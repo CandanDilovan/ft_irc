@@ -6,22 +6,63 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/02 13:57:55 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/03 13:39:52 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <iostream>
-#include <string>
-#include <netdb.h>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <stdio.h>
-#include <cstdlib>
-#include <poll.h>
-#include <string.h>
-#include <list>
+#include "../inc/user_class.hpp"
+
+void add_user(std::list<class user *> &userlist)
+{
+    struct pollfd   *tmp;
+    class user      *newuser;
+    
+    tmp = new pollfd[1];
+    tmp->fd = accept(userlist.front()->getFds()->fd , NULL, NULL);
+    if (tmp->fd < 0)
+        perror("error");
+    else
+    {
+        tmp->events = POLLIN | POLLOUT;
+        newuser = new user(tmp);
+        userlist.push_back(newuser);
+        std::cout << "connexion accepted" << std::endl;
+    }
+}
+
+
+void infinite_loop(std::list<class user *> &userlist)
+{
+    char tkt[100];
+    
+    memset(tkt, 0, 100);
+    while (1)
+    {
+        for (std::list<class user *>::iterator it = userlist.begin(); it != userlist.end(); ++it)
+        {
+            class user *userlisttmp = *it;
+            struct pollfd *user_fd = userlisttmp->getFds();
+            if (poll(user_fd, 1, 0) > 0)
+            {
+                if (user_fd->fd == userlist.front()->getFds()->fd && user_fd->revents & POLLIN)
+                    add_user(userlist);
+                else if (user_fd->revents & POLLIN)
+                {
+                    int reading = read(user_fd->fd, tkt, 100);
+                    if (reading > 0)
+                        std::cout << reading << " " << tkt;
+                    write(user_fd->fd, "bien vu\n", 9);
+                    memset(tkt, 0, 100);
+                }
+            }
+        }
+    }
+}
+
+// void parse_input(char str[100])
+// {
+    
+// }
 
 int main(int argc, char **argv)
 {
@@ -41,43 +82,11 @@ int main(int argc, char **argv)
         std::cerr << "Error: " << error <<  lene << std::endl; 
     }
     listen(socket_fd, 1);
-    char tkt[100];
-    memset(tkt, 0, 100);
     struct pollfd fds[1];
     fds[0].fd = socket_fd;
     fds[0].events = POLLIN | POLLOUT;
-    std::list<struct pollfd *> listfd;
-    listfd.push_back(fds);
-    while (1)
-    {
-        for (std::list<struct pollfd *>::iterator it = listfd.begin(); it != listfd.end(); ++it)
-        {
-            struct pollfd *listfds = *it;
-            if (poll(listfds, 1, 0) > 0)
-            {
-                if (listfds->fd == socket_fd && listfds->revents & POLLIN)
-                {
-                    struct pollfd *tmp;
-                    tmp = new struct pollfd[1];
-                    tmp->fd = accept(fds[0].fd, NULL, NULL);
-                    if (tmp->fd < 0)
-                        perror("error");
-                    else
-                    {
-                        tmp->events = POLLIN | POLLOUT;
-                        listfd.push_back(tmp);
-                        std::cout << "connexion accepted" << std::endl;
-                    }
-                }
-                else if (listfds->revents & POLLIN)
-                {
-                    int reading = read(listfds->fd, tkt, 100);
-                    if (reading > 0)
-                        std::cout << reading << " " << tkt << std::endl;
-                    write(listfds->fd, "bien vu\n", 9);
-                    memset(tkt, 0, 100);
-                }
-            }
-        }
-    }
+    std::list<class user *> userlist;
+    class user *socket_user = new user(fds);
+    userlist.push_back(socket_user);
+    infinite_loop(userlist);
 }
