@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/03 13:39:52 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/03 14:57:43 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,24 @@ void add_user(std::list<class user *> &userlist)
     }
 }
 
+void parse_input(class user *user_one)
+{
+    std::list<std::string> strings;
+    std::string tmp;
+    int closest;
+
+    while (user_one->allbuff.find('\r') != user_one->allbuff.npos || user_one->allbuff.find('\n') != user_one->allbuff.npos)
+    {
+        if (user_one->allbuff.find('\r') < user_one->allbuff.find('\n'))
+            closest = user_one->allbuff.find('\r');
+        else
+            closest = user_one->allbuff.find('\n');
+        tmp = user_one->allbuff.substr(0, closest);
+        user_one->allbuff.erase(0, closest + 1);
+        strings.push_back(tmp);
+        std::cout << tmp << std::endl;
+    }
+}
 
 void infinite_loop(std::list<class user *> &userlist)
 {
@@ -49,20 +67,25 @@ void infinite_loop(std::list<class user *> &userlist)
                 else if (user_fd->revents & POLLIN)
                 {
                     int reading = read(user_fd->fd, tkt, 100);
-                    if (reading > 0)
+                    if (reading > 0){
+
                         std::cout << reading << " " << tkt;
+                        userlisttmp->allbuff += tkt;
+                    }
                     write(user_fd->fd, "bien vu\n", 9);
                     memset(tkt, 0, 100);
                 }
+            }
+            if (userlisttmp->allbuff.find('\n') || userlisttmp->allbuff.find('\r'))
+            {
+                parse_input(userlisttmp);
+                userlisttmp->allbuff.clear();
             }
         }
     }
 }
 
-// void parse_input(char str[100])
-// {
-    
-// }
+
 
 int main(int argc, char **argv)
 {

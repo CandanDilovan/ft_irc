@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/03 13:32:36 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/03 14:36:33 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ public:
             return ("Issue with username");
         }
     };
+
+    std::string allbuff;
 };
 
 
