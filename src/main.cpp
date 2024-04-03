@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/03 14:57:43 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/03 15:43:16 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,31 @@ void add_user(std::list<class user *> &userlist)
     }
 }
 
+void fill_user(class user* user_one, std::list<std::string> strings)
+{
+    int closest;
+    
+    for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
+    {
+        if (user_one->allbuff.find('\r') < user_one->allbuff.find('\n'))
+            closest = user_one->allbuff.find('\r');
+        else
+            closest = user_one->allbuff.find('\n');
+        if ((*it).find("NICK") != (*it).npos)
+        {
+            std::string ok = (*it).substr((*it).find(" ") + 1, closest);
+            std::cout << ok << std::endl;
+            user_one->setNick(ok);
+        }
+        if ((*it).find("USER") != (*it).npos)
+        {
+            std::string ok2 = (*it).substr((*it).find(":") + 1, closest);
+            std::cout << ok2 << std::endl;
+            user_one->setNick(ok2);
+        }
+    }
+}
+
 void parse_input(class user *user_one)
 {
     std::list<std::string> strings;
@@ -45,7 +70,7 @@ void parse_input(class user *user_one)
         tmp = user_one->allbuff.substr(0, closest);
         user_one->allbuff.erase(0, closest + 1);
         strings.push_back(tmp);
-        std::cout << tmp << std::endl;
+        fill_user(user_one, strings);
     }
 }
 
