@@ -13,33 +13,39 @@
 #ifndef USER_CLASS_HPP
 # define USER_CLASS_HPP
 
-# include <sys/types.h>
-# include <sys/socket.h>
-# include <iostream>
-# include <string>
-# include <netdb.h>
-# include <unistd.h>
-# include <netinet/in.h>
-# include <stdio.h>
-# include <cstdlib>
-# include <poll.h>
-# include <string.h>
-# include <list>
+# include "ft_irc.hpp"
 
 class user
 {
+
 private:
+
     struct pollfd   *_fds;
     std::string     _name;
     std::string     _nick;
+
     user();
+
 public:
+
+    std::string allbuff;
+
+//constructor
+
     ~user();
     user(struct pollfd *fds);
 
+//set / get
+
     struct pollfd   *getFds();
-    void    setName(std::string name);
-    void    setNick(std::string nick);
+
+//fonction utile
+
+    void    parse_input();
+    void    fill_user(std::list<std::string> strings);
+
+
+//exception 
 
     class WrongFds : public std::exception 
     {
@@ -58,8 +64,7 @@ public:
             return ("Issue with username");
         }
     };
-
-    std::string allbuff;
+    
 };
 
 

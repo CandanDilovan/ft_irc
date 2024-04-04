@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = ft_irc
-SOURCES = src/main.cpp src/user_class.cpp
+SOURCES = src/main.cpp src/user_class.cpp src/server_class.cpp
 			
 OBJECTS = $(SOURCES:.cpp=.o)
 
