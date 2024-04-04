@@ -23,8 +23,7 @@ void infinite_loop(class Server &serv)
         memset(tkt, 0, 100);
         for (std::list<class user *>::iterator it = serv.getUserlist().begin(); it != serv.getUserlist().end(); ++it)
         {
-            class user *userlisttmp = *it;
-            struct pollfd *user_fd = userlisttmp->getFds();
+            struct pollfd *user_fd = (*it)->getFds();
             if (poll(user_fd, 1, 0) > 0)
             {
                 if (user_fd->fd == serv.getUserlist().front()->getFds()->fd && user_fd->revents & POLLIN)
@@ -33,10 +32,10 @@ void infinite_loop(class Server &serv)
                 {
                     int reading = read(user_fd->fd, tkt, 100);
                     if (reading > 0)
-                        userlisttmp->allbuff += tkt;
+                        (*it)->allbuff += tkt;
                 }
             }
-            userlisttmp->parse_input();
+            (*it)->parse_input();
         }
     }
 }
