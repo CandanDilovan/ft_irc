@@ -12,14 +12,22 @@
 
 #include "../inc/user_class.hpp"
 
-user::user(struct pollfd *fds)
+user::user(struct pollfd *fds, size_t n)
 {
     if (fds)
-    {
         _fds = fds;
-    }
     else
         throw WrongFds();
+    std::stringstream convert;
+    convert << n;
+    if (n < 10)
+        _num += "00" + convert.str();
+    else if (n < 100)
+        _num += "0" + convert.str();
+    else if (n < 999)
+        _num += convert.str();
+    else
+        throw ToMany();
 }
 
 user::user()
@@ -39,6 +47,14 @@ struct pollfd *user::getFds()
     return (_fds);
 }
 
+void user::nego_end()
+{
+    std::string Willkommen;
+
+    Willkommen += _num + " " + _nick + " :Welcome to the Internet Relay Network " + _nick;
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+}
+
 void user::fill_user(std::list<std::string> strings)
 {
     int closest;
@@ -49,10 +65,16 @@ void user::fill_user(std::list<std::string> strings)
             closest = (*it).find('\r');
         else
             closest = (*it).find('\n');
+        if ((*it).find("CAP LS") != (*it).npos)
+            write(_fds->fd, "CAP * LS", 9);
+        if ((*it).find("PASS") != (*it).npos)
+            _upass = (*it).substr((*it).find(" ") + 1, closest);
         if ((*it).find("NICK") != (*it).npos)
             _nick = (*it).substr((*it).find(" ") + 1, closest);
         if ((*it).find("USER") != (*it).npos)
             _name = (*it).substr((*it).find(":") + 1, closest);
+        if ((*it).find("CAP END") != (*it).npos)
+            nego_end();
     }
 }
 
@@ -76,7 +98,5 @@ void user::parse_input()
             fill_user(strings);
         }
         allbuff.clear();
-        std::cout << _name << std::endl;
-        std::cout << _nick << std::endl;
     }
 }

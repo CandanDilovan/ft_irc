@@ -32,7 +32,7 @@ Server::Server(char **argv)
     fds[0].fd = socket_fd;
     fds[0].events = POLLIN | POLLOUT;
     
-    user *socket_user = new user(fds);
+    user *socket_user = new user(fds, 1);
     _userlist.push_back(socket_user);
 }
 
@@ -68,7 +68,7 @@ void Server::add_user()
     else
     {
         tmp->events = POLLIN | POLLOUT;
-        newuser = new user(tmp);
+        newuser = new user(tmp, _userlist.size());
         _userlist.push_back(newuser);
         std::cout << "connexion accepted" << std::endl;
     }

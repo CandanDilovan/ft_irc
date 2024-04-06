@@ -33,6 +33,7 @@ void infinite_loop(class Server &serv)
                     int reading = read(user_fd->fd, tkt, 100);
                     if (reading > 0)
                         (*it)->allbuff += tkt;
+                    std::cout << tkt;
                 }
             }
             (*it)->parse_input();

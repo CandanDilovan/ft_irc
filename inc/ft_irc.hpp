@@ -25,6 +25,7 @@
 # include <poll.h>
 # include <string.h>
 # include <list>
+# include <sstream>
 # include "user_class.hpp"
 
 #endif 

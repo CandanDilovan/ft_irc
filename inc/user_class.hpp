@@ -23,6 +23,8 @@ private:
     struct pollfd   *_fds;
     std::string     _name;
     std::string     _nick;
+    std::string     _upass;
+    std::string     _num;
 
     user();
 
@@ -33,7 +35,7 @@ public:
 //constructor
 
     ~user();
-    user(struct pollfd *fds);
+    user(struct pollfd *fds, size_t n);
 
 //set / get
 
@@ -43,6 +45,7 @@ public:
 
     void    parse_input();
     void    fill_user(std::list<std::string> strings);
+    void    nego_end();
 
 
 //exception 
@@ -56,12 +59,21 @@ public:
         }
     };
 
-        class WrongName : public std::exception 
+    class WrongName : public std::exception 
     {
         public:
         virtual const char *what() const throw()
         {
             return ("Issue with username");
+        }
+    };
+
+    class ToMany : public std::exception 
+    {
+        public:
+        virtual const char *what() const throw()
+        {
+            return ("Too many users");
         }
     };
     
