@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/08 13:23:38 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 14:50:23 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,9 @@ void Server::join_channel(user *chuser, std::string chname)
     }
     else
         _chanmap[chname]->add_user(chuser);
+}
+
+void Server::tmfm(user *chuser, std::string chname, std::string msg)
+{
+    _chanmap[chname]->sendtoall(chuser, msg);
 }

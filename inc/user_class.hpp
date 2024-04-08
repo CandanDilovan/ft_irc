@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 13:05:29 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 14:12:58 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ class user
 
 private:
 
+    int             _connected;
     struct pollfd   *_fds;
     std::string     _name;
     std::string     _nick;
@@ -39,6 +40,7 @@ public:
 
 //set / get
 
+    int             _getco();
     struct pollfd   *getFds();
 
 //fonction utile

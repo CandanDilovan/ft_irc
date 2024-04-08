@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 13:34:05 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 14:50:56 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,21 @@ void infinite_loop(class Server &serv)
                     std::cout << tkt;
                 }
             }
-            if ((*it)->allbuff.find("JOIN") != (*it)->allbuff.npos)
+            if ((*it)->_getco() == 0)
+                (*it)->parse_input();
+            else if ((*it)->allbuff.find("JOIN") != (*it)->allbuff.npos && (*it)->_getco() == 1)
             {
                 std::string chname = (*it)->allbuff.substr(5, (*it)->allbuff.find("\n"));
                 serv.join_channel(*it, chname);
+                (*it)->allbuff.clear();
             }
-            (*it)->parse_input();
+            else if ((*it)->_getco() == 1 && (*it)->allbuff.find("PRIVMSG") != (*it)->allbuff.npos )
+            {
+                std::string chname = (*it)->allbuff.substr((*it)->allbuff.find('#'), (*it)->allbuff.find(':') - (*it)->allbuff.find('#') - 1);
+                std::string input =  (*it)->allbuff.substr((*it)->allbuff.find(':'), (*it)->allbuff.find('\r') - (*it)->allbuff.find(':') - 1);
+                serv.tmfm((*it), chname, input);
+                (*it)->allbuff.clear();
+            }
         }
     }
 }

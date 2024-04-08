@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 13:14:34 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 14:47:28 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ public :
     Channel(user *chuser, std::string cname);
     ~Channel();
 
-    void add_user(user *chuser);
+    void    add_user(user *chuser);
+    void    sendtoall(user *chuser, std::string msg);
 };
 
 #endif

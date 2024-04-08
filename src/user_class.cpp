@@ -6,13 +6,13 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 13:37:13 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 14:13:46 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/user_class.hpp"
 
-user::user(struct pollfd *fds, size_t n)
+user::user(struct pollfd *fds, size_t n) : _connected(0)
 {
     if (fds)
         _fds = fds;
@@ -47,6 +47,11 @@ struct pollfd *user::getFds()
     return (_fds);
 }
 
+int user::_getco()
+{
+    return(_connected);
+}
+
 void user::nego_end()
 {
     std::string Willkommen;
@@ -63,6 +68,7 @@ void user::nego_end()
     write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
     Willkommen = "004 " + _nick + " :There are 1 users and 0 services on 1 servers" + "\r\n";
     write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    _connected = 1;
     
 }
 
