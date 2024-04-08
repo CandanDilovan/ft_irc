@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/08 13:37:16 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 13:38:22 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ public :
     
 
     void                    add_user();
+    void                    join_channel(user *chuser, std::string chname);
 };
 
 #endif
