@@ -38,16 +38,24 @@ void infinite_loop(class Server &serv)
             }
             if ((*it)->_getco() == 0)
                 (*it)->parse_input();
+            else if ((*it)->allbuff.find("PING") != (*it)->allbuff.npos && (*it)->_getco() == 1)
+            {
+                std::string ping = (*it)->allbuff.substr((*it)->allbuff.find("PING"),  (*it)->allbuff.rfind('\r') - (*it)->allbuff.find("PING"));
+                ping = ping.substr(ping.find(" ") + 1,  ping.rfind('\r') - ping.find(" "));
+                ping = "PONG : ft_irc " + ping + "\r\n";
+                write((*it)->getFds()->fd, ping.c_str(), ping.size());
+                (*it)->allbuff.clear();
+            }
             else if ((*it)->allbuff.find("JOIN") != (*it)->allbuff.npos && (*it)->_getco() == 1)
             {
-                std::string chname = (*it)->allbuff.substr(5, (*it)->allbuff.find("\n"));
+                std::string chname = (*it)->allbuff.substr((*it)->allbuff.find("#"),  (*it)->allbuff.rfind('\r') - (*it)->allbuff.find("#"));
                 serv.join_channel(*it, chname);
                 (*it)->allbuff.clear();
             }
-            else if ((*it)->_getco() == 1 && (*it)->allbuff.find("PRIVMSG") != (*it)->allbuff.npos )
+            else if ((*it)->_getco() == 1 && (*it)->allbuff.find("PRIVMSG") != (*it)->allbuff.npos)
             {
                 std::string chname = (*it)->allbuff.substr((*it)->allbuff.find('#'), (*it)->allbuff.find(':') - (*it)->allbuff.find('#') - 1);
-                std::string input =  (*it)->allbuff.substr((*it)->allbuff.find(':'), (*it)->allbuff.find('\r') - (*it)->allbuff.find(':') - 1);
+                std::string input =  (*it)->allbuff.substr((*it)->allbuff.find(':') + 1, (*it)->allbuff.find('\n') - (*it)->allbuff.find(':'));
                 serv.tmfm((*it), chname, input);
                 (*it)->allbuff.clear();
             }

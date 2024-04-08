@@ -40,6 +40,7 @@ public:
 
 //set / get
 
+    std::string     getNick();
     int             _getco();
     struct pollfd   *getFds();
 

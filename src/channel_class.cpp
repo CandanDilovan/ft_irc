@@ -31,8 +31,10 @@ void Channel::sendtoall(user *chuser, std::string msg)
 {
     for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
     {
+        (void)chuser;
+        std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + msg + "\r\n";
         if ((*it)->getFds()->fd != chuser->getFds()->fd)
-            write((*it)->getFds()->fd, msg.c_str(), msg.size() + 1);
+            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
     }
 
 }

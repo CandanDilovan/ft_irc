@@ -41,6 +41,10 @@ user::~user()
         delete[] _fds;
 }
 
+std::string user::getNick()
+{
+    return (_nick);
+}
 
 struct pollfd *user::getFds()
 {
