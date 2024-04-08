@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_class.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/03 13:32:20 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 11:35:38 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,23 @@ struct pollfd *user::getFds()
 void user::nego_end()
 {
     std::string Willkommen;
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    char timeloc[100];
+    strftime(timeloc, sizeof(timeloc), "%Y/%m/%d %H:%M:%S", ltm);
 
-    Willkommen += _num + " " + _nick + " :Welcome to the Internet Relay Network " + _nick;
+    Willkommen += _num + " " + _nick + " :Welcome to the Internet Relay Network " + _nick + "\r\n";
     write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    Willkommen.clear();
+    Willkommen += _num + " " + _nick + " :Your host is ft_irc, running version 1.0" + "\r\n";
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    Willkommen.clear();
+    Willkommen += _num + " " + _nick + " :This server was created " + timeloc + "\r\n";
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    Willkommen.clear();
+    Willkommen += _num + " " + _nick + " :There are 1 users and 0 services on 1 servers" + "\r\n";
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    
 }
 
 void user::fill_user(std::list<std::string> strings)

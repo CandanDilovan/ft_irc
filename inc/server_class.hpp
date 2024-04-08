@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_class.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-04 12:59:16 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
+/*   Updated: 2024/04/08 10:37:56 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ public :
     std::list<user *>       &getUserlist(); 
 
     void                    add_user();
+    void                    KICK(std::string const &name);
+    void                    INVITE(std::string const &name);
+    void                    TOPIC();
+    void                    MODE(std::string const &mode);
 
 };
 
