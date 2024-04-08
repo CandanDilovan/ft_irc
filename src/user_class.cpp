@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 11:33:30 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 12:29:19 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,20 @@ struct pollfd *user::getFds()
 void user::nego_end()
 {
     std::string Willkommen;
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    char timeloc[100];
+    strftime(timeloc, sizeof(timeloc), "%Y/%m/%d %H:%M:%S", ltm);
 
-    Willkommen =  "001 " + _nick + " :Welcome to the Internet Relay Network, " + _nick + "\r\n";
+    Willkommen = _num + " " + _nick + " :Welcome to the Internet Relay Network " + _nick + "\r\n";
     write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
-    Willkommen =  "002 " + _nick + " :Your host is ft_irc, running version ft_irc 0.1" + "\r\n";
+    Willkommen = _num + " " + _nick + " :Your host is ft_irc, running version 1.0" + "\r\n";
     write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
-    Willkommen =  "003 " + _nick + " :This server was created 08/04/2024" + "\r\n";
+    Willkommen = _num + " " + _nick + " :This server was created " + timeloc + "\r\n";
     write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    Willkommen = _num + " " + _nick + " :There are 1 users and 0 services on 1 servers" + "\r\n";
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    
 }
 
 void user::fill_user(std::list<std::string> strings)

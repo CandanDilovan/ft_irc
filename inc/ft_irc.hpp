@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-04 11:52:41 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-04 11:52:41 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/04 11:52:41 by dilovan           #+#    #+#             */
+/*   Updated: 2024/04/08 11:24:10 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <string.h>
 # include <list>
 # include <sstream>
+# include <ctime>
 # include "user_class.hpp"
 
 #endif 
