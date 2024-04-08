@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_irc.hpp                                         :+:      :+:    :+:   */
+/*   channel_class.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 11:52:41 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/08 13:11:25 by dcandan          ###   ########.fr       */
+/*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
+/*   Updated: 2024/04/08 13:29:28 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_IRC_HPP
-# define FT_IRC_HPP
+#include "../inc/channel_class.hpp"
 
-# include <sys/types.h>
-# include <sys/socket.h>
-# include <iostream>
-# include <string>
-# include <netdb.h>
-# include <unistd.h>
-# include <netinet/in.h>
-# include <stdio.h>
-# include <cstdlib>
-# include <poll.h>
-# include <string.h>
-# include <list>
-# include <sstream>
-# include <ctime>
-# include <map>
-# include "user_class.hpp"
+Channel::Channel()
+{
+    
+}
 
-#endif 
+Channel::~Channel()
+{
+    
+}
+
+Channel::Channel(user *chuser, std::string cname) : _cname(cname)
+{
+    _ulist.push_back(chuser);
+}
+
+void Channel::add_user(user *chuser)
+{
+    _ulist.push_back(chuser);
+}

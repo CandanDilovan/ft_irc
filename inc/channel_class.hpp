@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_irc.hpp                                         :+:      :+:    :+:   */
+/*   channel_class.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 11:52:41 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/08 13:11:25 by dcandan          ###   ########.fr       */
+/*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
+/*   Updated: 2024/04/08 13:14:34 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_IRC_HPP
-# define FT_IRC_HPP
+#ifndef CHANNEL_CLASS_HPP
+# define CHANNEL_CLASS_HPP
 
-# include <sys/types.h>
-# include <sys/socket.h>
-# include <iostream>
-# include <string>
-# include <netdb.h>
-# include <unistd.h>
-# include <netinet/in.h>
-# include <stdio.h>
-# include <cstdlib>
-# include <poll.h>
-# include <string.h>
-# include <list>
-# include <sstream>
-# include <ctime>
-# include <map>
+# include "ft_irc.hpp"
 # include "user_class.hpp"
 
-#endif 
+class user;
+
+class Channel
+{
+
+private :
+
+    std::string _cname;
+    std::list<user *> _ulist;
+
+public :
+
+    Channel();
+    Channel(user *chuser, std::string cname);
+    ~Channel();
+
+    void add_user(user *chuser);
+};
+
+#endif

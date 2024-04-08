@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 10:35:28 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 13:34:05 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ void infinite_loop(class Server &serv)
                         (*it)->allbuff += tkt;
                     std::cout << tkt;
                 }
+            }
+            if ((*it)->allbuff.find("JOIN") != (*it)->allbuff.npos)
+            {
+                std::string chname = (*it)->allbuff.substr(5, (*it)->allbuff.find("\n"));
+                serv.join_channel(*it, chname);
             }
             (*it)->parse_input();
         }

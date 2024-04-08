@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_class.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-04 13:06:07 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
+/*   Updated: 2024/04/08 13:23:38 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,17 @@ void Server::add_user()
         _userlist.push_back(newuser);
         std::cout << "connexion accepted" << std::endl;
     }
+}
+
+void Server::join_channel(user *chuser, std::string chname)
+{
+    if (_chanmap.find(chname) == _chanmap.end())
+    {
+        Channel      *newchan;
+        
+        newchan = new Channel(chuser, chname);
+        _chanmap.insert(std::pair<std::string, Channel *>(chname, newchan));
+    }
+    else
+        _chanmap[chname]->add_user(chuser);
 }
