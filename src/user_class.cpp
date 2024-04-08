@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/03 13:32:20 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 11:33:30 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,11 @@ void user::nego_end()
 {
     std::string Willkommen;
 
-    Willkommen += _num + " " + _nick + " :Welcome to the Internet Relay Network " + _nick;
+    Willkommen =  "001 " + _nick + " :Welcome to the Internet Relay Network, " + _nick + "\r\n";
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    Willkommen =  "002 " + _nick + " :Your host is ft_irc, running version ft_irc 0.1" + "\r\n";
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    Willkommen =  "003 " + _nick + " :This server was created 08/04/2024" + "\r\n";
     write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
 }
 

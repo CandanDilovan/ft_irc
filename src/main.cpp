@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/03 15:43:16 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/08 10:35:28 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ void infinite_loop(class Server &serv)
 
 int main(int argc, char **argv)
 {
-    (void)argc;
+    if (argc != 3)
+    {
+        std::cerr << "Error: wrong number of arguments" << std::endl;
+        return (1);
+    }
     try
     {
         Server serv(argv);
@@ -54,4 +58,5 @@ int main(int argc, char **argv)
     {
         std::cerr << "Error: " << e.what() << std::endl;
     }
+    return (0);
 }
