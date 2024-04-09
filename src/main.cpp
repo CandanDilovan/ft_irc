@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 14:50:56 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/09 13:46:32 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/user_class.hpp"
 #include "../inc/server_class.hpp"
+#include "../inc/channel_class.hpp"
 
 
 void infinite_loop(class Server &serv)
@@ -57,6 +58,11 @@ void infinite_loop(class Server &serv)
                 std::string chname = (*it)->allbuff.substr((*it)->allbuff.find('#'), (*it)->allbuff.find(':') - (*it)->allbuff.find('#') - 1);
                 std::string input =  (*it)->allbuff.substr((*it)->allbuff.find(':') + 1, (*it)->allbuff.find('\n') - (*it)->allbuff.find(':'));
                 serv.tmfm((*it), chname, input);
+                (*it)->allbuff.clear();
+            }
+            else if (("KICK" == (*it)->allbuff.substr(0, 4) || "INVITE" == (*it)->allbuff.substr(0, 6)))
+            {
+                serv.com_spec((*it)->allbuff);
                 (*it)->allbuff.clear();
             }
         }
