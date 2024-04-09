@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/09 14:32:34 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/09 15:12:49 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void Server::tmfm(user *chuser, std::string chname, std::string msg)
     _chanmap[chname]->sendtoall(chuser, msg);
 }
 
-void    Server::com_spec(std::string line)
+void    Server::com_spec_kick(std::string line)
 {
     if (line.empty())
         return;
@@ -109,10 +109,42 @@ void    Server::com_spec(std::string line)
         return;
     }
     std::string chname = line.substr(hashPos, SecondSpacePos);
+    
     std::string nick = line.substr(cmd.size() + chname.size() + 1, line.rfind(" ") - (cmd.size() + chname.size() + 1));
+    std::cout << "cmd:" << cmd << std::endl;
+    std::cout << "chname:" << chname << std::endl;
+    std::cout << "nick:" << nick << std::endl;
     if (cmd == "KICK")
         _chanmap[chname]->KICK(_userlist.front(), nick);
-    else if (cmd == "INVITE")
+    // else if (cmd == "TOPIC")
+    //     _chanmap[chname]->TOPIC(_userlist.front());
+    // else if (cmd == "MODE")
+    //     _chanmap[chname]->MODE(_userlist.front());
+}
+
+void    Server::com_spec_invite(std::string line)
+{
+    if (line.empty())
+        return;
+    size_t firstSpacePos = line.find(" ");
+    if (firstSpacePos == std::string::npos) {
+        std::cerr << "Error: command format is incorrect." << std::endl;
+        return;
+    }
+    std::string cmd = line.substr(0, firstSpacePos);
+    size_t hashPos = line.find("#");
+    size_t SecondSpacePos = line.find(" ");
+    if (hashPos == std::string::npos || hashPos < firstSpacePos) {
+        std::cerr << "Error: channel name format is incorrect." << std::endl;
+        return;
+    }
+    std::string chname = line.substr(hashPos, SecondSpacePos);
+    
+    std::string nick = line.substr(cmd.size() + chname.size() + 1, line.rfind(" ") - (cmd.size() + chname.size() + 1));
+    std::cout << "cmd:" << cmd << std::endl;
+    std::cout << "chname:" << chname << std::endl;
+    std::cout << "nick:" << nick << std::endl;
+    if (cmd == "INVITE")
         _chanmap[chname]->INVITE(_userlist.front(), nick);
     // else if (cmd == "TOPIC")
     //     _chanmap[chname]->TOPIC(_userlist.front());
