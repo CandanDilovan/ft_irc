@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/09 13:21:08 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/09 14:58:43 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ void Server::join_channel(user *chuser, std::string chname)
         
         newchan = new Channel(chuser, chname);
         _chanmap.insert(std::pair<std::string, Channel *>(chname, newchan));
+
+        std::string joined = "has joined " + chname;
+        _chanmap[chname]->sendtoallfr(chuser, joined);
     }
     else
         _chanmap[chname]->add_user(chuser);
