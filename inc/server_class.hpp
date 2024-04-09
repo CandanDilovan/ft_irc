@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/09 12:17:44 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/09 14:31:26 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "ft_irc.hpp"
 # include "user_class.hpp"
 # include "channel_class.hpp"
+
+class Channel;
 
 class Server
 {
