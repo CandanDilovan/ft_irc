@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/09 14:31:26 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/09 15:12:39 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ public :
     void                    add_user();
     void                    join_channel(user *chuser, std::string chname);
     void                    tmfm(user *chuser, std::string chname, std::string msg);
-    void                    com_spec(std::string line);
+    void                    com_spec_kick(std::string line);
+    void                    com_spec_invite(std::string line);
 };
 
 #endif

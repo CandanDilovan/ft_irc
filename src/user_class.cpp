@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_class.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/09 15:08:00 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/09 15:17:51 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int user::_getco()
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
 	std::string	msg[5] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE"};
-	void		(user::*user_list[4])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm};
+	void		(user::*user_list[5])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm_kick, &user::call_spec_comm_invite};
 	int 		a;
 
 	a = -1;
@@ -168,7 +168,12 @@ void user::parse_input(Server &serv)
         
 }
 
-void    user::call_spec_comm(Server &serv, std::string str)
+void    user::call_spec_comm_kick(Server &serv, std::string str)
 {
-    serv.com_spec(str);
+    serv.com_spec_kick(str);
+}
+
+void    user::call_spec_comm_invite(Server &serv, std::string str)
+{
+    serv.com_spec_invite(str);
 }
