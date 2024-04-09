@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 14:50:56 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/09 13:51:49 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,7 @@ void infinite_loop(class Server &serv)
                     std::cout << tkt;
                 }
             }
-            if ((*it)->_getco() == 0)
-                (*it)->parse_input();
-            else if ((*it)->allbuff.find("PING") != (*it)->allbuff.npos && (*it)->_getco() == 1)
-            {
-                std::string ping = (*it)->allbuff.substr((*it)->allbuff.find("PING"),  (*it)->allbuff.rfind('\r') - (*it)->allbuff.find("PING"));
-                ping = ping.substr(ping.find(" ") + 1,  ping.rfind('\r') - ping.find(" "));
-                ping = "PONG : ft_irc " + ping + "\r\n";
-                write((*it)->getFds()->fd, ping.c_str(), ping.size());
-                (*it)->allbuff.clear();
-            }
-            else if ((*it)->allbuff.find("JOIN") != (*it)->allbuff.npos && (*it)->_getco() == 1)
-            {
-                std::string chname = (*it)->allbuff.substr((*it)->allbuff.find("#"),  (*it)->allbuff.rfind('\r') - (*it)->allbuff.find("#"));
-                serv.join_channel(*it, chname);
-                (*it)->allbuff.clear();
-            }
-            else if ((*it)->_getco() == 1 && (*it)->allbuff.find("PRIVMSG") != (*it)->allbuff.npos)
-            {
-                std::string chname = (*it)->allbuff.substr((*it)->allbuff.find('#'), (*it)->allbuff.find(':') - (*it)->allbuff.find('#') - 1);
-                std::string input =  (*it)->allbuff.substr((*it)->allbuff.find(':') + 1, (*it)->allbuff.find('\n') - (*it)->allbuff.find(':'));
-                serv.tmfm((*it), chname, input);
-                (*it)->allbuff.clear();
-            }
+            (*it)->parse_input(serv);
         }
     }
 }

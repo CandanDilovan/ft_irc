@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 14:13:46 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/09 14:05:41 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,48 @@ int user::_getco()
     return(_connected);
 }
 
+void user::connected_parse(Server &serv, std::list<std::string> strings)
+{
+	std::string	msg[3] = {"JOIN", "PING", "PRIVMSG"};
+	void		(user::*user_list[4])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg};
+	int 		a;
+
+	a = -1;
+	while (++a < 3)
+	{
+        for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
+        {
+            if ((*it).find(msg[a]) != (*it).npos)
+            {
+                (this->*user_list[a])(serv, (*it));
+                return ;
+            }
+        }
+	}
+}
+
+void    user::privmsg(Server &serv, std::string str)
+{
+    std::string chname = str.substr(str.find('#'), (str.find(':') - str.find('#') - 1));
+    std::string input =  str.substr(str.find(':') + 1, str.find('\n') - str.find(':'));
+    serv.tmfm(this, chname, input);
+}
+
+void    user::join(Server &serv, std::string str)
+{
+    std::string chname = str.substr(str.find("#"),  str.rfind('\r') - str.find("#"));
+    serv.join_channel(this, chname);
+}
+
+void    user::ping(Server &serv, std::string str)
+{
+    (void)serv;
+    std::string ping = str.substr(str.find("PING"),  (str.rfind('\r') - str.find("PING")));
+    ping = ping.substr(ping.find(" ") + 1,  ping.rfind('\r') - ping.find(" "));
+    ping = "PONG : ft_irc " + ping + "\r\n";
+    write(getFds()->fd, ping.c_str(), ping.size());
+}
+
 void user::nego_end()
 {
     std::string Willkommen;
@@ -99,7 +141,7 @@ void user::fill_user(std::list<std::string> strings)
     }
 }
 
-void user::parse_input()
+void user::parse_input(Server &serv)
 {
     std::list<std::string> strings;
     std::string tmp;
@@ -116,8 +158,12 @@ void user::parse_input()
             tmp = allbuff.substr(0, closest);
             allbuff.erase(0, closest + 1);
             strings.push_back(tmp);
-            fill_user(strings);
         }
+        if (_connected == 0)
+            fill_user(strings);
+        else if (_connected == 1)
+            connected_parse(serv, strings);
         allbuff.clear();
     }
+        
 }

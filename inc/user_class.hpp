@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/08 14:12:58 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/09 13:56:29 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define USER_CLASS_HPP
 
 # include "ft_irc.hpp"
+
+class Server;
 
 class user
 {
@@ -28,6 +30,11 @@ private:
     std::string     _num;
 
     user();
+
+
+    void            ping(Server &serv, std::string str);
+    void            join(Server &serv, std::string str);
+    void            privmsg(Server &serv, std::string str);
 
 public:
 
@@ -46,9 +53,10 @@ public:
 
 //fonction utile
 
-    void    parse_input();
+    void    parse_input(Server &serv);
     void    fill_user(std::list<std::string> strings);
     void    nego_end();
+    void    connected_parse(Server &serv, std::list<std::string> strings);
 
 
 //exception 
