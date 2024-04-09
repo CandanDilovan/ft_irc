@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   server_class.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/04/09 14:58:43 by dcandan          ###   ########.fr       */
+=======
+/*   Updated: 2024/04/09 14:32:34 by aabel            ###   ########.fr       */
+>>>>>>> refs/remotes/origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +97,32 @@ void Server::join_channel(user *chuser, std::string chname)
 void Server::tmfm(user *chuser, std::string chname, std::string msg)
 {
     _chanmap[chname]->sendtoall(chuser, msg);
+}
+
+void    Server::com_spec(std::string line)
+{
+    if (line.empty())
+        return;
+    size_t firstSpacePos = line.find(" ");
+    if (firstSpacePos == std::string::npos) {
+        std::cerr << "Error: command format is incorrect." << std::endl;
+        return;
+    }
+    std::string cmd = line.substr(0, firstSpacePos);
+    size_t hashPos = line.find("#");
+    size_t SecondSpacePos = line.find(" ");
+    if (hashPos == std::string::npos || hashPos < firstSpacePos) {
+        std::cerr << "Error: channel name format is incorrect." << std::endl;
+        return;
+    }
+    std::string chname = line.substr(hashPos, SecondSpacePos);
+    std::string nick = line.substr(cmd.size() + chname.size() + 1, line.rfind(" ") - (cmd.size() + chname.size() + 1));
+    if (cmd == "KICK")
+        _chanmap[chname]->KICK(_userlist.front(), nick);
+    else if (cmd == "INVITE")
+        _chanmap[chname]->INVITE(_userlist.front(), nick);
+    // else if (cmd == "TOPIC")
+    //     _chanmap[chname]->TOPIC(_userlist.front());
+    // else if (cmd == "MODE")
+    //     _chanmap[chname]->MODE(_userlist.front());
 }

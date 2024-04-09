@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   user_class.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/04/09 14:47:30 by dcandan          ###   ########.fr       */
+=======
+/*   Updated: 2024/04/09 14:44:49 by aabel            ###   ########.fr       */
+>>>>>>> refs/remotes/origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +62,12 @@ int user::_getco()
 
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
-	std::string	msg[3] = {"JOIN", "PING", "PRIVMSG"};
-	void		(user::*user_list[3])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg};
+	std::string	msg[5] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE"};
+	void		(user::*user_list[4])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm};
 	int 		a;
 
 	a = -1;
-	while (++a < 3)
+	while (++a < 5)
 	{
         for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
         {
@@ -166,4 +170,9 @@ void user::parse_input(Server &serv)
         allbuff.clear();
     }
         
+}
+
+void    user::call_spec_comm(Server &serv, std::string str)
+{
+    serv.com_spec(str);
 }
