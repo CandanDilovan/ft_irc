@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/10 11:43:02 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/10 13:13:24 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ public :
     void    sendtoallfr(user *chuser, std::string msg);
     
     void    KICK(std::string nick);
-    void    INVITE(user *chuser, std::string nick);
+    void    INVITE(std::string nick);
     void    TOPIC(user *chuser);
     void    MODE(user *chuser);
 };

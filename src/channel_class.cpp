@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/10 12:48:04 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/10 14:30:50 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ void Channel::KICK(std::string nick)
     {
         if ((*it)->getNick() == nick)
         {
-            std::cout << (*it)->getNick() << std::endl;
-            std::string tosend = ": KICK " + _cname + " " + nick + "\r\n";
+            std::string tosend = ":" + (*it)->getNick() + " KICK " + _cname + " " + nick + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             it = _ulist.erase(it);
             break;
@@ -77,23 +76,21 @@ void Channel::KICK(std::string nick)
     }
 }
 
-void Channel::INVITE(user *chuser, std::string nick)
+void Channel::INVITE(std::string nick)
 {
     for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
     {
         if ((*it)->getNick() == nick)
         {
-            std::string tosend = ":" + chuser->getNick() + " Allready in the Channel " + nick + " " + _cname + "\r\n";
+            std::string tosend = ": Allready in the Channel " + nick + " " + _cname + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             break;
         }
         else if (it == _ulist.end())
         {
-            std::string tosend = ":" + chuser->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
+            std::string tosend = ":" + (*it)->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-            _ulist.push_back(chuser);
         }
     }
 }
-
 

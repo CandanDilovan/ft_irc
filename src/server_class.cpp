@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/10 11:48:08 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/10 14:30:40 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,11 @@ void    Server::com_spec_kick(std::string line)
     size_t firstSpacePos = line.find(" ");
     std::string cmd = line.substr(0, firstSpacePos);
     
-    size_t hashPos = line.find("#");
-    size_t SecondSpacePos = line.find(" ") - 1;
-    std::string chname = line.substr(hashPos, SecondSpacePos);
+    size_t hashPos = line.find("#", firstSpacePos);
+    size_t secondSpacePos = line.find(" ", hashPos);
+    std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
     
     std::string nick = line.substr(cmd.size() + chname.size() + 2, line.rfind(" ") - (cmd.size() + chname.size() + 2));
-    std::cout << "cmd:" << cmd << "!" << std::endl;
-    std::cout << "chname:" << chname << "!" << std::endl;
-    std::cout << "nick:" << nick << "!" << std::endl;
     if (_chanmap.find(chname) != _chanmap.end())
         _chanmap[chname]->KICK(nick);
 }
@@ -121,13 +118,11 @@ void    Server::com_spec_invite(std::string line)
     size_t firstSpacePos = line.find(" ");
     std::string cmd = line.substr(0, firstSpacePos);
     
-    size_t hashPos = line.find("#");
-    size_t SecondSpacePos = line.find(" ");
-    std::string chname = line.substr(hashPos, SecondSpacePos);
-    
-    std::string nick = line.substr(cmd.size() + chname.size() + 1, line.rfind(" ") - (cmd.size() + chname.size() + 1));
-    std::cout << "cmd:" << cmd << std::endl;
-    std::cout << "chname:" << chname << std::endl;
-    std::cout << "nick:" << nick << std::endl;
-    _chanmap[chname]->INVITE(_userlist.front(), nick);
+    size_t secondSpacePos = line.find(" ", firstSpacePos + 1);
+    std::string nick = line.substr(firstSpacePos + 1, secondSpacePos - firstSpacePos - 1);
+     
+    size_t hashPos = line.find("#", secondSpacePos);
+    std::string chname = line.substr(hashPos);
+    if (_chanmap.find(chname) != _chanmap.end())
+        _chanmap[chname]->INVITE(nick);
 }
