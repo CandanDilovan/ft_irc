@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_class.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/09 15:08:20 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/10 12:48:04 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,22 @@ void Channel::add_user(user *chuser)
     sendtoallfr(chuser, joined);
 }
 
-void Channel::KICK(user *chuser, std::string nick)
+void Channel::KICK(std::string nick)
 {
-    for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+    std::list<user*>::iterator it = _ulist.begin();
+    while (it != _ulist.end())
     {
         if ((*it)->getNick() == nick)
         {
-            std::string tosend = ":" + chuser->getNick() + " KICK " + _cname + " " + nick + "\r\n";
+            std::cout << (*it)->getNick() << std::endl;
+            std::string tosend = ": KICK " + _cname + " " + nick + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-            _ulist.erase(it);
+            it = _ulist.erase(it);
             break;
+        }
+        else
+        {
+            ++it;
         }
     }
 }

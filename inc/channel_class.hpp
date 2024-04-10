@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_class.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/09 15:04:17 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/10 11:43:02 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ public :
     void    sendtoall(user *chuser, std::string msg);
     void    sendtoallfr(user *chuser, std::string msg);
     
-    void    KICK(user *chuser, std::string nick);
+    void    KICK(std::string nick);
     void    INVITE(user *chuser, std::string nick);
     void    TOPIC(user *chuser);
     void    MODE(user *chuser);
