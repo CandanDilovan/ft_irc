@@ -40,12 +40,26 @@ void Channel::sendtoallfr(user *chuser, std::string msg)
 
 void Channel::sendtoall(user *chuser, std::string msg)
 {
+    int flag = 0;
     for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+        if ((*it)->getNick() == chuser->getNick())
+            flag = 1;
+    if (flag == 1)
     {
+
+        for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+        {
+            std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + msg + "\r\n";
+            if ((*it)->getFds()->fd != chuser->getFds()->fd)
+                write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+            std::cout << tosend;
+        }
+    }
+    else
+    {
+        std::string msg = "Your message can't be sent because you've left the channel";
         std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + msg + "\r\n";
-        if ((*it)->getFds()->fd != chuser->getFds()->fd)
-            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-        std::cout << tosend;
+        write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
     }
 
 }
@@ -55,6 +69,23 @@ void Channel::add_user(user *chuser)
     _ulist.push_back(chuser);
     std::string joined = "has joined " + _cname;
     sendtoallfr(chuser, joined);
+}
+
+void Channel::rm_user(user *chuser)
+{
+    for(std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+    {
+        if ((*it)->getNick() == chuser->getNick())  
+        {
+            std::string msg = "has left " + _cname;
+            sendtoall(chuser, msg);
+            msg = "you have left the channel press alt + 1 to return to the main menu ";
+            std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + msg + "\r\n";
+            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+            _ulist.erase(it);
+            break;
+        }
+    }
 }
 
 void Channel::KICK(std::string nick)

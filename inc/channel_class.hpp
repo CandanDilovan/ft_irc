@@ -33,6 +33,7 @@ public :
     ~Channel();
 
     void    add_user(user *chuser);
+    void    rm_user(user *chuser);
     void    sendtoall(user *chuser, std::string msg);
     void    sendtoallfr(user *chuser, std::string msg);
     

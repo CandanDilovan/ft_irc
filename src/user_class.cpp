@@ -58,12 +58,12 @@ int user::_getco()
 
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
-	std::string	msg[5] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE"};
-	void		(user::*user_list[5])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm_kick, &user::call_spec_comm_invite};
+	std::string	msg[6] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART"};
+	void		(user::*user_list[6])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part};
 	int 		a;
 
 	a = -1;
-	while (++a < 5)
+	while (++a < 6)
 	{
         for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
         {
@@ -87,6 +87,12 @@ void    user::join(Server &serv, std::string str)
 {
     std::string chname = str.substr(str.find("#"),  str.rfind('\r') - str.find("#"));
     serv.join_channel(this, chname);
+}
+
+void    user::part(Server &serv, std::string str)
+{
+    std::string chname = str.substr(str.find('#'), (str.find(':') - str.find('#') - 1));
+    serv.leaving(this, chname);
 }
 
 void    user::ping(Server &serv, std::string str)

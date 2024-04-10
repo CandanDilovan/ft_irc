@@ -35,6 +35,7 @@ private:
     void            ping(Server &serv, std::string str);
     void            join(Server &serv, std::string str);
     void            privmsg(Server &serv, std::string str);
+    void            part(Server &serv, std::string str);
     void            call_spec_comm_kick(Server &serv, std::string str);
     void            call_spec_comm_invite(Server &serv, std::string str);
 

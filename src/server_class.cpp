@@ -90,6 +90,11 @@ void Server::join_channel(user *chuser, std::string chname)
         _chanmap[chname]->add_user(chuser);
 }
 
+void Server::leaving(user *chuser, std::string chname)
+{
+    _chanmap[chname]->rm_user(chuser);
+}
+
 void Server::tmfm(user *chuser, std::string chname, std::string msg)
 {
     _chanmap[chname]->sendtoall(chuser, msg);
