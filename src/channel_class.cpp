@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/10 14:30:50 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/10 14:35:38 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void Channel::KICK(std::string nick)
         if ((*it)->getNick() == nick)
         {
             std::string tosend = ":" + (*it)->getNick() + " KICK " + _cname + " " + nick + "\r\n";
-            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+            // write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+            sendtoallfr((*it), tosend);
             it = _ulist.erase(it);
             break;
         }
