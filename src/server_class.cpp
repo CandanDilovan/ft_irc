@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/11 12:03:31 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/11 14:11:19 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void    Server::com_spec_invite(std::string line)
         _chanmap[chname]->INVITE(nick);
 }
 
-void    Server::com_spec_topic(std::string line)
+void    Server::com_spec_topic(std::string line, user *users)
 {
     if (line.empty())
         return;
@@ -143,6 +143,6 @@ void    Server::com_spec_topic(std::string line)
     std::cout << cmd << "!" << std::endl;
     std::cout << chname << "!" << std::endl;
     std::cout << topic << "!" << std::endl;
-    // if (_chanmap.find(chname) != _chanmap.end())
-    //     _chanmap[chname]->TOPIC(topic);
+    if (_chanmap.find(chname) != _chanmap.end())
+        _chanmap[chname]->TOPIC(topic, users);
 }

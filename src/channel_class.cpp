@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/11 12:07:15 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/11 14:36:14 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,18 @@ void Channel::INVITE(std::string nick)
     }
 }
 
-void    TOPIC(std::string topic)
+void    Channel::TOPIC(std::string topic, user *users)
 {
-    (void) topic;
-    // std::string tosend = ":" + getNick() + " INVITE " + nick + " " + _cname + "\r\n";
-    // write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+    _topic = topic;
+    std::cout << "topic: " << _topic << std::endl;
+    for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+    {
+        if ((*it)->getNick() == users->getNick())
+        {
+            // std::string tosend = ": TOPIC: " + users->getNick() + " modify topic to " + topic  + "\r\n";
+            std::string tosend = ":" + (*it)->getNick() + _cname + " " + _topic + "\r\n";
+            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+            break;
+        }
+    }
 }
