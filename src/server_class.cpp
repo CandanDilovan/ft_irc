@@ -74,6 +74,12 @@ void Server::add_user()
     }
 }
 
+void    Server::checkempty(std::string chname)
+{
+    if (_chanmap[chname]->getUserSize() < 1)
+        _chanmap.erase(chname); 
+}
+
 void Server::join_channel(user *chuser, std::string chname)
 {
     if (_chanmap.find(chname) == _chanmap.end())
@@ -89,6 +95,7 @@ void Server::join_channel(user *chuser, std::string chname)
 void Server::leaving(user *chuser, std::string chname)
 {
     _chanmap[chname]->rm_user(chuser);
+    checkempty(chname);
 }
 
 void Server::tmfm(user *chuser, std::string chname, std::string msg)
@@ -110,6 +117,7 @@ void    Server::com_spec_kick(user *user,std::string line)
     std::string nick = line.substr(cmd.size() + chname.size() + 2, line.rfind(" ") - (cmd.size() + chname.size() + 2));
     if (_chanmap.find(chname) != _chanmap.end())
         _chanmap[chname]->KICK(user, nick);
+    checkempty(chname);
 }
 
 void    Server::com_spec_invite(std::string line)

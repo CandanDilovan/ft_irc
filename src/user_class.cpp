@@ -180,6 +180,7 @@ void user::parse_input(Server &serv)
 
 void    user::call_spec_comm_kick(Server &serv, std::string str, user *users)
 {
+    (void)users;
     serv.com_spec_kick(this, str);
 }
 

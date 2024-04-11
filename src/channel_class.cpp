@@ -33,7 +33,11 @@ int Channel::isop(user *chuser)
         if ((*it)->getNick() == chuser->getNick())
             return (1);
     return (0);
+}
 
+int Channel::getUserSize()
+{
+    return(_ulist.size());
 }
 
 void Channel::sendtoallnopm(std::string msg)
@@ -105,8 +109,7 @@ void Channel::rm_user(user *chuser)
 
 void Channel::KICK(user *chuser, std::string nick)
 {
-    int flag = isop(chuser);
-    if (flag == 1)
+    if (isop(chuser) == 1)
     {
         for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
         {

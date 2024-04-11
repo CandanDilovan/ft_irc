@@ -43,6 +43,7 @@ public :
     
 
     void                    add_user();
+    void                    checkempty(std::string chname);
     void                    join_channel(user *chuser, std::string chname);
     void                    leaving(user *chuser, std::string chname);
     void                    tmfm(user *chuser, std::string chname, std::string msg);

@@ -36,6 +36,8 @@ public :
     Channel(user *chuser, std::string cname);
     ~Channel();
 
+    int     getUserSize();
+
     void    add_user(user *chuser);
     void    rm_user(user *chuser);
     void    sendtoall(user *chuser, std::string msg);
