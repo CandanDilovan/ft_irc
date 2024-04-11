@@ -24,7 +24,23 @@ Channel::~Channel()
 
 Channel::Channel(user *chuser, std::string cname) : _cname(cname)
 {
-    _ulist.push_back(chuser);
+    _oplist.push_back(chuser);
+}
+
+int Channel::isop(user *chuser)
+{
+    for (std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
+        if ((*it)->getNick() == chuser->getNick())
+            return (1);
+    return (0);
+
+}
+
+void Channel::sendtoallnopm(std::string msg)
+{
+    for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+        write((*it)->getFds()->fd, msg.c_str(), msg.size());
+    std::cout << msg;
 }
 
 void Channel::sendtoallfr(user *chuser, std::string msg)
@@ -35,7 +51,6 @@ void Channel::sendtoallfr(user *chuser, std::string msg)
         write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
         std::cout << tosend;
     }
-
 }
 
 void Channel::sendtoall(user *chuser, std::string msg)
@@ -67,8 +82,8 @@ void Channel::sendtoall(user *chuser, std::string msg)
 void Channel::add_user(user *chuser)
 {
     _ulist.push_back(chuser);
-    std::string joined = "has joined " + _cname;
-    sendtoallfr(chuser, joined);
+    std::string joined = ":" + chuser->getNick() + " JOIN " + _cname + " " + chuser->getNick() + "\r\n";
+    sendtoallnopm(joined);
 }
 
 void Channel::rm_user(user *chuser)
@@ -77,8 +92,8 @@ void Channel::rm_user(user *chuser)
     {
         if ((*it)->getNick() == chuser->getNick())  
         {
-            std::string msg = "has left " + _cname;
-            sendtoall(chuser, msg);
+            std::string msg = ":" + chuser->getNick() + " PART " + _cname + " " + chuser->getNick() + "\r\n";
+            sendtoallnopm(msg);
             msg = "you have left the channel press alt + 1 to return to the main menu ";
             std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + msg + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
@@ -88,23 +103,27 @@ void Channel::rm_user(user *chuser)
     }
 }
 
-void Channel::KICK(std::string nick)
+void Channel::KICK(user *chuser, std::string nick)
 {
-    std::list<user*>::iterator it = _ulist.begin();
-    while (it != _ulist.end())
+    int flag = isop(chuser);
+    if (flag == 1)
     {
-        if ((*it)->getNick() == nick)
+        for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
         {
-            std::string tosend = ": " + (*it)->getNick() + " KICK " + _cname + " " + nick + "\r\n";
-            // write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-            sendtoallfr((*it), tosend);
-            it = _ulist.erase(it);
-            break;
+            if ((*it)->getNick() == nick)
+            {
+                std::string tosend = ":" + (*it)->getNick() + " KICK " + _cname + " " + nick + "\r\n";
+                // write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+                sendtoallnopm(tosend);
+                it = _ulist.erase(it);
+                break;
+            }
         }
-        else
-        {
-            ++it;
-        }
+    }
+    else
+    {
+        std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + "you don't have the rights to kick" + "\r\n";
+        write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
     }
 }
 

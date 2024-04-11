@@ -82,12 +82,8 @@ void Server::join_channel(user *chuser, std::string chname)
         
         newchan = new Channel(chuser, chname);
         _chanmap.insert(std::pair<std::string, Channel *>(chname, newchan));
-
-        std::string joined = "has joined " + chname;
-        _chanmap[chname]->sendtoallfr(chuser, joined);
     }
-    else
-        _chanmap[chname]->add_user(chuser);
+    _chanmap[chname]->add_user(chuser);
 }
 
 void Server::leaving(user *chuser, std::string chname)
@@ -100,7 +96,7 @@ void Server::tmfm(user *chuser, std::string chname, std::string msg)
     _chanmap[chname]->sendtoall(chuser, msg);
 }
 
-void    Server::com_spec_kick(std::string line)
+void    Server::com_spec_kick(user *user,std::string line)
 {
     if (line.empty())
         return;
@@ -113,7 +109,7 @@ void    Server::com_spec_kick(std::string line)
     
     std::string nick = line.substr(cmd.size() + chname.size() + 2, line.rfind(" ") - (cmd.size() + chname.size() + 2));
     if (_chanmap.find(chname) != _chanmap.end())
-        _chanmap[chname]->KICK(nick);
+        _chanmap[chname]->KICK(user, nick);
 }
 
 void    Server::com_spec_invite(std::string line)

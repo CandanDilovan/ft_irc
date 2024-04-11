@@ -12,6 +12,8 @@ ARTHUR
 ///////
 DILO
 ------
-1.
+1. Modification du fonctionnement de Kick, message d'erreur ajouter + commande executable seulement par l'op (à tester)
+2. Modification de join et de leave qui fonctionne parfois
+3. ajout de la list d'opérateur dans la classe channel
 
 ------

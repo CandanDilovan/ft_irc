@@ -176,7 +176,7 @@ void user::parse_input(Server &serv)
 
 void    user::call_spec_comm_kick(Server &serv, std::string str)
 {
-    serv.com_spec_kick(str);
+    serv.com_spec_kick(this, str);
 }
 
 void    user::call_spec_comm_invite(Server &serv, std::string str)

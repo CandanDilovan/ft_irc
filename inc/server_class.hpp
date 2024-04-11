@@ -46,7 +46,7 @@ public :
     void                    join_channel(user *chuser, std::string chname);
     void                    leaving(user *chuser, std::string chname);
     void                    tmfm(user *chuser, std::string chname, std::string msg);
-    void                    com_spec_kick(std::string line);
+    void                    com_spec_kick(user* chuser, std::string line);
     void                    com_spec_invite(std::string line);
     void                    com_spec_topic(std::string topic);
 };

@@ -25,7 +25,10 @@ private :
 
     std::string _cname;
     std::list<user *> _ulist;
+    std::list<user *> _oplist;
     std::string _topic;
+
+    int isop(user *chuser);
 
 public :
 
@@ -37,8 +40,9 @@ public :
     void    rm_user(user *chuser);
     void    sendtoall(user *chuser, std::string msg);
     void    sendtoallfr(user *chuser, std::string msg);
+    void    sendtoallnopm(std::string msg);
     
-    void    KICK(std::string nick);
+    void    KICK(user *user, std::string nick);
     void    INVITE(std::string nick);
     void    TOPIC(std::string topic);
     void    MODE(user *chuser);
