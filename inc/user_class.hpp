@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/11 11:15:05 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/11 14:08:50 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ private:
     user();
 
 
-    void            ping(Server &serv, std::string str);
-    void            join(Server &serv, std::string str);
-    void            privmsg(Server &serv, std::string str);
-    void            part(Server &serv, std::string str);
-    void            call_spec_comm_kick(Server &serv, std::string str);
-    void            call_spec_comm_invite(Server &serv, std::string str);
-    void            call_spec_comm_topic(Server &Serv, std::string str);
+    void            ping(Server &serv, std::string str, user *users);
+    void            join(Server &serv, std::string str, user *users);
+    void            privmsg(Server &serv, std::string str, user *users);
+    void            part(Server &serv, std::string str, user *users);
+    void            call_spec_comm_kick(Server &serv, std::string str, user *users);
+    void            call_spec_comm_invite(Server &serv, std::string str, user *users);
+    void            call_spec_comm_topic(Server &Serv, std::string str, user *users);
 
 public:
 

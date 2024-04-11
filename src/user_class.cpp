@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/11 11:58:18 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/11 14:26:31 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int user::_getco()
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
 	std::string	msg[7] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC"};
-	void		(user::*user_list[7])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part, &user::call_spec_comm_topic};
+	void		(user::*user_list[7])(Server &serv, std::string str, user *users) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part, &user::call_spec_comm_topic};
 	int 		a;
 
 	a = -1;
@@ -69,35 +69,39 @@ void user::connected_parse(Server &serv, std::list<std::string> strings)
         {
             if ((*it).find(msg[a]) != (*it).npos)
             {
-                (this->*user_list[a])(serv, (*it));
+                (this->*user_list[a])(serv, (*it), this);
                 return ;
             }
         }
 	}
 }
 
-void    user::privmsg(Server &serv, std::string str)
+void    user::privmsg(Server &serv, std::string str, user *users)
 {
+    (void) users;
     std::string chname = str.substr(str.find('#'), (str.find(':') - str.find('#') - 1));
     std::string input =  str.substr(str.find(':') + 1, str.find('\n') - str.find(':'));
     serv.tmfm(this, chname, input);
 }
 
-void    user::join(Server &serv, std::string str)
+void    user::join(Server &serv, std::string str, user *users)
 {
+    (void) users;
     std::string chname = str.substr(str.find("#"),  str.rfind('\r') - str.find("#"));
     serv.join_channel(this, chname);
 }
 
-void    user::part(Server &serv, std::string str)
+void    user::part(Server &serv, std::string str, user *users)
 {
+    (void) users;
     std::string chname = str.substr(str.find('#'), (str.find(':') - str.find('#') - 1));
     serv.leaving(this, chname);
 }
 
-void    user::ping(Server &serv, std::string str)
+void    user::ping(Server &serv, std::string str, user *users)
 {
     (void)serv;
+    (void) users;
     std::string ping = str.substr(str.find("PING"),  (str.rfind('\r') - str.find("PING")));
     ping = ping.substr(ping.find(" ") + 1,  ping.rfind('\r') - ping.find(" "));
     ping = "PONG : ft_irc " + ping + "\r\n";
@@ -174,17 +178,19 @@ void user::parse_input(Server &serv)
         
 }
 
-void    user::call_spec_comm_kick(Server &serv, std::string str)
+void    user::call_spec_comm_kick(Server &serv, std::string str, user *users)
 {
+    (void) users;
     serv.com_spec_kick(str);
 }
 
-void    user::call_spec_comm_invite(Server &serv, std::string str)
+void    user::call_spec_comm_invite(Server &serv, std::string str, user *users)
 {
+    (void) users;
     serv.com_spec_invite(str);
 }
 
-void	user::call_spec_comm_topic(Server &serv, std::string str)
+void	user::call_spec_comm_topic(Server &serv, std::string str, user *users)
 {
-	serv.com_spec_topic(str);
+	serv.com_spec_topic(str, users);
 }
