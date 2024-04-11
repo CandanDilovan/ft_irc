@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/10 14:30:40 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/11 12:03:31 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,4 +130,23 @@ void    Server::com_spec_invite(std::string line)
     std::string chname = line.substr(hashPos);
     if (_chanmap.find(chname) != _chanmap.end())
         _chanmap[chname]->INVITE(nick);
+}
+
+void    Server::com_spec_topic(std::string line)
+{
+    if (line.empty())
+        return;
+    size_t firstSpacePos = line.find(" ");
+    std::string cmd = line.substr(0, firstSpacePos);
+    
+    size_t hashPos = line.find("#", firstSpacePos);
+    size_t secondSpacePos = line.find(" ", hashPos);
+    std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
+    
+    std::string topic = line.substr(cmd.size() + chname.size() + 2, line.rfind(" ") - (cmd.size() + chname.size() + 2));
+    std::cout << cmd << "!" << std::endl;
+    std::cout << chname << "!" << std::endl;
+    std::cout << topic << "!" << std::endl;
+    // if (_chanmap.find(chname) != _chanmap.end())
+    //     _chanmap[chname]->TOPIC(topic);
 }

@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/10 11:38:53 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/11 11:58:18 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ int user::_getco()
 
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
-	std::string	msg[6] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART"};
-	void		(user::*user_list[6])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part};
+	std::string	msg[7] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC"};
+	void		(user::*user_list[7])(Server &serv, std::string str) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part, &user::call_spec_comm_topic};
 	int 		a;
 
 	a = -1;
-	while (++a < 6)
+	while (++a < 7)
 	{
         for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
         {
@@ -182,4 +182,9 @@ void    user::call_spec_comm_kick(Server &serv, std::string str)
 void    user::call_spec_comm_invite(Server &serv, std::string str)
 {
     serv.com_spec_invite(str);
+}
+
+void	user::call_spec_comm_topic(Server &serv, std::string str)
+{
+	serv.com_spec_topic(str);
 }

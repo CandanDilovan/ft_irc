@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/09 15:14:36 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/11 11:15:05 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ private:
     void            part(Server &serv, std::string str);
     void            call_spec_comm_kick(Server &serv, std::string str);
     void            call_spec_comm_invite(Server &serv, std::string str);
+    void            call_spec_comm_topic(Server &Serv, std::string str);
 
 public:
 

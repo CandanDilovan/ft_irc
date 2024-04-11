@@ -1,0 +1,17 @@
+///////
+ARTHUR
+------
+1. KICK fonctionnel mais pas les messages d'erreur
+2. Invite cree, a verifier que le message arrive bien
+3.TOPIC en cours, besoins de stocker le nick afin d'envoyer le message a la bonne personne
+    -Le message client n a pas le nom : /TOPIC #ok (message)
+    -Dans la fonction channel obligee de faire paser sur tous les Users jusqu au bon
+------
+
+
+///////
+DILO
+------
+1.
+
+------

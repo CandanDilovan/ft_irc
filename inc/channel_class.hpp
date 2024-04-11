@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/10 13:13:24 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/11 11:21:53 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ private :
 
     std::string _cname;
     std::list<user *> _ulist;
+    std::string _topic;
 
 public :
 
@@ -39,7 +40,7 @@ public :
     
     void    KICK(std::string nick);
     void    INVITE(std::string nick);
-    void    TOPIC(user *chuser);
+    void    TOPIC(std::string topic);
     void    MODE(user *chuser);
 };
 
