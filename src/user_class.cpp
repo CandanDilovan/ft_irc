@@ -128,7 +128,7 @@ void user::nego_end()
     
 }
 
-void user::fill_user(std::list<std::string> strings)
+void user::fill_user(std::list<std::string> strings, std::string mdp)
 {
     int closest;
     
@@ -141,7 +141,14 @@ void user::fill_user(std::list<std::string> strings)
         if ((*it).find("CAP LS") != (*it).npos)
             write(_fds->fd, "CAP * LS\n", 9);
         if ((*it).find("PASS") != (*it).npos)
+        {
             _upass = (*it).substr((*it).find(" ") + 1, closest);
+            if (mdp != _upass)
+            {
+                std::string error = "ERROR :Password incorrect\r\n";
+                write(_fds->fd, error.c_str(), error.size());
+            }
+        }
         if ((*it).find("NICK") != (*it).npos)
             _nick = (*it).substr((*it).find(" ") + 1, closest);
         if ((*it).find("USER") != (*it).npos)
@@ -170,7 +177,7 @@ void user::parse_input(Server &serv)
             strings.push_back(tmp);
         }
         if (_connected == 0)
-            fill_user(strings);
+            fill_user(strings, serv.getPass());
         else if (_connected == 1)
             connected_parse(serv, strings);
         allbuff.clear();

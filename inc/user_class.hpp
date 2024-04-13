@@ -58,7 +58,7 @@ public:
 //fonction utile
 
     void    parse_input(Server &serv);
-    void    fill_user(std::list<std::string> strings);
+    void    fill_user(std::list<std::string> strings, std::string mdp);
     void    nego_end();
     void    connected_parse(Server &serv, std::list<std::string> strings);
 
@@ -91,7 +91,7 @@ public:
             return ("Too many users");
         }
     };
-    
+
 };
 
 #endif
