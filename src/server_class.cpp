@@ -100,7 +100,21 @@ void Server::leaving(user *chuser, std::string chname)
 
 void Server::tmfm(user *chuser, std::string chname, std::string msg)
 {
-    _chanmap[chname]->sendtoall(chuser, msg);
+    if (chname.find('#') != chname.npos)
+        _chanmap[chname]->sendtoall(chuser, msg);
+    else
+    {
+        for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
+        {
+            if ((*it)->getNick() == chname)
+            {
+                std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + chname + " :" + msg + "\r\n";
+                write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+                return ;
+            }
+        }
+        chuser->error("no such nick");
+    }
 }
 
 void Server::twinick(user *puser)

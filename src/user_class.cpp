@@ -84,7 +84,11 @@ void user::connected_parse(Server &serv, std::list<std::string> strings)
 void    user::privmsg(Server &serv, std::string str, user *users)
 {
     (void) users;
-    std::string chname = str.substr(str.find('#'), (str.find(':') - str.find('#') - 1));
+    std::string chname;
+    if (str.find('#') != str.npos)
+        chname = str.substr(str.find('#'), (str.find(':') - str.find('#') - 1));
+    else
+        chname = str.substr(str.find(' '), (str.find(':') - str.find('#') - 1));
     std::string input =  str.substr(str.find(':') + 1, str.find('\n') - str.find(':'));
     serv.tmfm(this, chname, input);
 }

@@ -15,5 +15,7 @@ DILO
 2. Modification de join et de leave qui fonctionne parfois
 3. ajout de la list d'opérateur dans la classe channel
 4. channel delete quand ils sont vides
+5. /msg "nickname" fonctionne uniquement si le nick existe
+6. rename si un user à déjà le nickname
 
 ------
