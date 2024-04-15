@@ -56,6 +56,11 @@ int user::_getco()
     return(_connected);
 }
 
+void user::setNick(std::string newnick)
+{
+    _nick = newnick;
+}
+
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
 	std::string	msg[7] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC"};
@@ -128,7 +133,13 @@ void user::nego_end()
     
 }
 
-void user::fill_user(std::list<std::string> strings, std::string mdp)
+void user::error(std::string eerror)
+{
+    std::string error = "ERROR :" + eerror + "\r\n";
+    write(_fds->fd, error.c_str(), error.size());
+}
+
+void user::fill_user(std::list<std::string> strings, Server &serv)
 {
     int closest;
     
@@ -143,14 +154,14 @@ void user::fill_user(std::list<std::string> strings, std::string mdp)
         if ((*it).find("PASS") != (*it).npos)
         {
             _upass = (*it).substr((*it).find(" ") + 1, closest);
-            if (mdp != _upass)
-            {
-                std::string error = "ERROR :Password incorrect\r\n";
-                write(_fds->fd, error.c_str(), error.size());
-            }
+            if (serv.getPass() != _upass)
+                error("Password incorrect");
         }
         if ((*it).find("NICK") != (*it).npos)
+        {    
             _nick = (*it).substr((*it).find(" ") + 1, closest);
+            serv.twinick(this);
+        }
         if ((*it).find("USER") != (*it).npos)
             _name = (*it).substr((*it).find(":") + 1, closest);
         if ((*it).find("CAP END") != (*it).npos)
@@ -177,7 +188,7 @@ void user::parse_input(Server &serv)
             strings.push_back(tmp);
         }
         if (_connected == 0)
-            fill_user(strings, serv.getPass());
+            fill_user(strings, serv);
         else if (_connected == 1)
             connected_parse(serv, strings);
         allbuff.clear();

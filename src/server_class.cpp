@@ -103,6 +103,15 @@ void Server::tmfm(user *chuser, std::string chname, std::string msg)
     _chanmap[chname]->sendtoall(chuser, msg);
 }
 
+void Server::twinick(user *puser)
+{
+    for(std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
+    {
+        if ((*it)->getNick() == puser->getNick() && (*it)->getFds() != puser->getFds())
+            puser->setNick(puser->getNick() + "_");
+    }
+}
+
 void    Server::com_spec_kick(user *user,std::string line)
 {
     if (line.empty())

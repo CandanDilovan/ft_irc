@@ -39,11 +39,13 @@ public :
 
     std::string             getPass();
     std::string             getPort();
-    std::list<user *>       &getUserlist(); 
+    std::list<user *>       &getUserlist();
+    
     
 
     void                    add_user();
     void                    checkempty(std::string chname);
+    void                    twinick(user *user);
     void                    join_channel(user *chuser, std::string chname);
     void                    leaving(user *chuser, std::string chname);
     void                    tmfm(user *chuser, std::string chname, std::string msg);

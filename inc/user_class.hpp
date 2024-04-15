@@ -55,12 +55,15 @@ public:
     int             _getco();
     struct pollfd   *getFds();
 
+    void             setNick(std::string newnick);
+
 //fonction utile
 
     void    parse_input(Server &serv);
-    void    fill_user(std::list<std::string> strings, std::string mdp);
+    void    fill_user(std::list<std::string> strings, Server &serv);
     void    nego_end();
     void    connected_parse(Server &serv, std::list<std::string> strings);
+    void    error(std::string error);
 
 
 //exception 
