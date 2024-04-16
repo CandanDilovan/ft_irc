@@ -3,8 +3,8 @@ ARTHUR
 ------
 1. KICK fonctionnel mais pas les messages d'erreur
 
-2. Invite cree, a verifier que le message arrive bien
-    - le message n arrive pas
+2. Invite -> OK
+    - le message arrive
 
 3.TOPIC -> fonctionnel : 
     -ajouter verifiaction droit a la modif
