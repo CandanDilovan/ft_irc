@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/11 14:11:19 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/16 11:42:01 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,12 @@ void    Server::com_spec_invite(std::string line)
      
     size_t hashPos = line.find("#", secondSpacePos);
     std::string chname = line.substr(hashPos);
+    // std::cout << cmd << "!" << std::endl;
+    // std::cout << nick << "!" << std::endl;
+    // std::cout << chname << "!" << std::endl;
     if (_chanmap.find(chname) != _chanmap.end())
-        _chanmap[chname]->INVITE(nick);
+        _chanmap[chname]->INVITE(nick, _userlist);
+        // _chanmap[chname]->INVITE(nick);
 }
 
 void    Server::com_spec_topic(std::string line, user *users)
@@ -170,10 +174,10 @@ void    Server::com_spec_topic(std::string line, user *users)
     size_t secondSpacePos = line.find(" ", hashPos);
     std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
     
-    std::string topic = line.substr(cmd.size() + chname.size() + 2, line.rfind(" ") - (cmd.size() + chname.size() + 2));
-    std::cout << cmd << "!" << std::endl;
-    std::cout << chname << "!" << std::endl;
-    std::cout << topic << "!" << std::endl;
+    std::string topic = line.substr(cmd.size() + chname.size() + 3, line.rfind(":") - (line.size() - line.find(":")));
+    // std::cout << cmd << "!" << std::endl;
+    // std::cout << chname << "!" << std::endl;
+    // std::cout << topic << "!" << std::endl;
     if (_chanmap.find(chname) != _chanmap.end())
         _chanmap[chname]->TOPIC(topic, users);
 }

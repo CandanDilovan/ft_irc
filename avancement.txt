@@ -2,9 +2,12 @@
 ARTHUR
 ------
 1. KICK fonctionnel mais pas les messages d'erreur
+
 2. Invite cree, a verifier que le message arrive bien
-3.TOPIC en cours:
-    -_topic enregistrer mais le message ne ce lit pas au client
+    - le message n arrive pas
+
+3.TOPIC -> fonctionnel : 
+    -ajouter verifiaction droit a la modif
 ------
 
 

@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/11 14:36:14 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/16 11:50:57 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,19 +130,37 @@ void Channel::KICK(user *chuser, std::string nick)
     }
 }
 
-void Channel::INVITE(std::string nick)
+// void Channel::INVITE(std::string nick)
+// {
+//     for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+//     {
+//         if ((*it)->getNick() == nick)
+//         {
+//             std::string tosend = ": Allready in the Channel " + nick + " " + _cname + "\r\n";
+//             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+//             break;
+//         }
+//         else if (it == _ulist.end())
+//         {
+//             std::string tosend = ":" + (*it)->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
+//             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+//         }
+//     }
+// }
+
+void Channel::INVITE(std::string nick, std::list<user *> userlist)
 {
-    for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+    for (std::list<user *>::iterator it = userlist.begin(); it != userlist.end(); it++)
     {
         if ((*it)->getNick() == nick)
         {
-            std::string tosend = ": Allready in the Channel " + nick + " " + _cname + "\r\n";
+            std::string tosend = ":" + (*it)->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             break;
         }
         else if (it == _ulist.end())
         {
-            std::string tosend = ":" + (*it)->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
+            std::string tosend = ":" + (*it)->getNick() + " want to invit " + nick + " in the server but not exist" + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
@@ -150,16 +168,20 @@ void Channel::INVITE(std::string nick)
 
 void    Channel::TOPIC(std::string topic, user *users)
 {
-    _topic = topic;
-    std::cout << "topic: " << _topic << std::endl;
-    for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+    if (topic.size() != 0)
+        _topic = topic;
+    else if (topic.size() == 0)
     {
-        if ((*it)->getNick() == users->getNick())
+        for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
         {
-            // std::string tosend = ": TOPIC: " + users->getNick() + " modify topic to " + topic  + "\r\n";
-            std::string tosend = ":" + (*it)->getNick() + _cname + " " + _topic + "\r\n";
-            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-            break;
+            if ((*it)->getNick() == users->getNick())
+            {
+                std::string tosend = "TOPIC " + _cname + " :" + _topic + "\r\n";
+                write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+                return ;
+            }
         }
     }
+    std::string tosend = "TOPIC " + _cname + " :" + _topic + "\r\n";
+    sendtoallnopm(tosend);
 }
