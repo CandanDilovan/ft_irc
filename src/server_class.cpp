@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/16 14:52:03 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/16 15:00:43 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,10 +133,31 @@ void Server::tmfm(user *chuser, std::string chname, std::string msg)
 
 void Server::twinick(user *puser)
 {
-    for(std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
+    std::list<user *>::iterator it = _userlist.begin();
+    std::stringstream convert;
+    std::string       replace = puser->getNick();
+    int add = 1;
+    
+    while (it != _userlist.end())
     {
         if ((*it)->getNick() == puser->getNick() && (*it)->getFds() != puser->getFds())
-            puser->setNick(puser->getNick() + "_");
+        {
+            if (add > 1)
+            {
+                replace = puser->getNick().substr(0, replace.size());
+                convert << add;
+                puser->setNick(replace + convert.str());
+            }
+            else
+            {
+                convert << add;
+                puser->setNick(puser->getNick() + convert.str());
+            }
+            convert.str(std::string());
+            it = _userlist.begin();
+            add++;
+        }
+        it++;
     }
 }
 

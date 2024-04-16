@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/16 13:15:41 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/16 15:01:12 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,21 +156,35 @@ void user::fill_user(std::list<std::string> strings, Server &serv)
             closest = (*it).find('\n');
         if ((*it).find("CAP LS") != (*it).npos)
             write(_fds->fd, "CAP * LS\n", 9);
-        if ((*it).find("PASS") != (*it).npos)
-        {
-            _upass = (*it).substr((*it).find(" ") + 1, closest);
-            if (serv.getPass() != _upass)
-                error("Password incorrect");
-        }
-        if ((*it).find("NICK") != (*it).npos)
+        else if ((*it).find("NICK") != (*it).npos)
         {    
             _nick = (*it).substr((*it).find(" ") + 1, closest);
             serv.twinick(this);
         }
-        if ((*it).find("USER") != (*it).npos)
+       else  if ((*it).find("USER") != (*it).npos)
             _name = (*it).substr((*it).find(":") + 1, closest);
-        if ((*it).find("CAP END") != (*it).npos)
-            nego_end();
+        else if ((*it).find("PASS") != (*it).npos)
+        {
+            _upass = (*it).substr((*it).find(" ") + 1, closest);
+            if (serv.getPass() != _upass)
+            {
+                error("Password incorrect");
+                usleep(100);
+                close(_fds->fd);
+            }
+        }
+        else if ((*it).find("CAP END") != (*it).npos)
+        {
+            if (_upass.size() > 0)
+                nego_end();
+            else
+            {
+                error("Password incorrect");
+                usleep(100);
+                close(_fds->fd);
+            }
+            
+        }
     }
 }
 

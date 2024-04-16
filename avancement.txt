@@ -29,5 +29,6 @@ DILO
 4. channel delete quand ils sont vides
 5. /msg "nickname" fonctionne uniquement si le nick existe
 6. rename si un user à déjà le nickname
+7. a faire : /quit /names (nick = chname :nick (@nick si op)) /nick
 
 ------
