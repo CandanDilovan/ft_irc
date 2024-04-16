@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/11 14:10:39 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/16 12:50:09 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ public :
     void                    com_spec_kick(user* chuser, std::string line);
     void                    com_spec_invite(std::string line);
     void                    com_spec_topic(std::string topic, user *users);
+    void                    com_spec_mode(std::string line);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/16 15:07:23 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/16 15:09:27 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ Channel::~Channel()
 Channel::Channel(user *chuser, std::string cname) : _cname(cname)
 {
     _oplist.push_back(chuser);
+    _invit_only = false;
 }
 
 int Channel::isop(user *chuser)
@@ -38,6 +39,27 @@ int Channel::isop(user *chuser)
 int Channel::getUserSize()
 {
     return(_ulist.size());
+}
+
+bool Channel::invite_on_off()
+{
+    return(_invit_only);
+}
+
+bool    Channel::is_in_invite_list(std::string nick)
+{
+    bool send;
+    for (std::list<user *>::iterator it = _invitlist.begin(); it != _invitlist.end(); it++)
+    {
+        if ((*it)->getNick() == nick)
+        {
+            send = true;
+            break;
+        }
+        else if (it == _invitlist.end())
+            send = false;
+    } 
+    return (send);  
 }
 
 void Channel::sendtoallnopm(std::string msg)
@@ -143,24 +165,6 @@ void Channel::KICK(user *chuser, std::string nick)
     }
 }
 
-// void Channel::INVITE(std::string nick)
-// {
-//     for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
-//     {
-//         if ((*it)->getNick() == nick)
-//         {
-//             std::string tosend = ": Allready in the Channel " + nick + " " + _cname + "\r\n";
-//             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-//             break;
-//         }
-//         else if (it == _ulist.end())
-//         {
-//             std::string tosend = ":" + (*it)->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
-//             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-//         }
-//     }
-// }
-
 void Channel::INVITE(std::string nick, std::list<user *> userlist)
 {
     for (std::list<user *>::iterator it = userlist.begin(); it != userlist.end(); it++)
@@ -169,6 +173,7 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist)
         {
             std::string tosend = ":" + (*it)->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+            _invitlist.push_back(*it);
             break;
         }
         else if (it == _ulist.end())
@@ -197,4 +202,24 @@ void    Channel::TOPIC(std::string topic, user *users)
     }
     std::string tosend = "TOPIC " + _cname + " :" + _topic + "\r\n";
     sendtoallnopm(tosend);
+}
+
+void    Channel::MODE(std::string commands)
+{
+    if (commands.find("i"))
+    {
+        if (commands.find("-"))
+            _invit_only = false;
+        else
+        _invit_only = true;
+        std::cout << commands << std::endl;
+    }
+    else if (commands.find("t"))
+        std::cout << "t" << std::endl;
+    else if (commands.find("k"))
+        std::cout << "k" << std::endl;
+    else if (commands.find("o"))
+        std::cout << "o" << std::endl;
+    else if (commands.find("l"))
+        std::cout << "l" << std::endl;
 }
