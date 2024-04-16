@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 11:52:41 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/09 13:55:19 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/16 13:45:54 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@
 # include "user_class.hpp"
 # include "server_class.hpp"
 # include "channel_class.hpp"
+# include <stdbool.h>
 
 #endif 

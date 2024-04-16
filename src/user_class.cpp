@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/11 14:26:31 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/16 13:15:41 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,13 @@ void user::setNick(std::string newnick)
 
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
-	std::string	msg[7] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC"};
-	void		(user::*user_list[7])(Server &serv, std::string str, user *users) = {&user::join, &user::ping, &user::privmsg, &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part, &user::call_spec_comm_topic};
+	std::string	msg[8] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC", "MODE"};
+	void		(user::*user_list[8])(Server &serv, std::string str, user *users) = {&user::join, &user::ping, &user::privmsg, 
+                &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part, &user::call_spec_comm_topic, &user::call_spec_comm_mode};
 	int 		a;
 
 	a = -1;
-	while (++a < 7)
+	while (++a < 8)
 	{
         for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
         {
@@ -215,4 +216,12 @@ void    user::call_spec_comm_invite(Server &serv, std::string str, user *users)
 void	user::call_spec_comm_topic(Server &serv, std::string str, user *users)
 {
 	serv.com_spec_topic(str, users);
+}
+
+void    user::call_spec_comm_mode(Server &serv, std::string str, user *users)
+{
+    (void) users;
+    // (void) str;
+    // (void) serv;
+    serv.com_spec_mode(str);
 }

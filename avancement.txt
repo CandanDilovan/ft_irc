@@ -8,6 +8,15 @@ ARTHUR
 
 3.TOPIC -> fonctionnel : 
     -ajouter verifiaction droit a la modif
+
+4. MODE:
+
+4.AJOUTER DANS LA CLASSE CHANNEL:
+    std::list<user *> _invitlist;
+    std::string _topic;
+    bool _invit_only;
+    bool __modif_topic;
+    int _nb_max_of_user;
 ------
 
 
