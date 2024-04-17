@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_class.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/16 15:01:12 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/17 13:53:09 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,10 @@ void user::setNick(std::string newnick)
 
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
-	std::string	msg[8] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC", "MODE"};
-	void		(user::*user_list[8])(Server &serv, std::string str, user *users) = {&user::join, &user::ping, &user::privmsg, 
-                &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part, &user::call_spec_comm_topic, &user::call_spec_comm_mode};
+	std::string	msg[9] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC", "MODE", "QUIT"};
+	void		(user::*user_list[9])(Server &serv, std::string str, user *users) = {&user::join, &user::ping, &user::privmsg, 
+                &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part, &user::call_spec_comm_topic, &user::call_spec_comm_mode,
+                &user::quit};
 	int 		a;
 
 	a = -1;
@@ -80,6 +81,13 @@ void user::connected_parse(Server &serv, std::list<std::string> strings)
             }
         }
 	}
+}
+
+void    user::quit(Server &serv, std::string str, user *users)
+{
+    (void)str;
+    (void) users;
+    serv.quit(this);
 }
 
 void    user::privmsg(Server &serv, std::string str, user *users)

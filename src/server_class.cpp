@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_class.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/16 15:00:43 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/17 13:52:41 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void Server::join_channel(user *chuser, std::string chname)
         
         newchan = new Channel(chuser, chname);
         _chanmap.insert(std::pair<std::string, Channel *>(chname, newchan));
+        _chanmap[chname]->add_user(chuser);
     }
     else if (_chanmap[chname]->invite_on_off() == false)
         _chanmap[chname]->add_user(chuser);
@@ -102,6 +103,26 @@ void Server::join_channel(user *chuser, std::string chname)
                 std::string tosend = ":" + (*it)->getNick() + " Can't join the channel because yo don't are invited" + "\r\n";
                 write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             }
+        }
+    }
+}
+
+void Server::leaveallchan(user *chuser)
+{
+    for(std::map<std::string, Channel *>::iterator itch = _chanmap.begin(); itch != _chanmap.end(); itch++)
+       itch->second->rm_user(chuser);
+}
+
+void Server::quit(user *chuser)
+{
+    for(std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
+    {
+        if ((*it)->getNick() == chuser->getNick())
+        {
+            leaveallchan(chuser);
+            usleep(100);
+            close(chuser->getFds()->fd);
+            _userlist.erase(it);
         }
     }
 }
@@ -218,14 +239,15 @@ void    Server::com_spec_topic(std::string line, user *users)
 
 void    Server::com_spec_mode(std::string line)
 {
-    size_t firstSpacePos = line.find(" ");
-    std::string cmd = line.substr(0, firstSpacePos);
+    (void)line;
+    // size_t firstSpacePos = line.find(" ");
+    // std::string cmd = line.substr(0, firstSpacePos);
     
-    size_t hashPos = line.find("#", firstSpacePos);
-    size_t secondSpacePos = line.find(" ", hashPos);
-    std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
+    // size_t hashPos = line.find("#", firstSpacePos);
+    // size_t secondSpacePos = line.find(" ", hashPos);
+    // std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
 
-    std::string objectifs = line.substr(cmd.size() + chname.size() + 3, line.rfind(":") - (line.size() - line.find(":")));
-    if (_chanmap.find(chname) != _chanmap.end())
-        _chanmap[chname]->MODE(objectifs);
+    // std::string objectifs = line.substr(cmd.size() + chname.size() + 3, line.rfind(":") - (line.size() - line.find(":")));
+    // if (_chanmap.find(chname) != _chanmap.end())
+    //     _chanmap[chname]->MODE(objectifs);
 }

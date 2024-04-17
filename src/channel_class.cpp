@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/16 15:09:27 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/17 12:08:47 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void Channel::add_user(user *chuser)
     std::string joineded = ":ft_irc 353 " + chuser->getNick() + " = " + _cname + " :";
     for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
     {
-        if (isop(chuser) == 1)
+        if (isop((*it)) == 1)
             joineded += '@' + (*it)->getNick() + " ";
         else
             joineded += (*it)->getNick() + " ";

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_class.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/16 12:43:03 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/17 13:12:37 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ private:
     void            join(Server &serv, std::string str, user *users);
     void            privmsg(Server &serv, std::string str, user *users);
     void            part(Server &serv, std::string str, user *users);
+    void            quit(Server &serv, std::string str, user *users);
     void            call_spec_comm_kick(Server &serv, std::string str, user *users);
     void            call_spec_comm_invite(Server &serv, std::string str, user *users);
     void            call_spec_comm_topic(Server &Serv, std::string str, user *users);
