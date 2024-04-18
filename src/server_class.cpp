@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/18 12:24:21 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/18 13:19:24 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,26 @@ void Server::join_channel(user *chuser, std::string chname)
                 std::string tosend = ":" + (*it)->getNick() + " Can't join the channel because yo don't are invited" + "\r\n";
                 write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             }
+        }
+    }
+}
+
+void Server::leaveallchan(user *chuser)
+{
+    for(std::map<std::string, Channel *>::iterator itch = _chanmap.begin(); itch != _chanmap.end(); itch++)
+       itch->second->rm_user(chuser);
+}
+
+void Server::quit(user *chuser)
+{
+    for(std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
+    {
+        if ((*it)->getNick() == chuser->getNick())
+        {
+            leaveallchan(chuser);
+            usleep(100);
+            close(chuser->getFds()->fd);
+            _userlist.erase(it);
         }
     }
 }
