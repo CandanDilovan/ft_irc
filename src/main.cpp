@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/09 14:33:08 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/18 13:57:04 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void infinite_loop(class Server &serv)
                 }
             }
             (*it)->parse_input(serv);
+            if ((*it)->allbuff.find("QUIT") != (*it)->allbuff.npos && (*it)->_getco() == 1)
+                it = serv.getUserlist().erase(it);
         }
     }
 }

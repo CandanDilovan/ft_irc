@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/17 13:52:41 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/18 13:19:36 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,24 +107,21 @@ void Server::join_channel(user *chuser, std::string chname)
     }
 }
 
-void Server::leaveallchan(user *chuser)
+void Server::leaveallchan(user *chuser, std::string str)
 {
     for(std::map<std::string, Channel *>::iterator itch = _chanmap.begin(); itch != _chanmap.end(); itch++)
-       itch->second->rm_user(chuser);
+    {
+       itch->second->quit_user(chuser, str);
+       checkempty(itch->second->getName());
+    }
 }
 
-void Server::quit(user *chuser)
+void Server::quit(user *chuser, std::string str)
 {
-    for(std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
-    {
-        if ((*it)->getNick() == chuser->getNick())
-        {
-            leaveallchan(chuser);
-            usleep(100);
-            close(chuser->getFds()->fd);
-            _userlist.erase(it);
-        }
-    }
+ 
+    leaveallchan(chuser, str);
+    usleep(100);
+    close(chuser->getFds()->fd);
 }
 
 void Server::leaving(user *chuser, std::string chname)

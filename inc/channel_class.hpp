@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_class.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/16 14:50:35 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/18 11:50:15 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,11 @@ public :
     ~Channel();
 
     int     getUserSize();
+    std::string getName();
 
     void    add_user(user *chuser);
     void    rm_user(user *chuser);
+    void    quit_user(user *chuser, std::string str);
     bool    invite_on_off();
     bool    is_in_invite_list(std::string nick);
     void    sendtoall(user *chuser, std::string msg);

@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/17 13:53:09 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/18 14:00:24 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void user::connected_parse(Server &serv, std::list<std::string> strings)
 	int 		a;
 
 	a = -1;
-	while (++a < 8)
+	while (++a < 9)
 	{
         for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
         {
@@ -85,9 +85,10 @@ void user::connected_parse(Server &serv, std::list<std::string> strings)
 
 void    user::quit(Server &serv, std::string str, user *users)
 {
-    (void)str;
     (void) users;
-    serv.quit(this);
+    int cut = str.find(':');
+    std::string cutstr = str.substr(cut + 1, (str.find('\r') - cut));
+    serv.quit(this, cutstr);
 }
 
 void    user::privmsg(Server &serv, std::string str, user *users)
@@ -122,7 +123,7 @@ void    user::ping(Server &serv, std::string str, user *users)
     (void) users;
     std::string ping = str.substr(str.find("PING"),  (str.rfind('\r') - str.find("PING")));
     ping = ping.substr(ping.find(" ") + 1,  ping.rfind('\r') - ping.find(" "));
-    ping = "PONG : ft_irc " + ping + "\r\n";
+    ping = "PONG :ft_irc " + ping + "\r\n";
     write(getFds()->fd, ping.c_str(), ping.size());
 }
 
@@ -135,13 +136,13 @@ void user::nego_end()
     strftime(timeloc, sizeof(timeloc), "%Y/%m/%d %H:%M:%S", ltm);
 
     Willkommen = "001 " + _nick + " :Welcome to the Internet Relay Network " + _nick + "\r\n";
-    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size());
     Willkommen = "002 " + _nick + " :Your host is ft_irc, running version 1.0" + "\r\n";
-    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size());
     Willkommen = "003 " + _nick + " :This server was created " + timeloc + "\r\n";
-    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size());
     Willkommen = "004 " + _nick + " :There are 1 users and 0 services on 1 servers" + "\r\n";
-    write(_fds->fd, Willkommen.c_str(), Willkommen.size() + 1);
+    write(_fds->fd, Willkommen.c_str(), Willkommen.size());
     _connected = 1;
     
 }
@@ -152,10 +153,21 @@ void user::error(std::string eerror)
     write(_fds->fd, error.c_str(), error.size());
 }
 
+void user::waiting_room()
+{
+    std::string Willkommen;
+
+    Willkommen = "looking up your Hostname, please wait...\r\n";
+    
+    if (_nick.c_str() && _name.c_str() && _upass.c_str() && _connected == 0)
+         write(_fds->fd, Willkommen.c_str(), Willkommen.size());
+}
+
 void user::fill_user(std::list<std::string> strings, Server &serv)
 {
     int closest;
     
+    waiting_room();
     for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
     {
         if ((*it).find('\r') < (*it).find('\n'))
