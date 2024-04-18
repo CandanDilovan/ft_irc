@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/16 14:50:35 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/18 12:01:23 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ private :
     std::list<user *> _invitlist;
     std::string _topic;
     bool _invit_only;
-    // bool __modif_topic;
+    bool _modif_topic;
     // int _nb_max_of_user;
 
     int isop(user *chuser);
@@ -46,6 +46,7 @@ public :
     void    rm_user(user *chuser);
     bool    invite_on_off();
     bool    is_in_invite_list(std::string nick);
+    bool    is_in_op_list(std::string nick);
     void    sendtoall(user *chuser, std::string msg);
     void    sendtoallfr(user *chuser, std::string msg);
     void    sendtoallnopm(std::string msg);

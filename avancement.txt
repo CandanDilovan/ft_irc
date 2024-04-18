@@ -7,15 +7,15 @@ ARTHUR
     - le message arrive
 
 3.TOPIC -> fonctionnel : 
-    -ajouter verifiaction droit a la modif
+    - Droit modifiable pour modif topic.
 
-4. MODE:
+4. MODE: -i : Le blocage fonctionne mais la personne ne peut pas rejoindre
+                a tester
 
-4.AJOUTER DANS LA CLASSE CHANNEL:
-    std::list<user *> _invitlist;
-    std::string _topic;
-    bool _invit_only;
-    bool __modif_topic;
+         -t: modif ajouter et prise en compte
+            a tester
+
+4.AJOUTER DANS LA CLASSE CHANNEL
     int _nb_max_of_user;
 
 Modification des fonctions JOIN et autres pour liniter le CHAN au personnes invitee

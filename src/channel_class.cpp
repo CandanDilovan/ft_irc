@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_class.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/16 15:09:27 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/18 12:11:02 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ Channel::Channel(user *chuser, std::string cname) : _cname(cname)
 {
     _oplist.push_back(chuser);
     _invit_only = false;
+    _modif_topic = false;
 }
 
 int Channel::isop(user *chuser)
@@ -105,6 +106,22 @@ void Channel::sendtoall(user *chuser, std::string msg)
 
 }
 
+bool Channel::is_in_op_list(std::string nick)
+{
+    bool    send;
+    for (std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
+    {
+        if ((*it)->getNick() == nick)
+        {
+            send = true;
+            break;
+        }
+        else if (it == _invitlist.end())
+            send = false;
+    }
+    return (send);
+}
+
 void Channel::add_user(user *chuser)
 {
     _ulist.push_back(chuser);
@@ -151,7 +168,6 @@ void Channel::KICK(user *chuser, std::string nick)
             if ((*it)->getNick() == nick)
             {
                 std::string tosend = ":" + (*it)->getNick() + " KICK " + _cname + " " + nick + "\r\n";
-                // write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
                 sendtoallnopm(tosend);
                 it = _ulist.erase(it);
                 break;
@@ -186,7 +202,9 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist)
 
 void    Channel::TOPIC(std::string topic, user *users)
 {
-    if (topic.size() != 0)
+    if (topic.size() != 0 && _modif_topic == true)
+        _topic = topic;
+    else if (topic.size() != 0 && _modif_topic == false && this->is_in_op_list(users->getNick()))
         _topic = topic;
     else if (topic.size() == 0)
     {
@@ -206,20 +224,26 @@ void    Channel::TOPIC(std::string topic, user *users)
 
 void    Channel::MODE(std::string commands)
 {
-    if (commands.find("i"))
+    if (commands.rfind("i") != commands.npos)
     {
-        if (commands.find("-"))
+        if (commands.rfind("-") != commands.npos)
             _invit_only = false;
-        else
-        _invit_only = true;
-        std::cout << commands << std::endl;
+        else if (commands.rfind("+") != commands.npos)
+            _invit_only = true;
+        std::cout << "Invit only: " <<_invit_only << std::endl;
     }
-    else if (commands.find("t"))
-        std::cout << "t" << std::endl;
-    else if (commands.find("k"))
-        std::cout << "k" << std::endl;
-    else if (commands.find("o"))
-        std::cout << "o" << std::endl;
-    else if (commands.find("l"))
-        std::cout << "l" << std::endl;
+    else if (commands.rfind("t") != commands.npos)
+    {
+        if (commands.rfind("-") != commands.npos)
+            _modif_topic = false;
+        else if (commands.rfind("+") != commands.npos)
+            _modif_topic = true;
+        std::cout << "Modif topic: " << _modif_topic << std::endl;
+    }
+    // else if (commands.find("k") != commands.npos)
+    //     std::cout << "k" << std::endl;
+    // else if (commands.find("o") != commands.npos)
+    //     std::cout << "o" << std::endl;
+    // else if (commands.find("l") != commands.npos)
+    //     std::cout << "l" << std::endl;
 }

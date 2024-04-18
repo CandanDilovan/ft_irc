@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/16 15:00:43 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/18 12:24:21 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,15 @@ void Server::join_channel(user *chuser, std::string chname)
         
         newchan = new Channel(chuser, chname);
         _chanmap.insert(std::pair<std::string, Channel *>(chname, newchan));
+        _chanmap[chname]->add_user(chuser);
     }
     else if (_chanmap[chname]->invite_on_off() == false)
         _chanmap[chname]->add_user(chuser);
     else if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) == true)
+    {
         _chanmap[chname]->add_user(chuser);
+        std::cout << chuser->getNick() << "join channel with invit" << std::endl;
+    }
     else
     {
         for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
@@ -208,7 +212,7 @@ void    Server::com_spec_topic(std::string line, user *users)
     size_t secondSpacePos = line.find(" ", hashPos);
     std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
     
-    std::string topic = line.substr(cmd.size() + chname.size() + 3, line.rfind(":") - (line.size() - line.find(":")));
+    std::string topic = line.substr(cmd.size() + chname.size() + 3,line.size() - cmd.size() - chname.size());
     // std::cout << cmd << "!" << std::endl;
     // std::cout << chname << "!" << std::endl;
     // std::cout << topic << "!" << std::endl;
@@ -218,14 +222,23 @@ void    Server::com_spec_topic(std::string line, user *users)
 
 void    Server::com_spec_mode(std::string line)
 {
-    size_t firstSpacePos = line.find(" ");
-    std::string cmd = line.substr(0, firstSpacePos);
-    
-    size_t hashPos = line.find("#", firstSpacePos);
-    size_t secondSpacePos = line.find(" ", hashPos);
-    std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
-
-    std::string objectifs = line.substr(cmd.size() + chname.size() + 3, line.rfind(":") - (line.size() - line.find(":")));
-    if (_chanmap.find(chname) != _chanmap.end())
-        _chanmap[chname]->MODE(objectifs);
+    // (void) line;
+    if (line.find("#") != line.npos)
+    {
+        size_t firstSpacePos = line.find(" ");
+        std::string cmd = line.substr(0, firstSpacePos);
+        
+        size_t hashPos = line.find("#", firstSpacePos);
+        size_t secondSpacePos = line.find(" ", hashPos);
+        std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
+        
+        std::string objectifs = line.substr(cmd.size() + chname.size() + 1, line.size() - cmd.size() - chname.size());
+        // std::cout << cmd << "!" << std::endl;
+        // std::cout << chname << "!" << std::endl;
+        // std::cout << objectifs << "!" << std::endl;
+        if (_chanmap.find(chname) != _chanmap.end())
+            _chanmap[chname]->MODE(objectifs);
+    }
+    else
+        std::cout << "Mode line: " << line << "!" << std::endl;
 }
