@@ -12,8 +12,7 @@ ARTHUR
 4. MODE: -i : Le blocage fonctionne mais la personne ne peut pas rejoindre
                 a tester
 
-         -t: modif ajouter et prise en compte
-            a tester
+         -t: FONCTIONNEL !!!!!!!!
 
 4.AJOUTER DANS LA CLASSE CHANNEL
     int _nb_max_of_user;

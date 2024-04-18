@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/18 13:17:57 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:29:08 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,8 +222,9 @@ void    Channel::TOPIC(std::string topic, user *users)
     sendtoallnopm(tosend);
 }
 
-void    Channel::MODE(std::string commands)
+void    Channel::MODE(std::string commands, user *users)
 {
+	(void) users;
     if (commands.rfind("i") != commands.npos)
     {
         if (commands.rfind("-") != commands.npos)
@@ -240,10 +241,29 @@ void    Channel::MODE(std::string commands)
             _modif_topic = true;
         std::cout << "Modif topic: " << _modif_topic << std::endl;
     }
+    // else if ((commands.rfind("-o") != commands.npos && this->is_in_op_list(users->getNick())) || commands.rfind("+o") != commands.npos)
+    // {
+	// 	if (commands.rfind("-o")!= commands.npos)
+	// 	{
+	// 		std::string	nick = commands.substr(commands.find("-o"), commands.size() - 8);
+	// 		std::cout << "nick -o : " << nick << "!" << std::endl;
+	// 		for (std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
+	// 		{
+	// 			if ((*it)->getNick() == nick)
+	// 			{
+	// 				_oplist.erase(it);
+	// 				break;
+	// 			}
+	// 			else if (it == _oplist.end())
+	// 			{
+					
+	// 			}
+	// 		}
+	// 	}
+    //     	std::cout << "Mode o : " << std::endl;
+    // }
     // else if (commands.find("k") != commands.npos)
     //     std::cout << "k" << std::endl;
-    // else if (commands.find("o") != commands.npos)
-    //     std::cout << "o" << std::endl;
     // else if (commands.find("l") != commands.npos)
     //     std::cout << "l" << std::endl;
 }
