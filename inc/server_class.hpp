@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/18 14:25:23 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:31:21 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ private :
     std::map<std::string, Channel *>    _chanmap;
 
     Server();
-    void                    leaveallchan(user *chuser);
+    void                    leaveallchan(user *chuser, std::string str);
 
 public :
 
@@ -49,8 +49,10 @@ public :
     void                    twinick(user *user);
     void                    join_channel(user *chuser, std::string chname);
     void                    leaving(user *chuser, std::string chname);
-    void                    quit(user *chuser);
+    void                    quit(user *chuser, std::string str);
+    
     void                    tmfm(user *chuser, std::string chname, std::string msg);
+    
     void                    com_spec_kick(user* chuser, std::string line);
     void                    com_spec_invite(std::string line);
     void                    com_spec_topic(std::string topic, user *users);

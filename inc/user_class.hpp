@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/17 13:12:37 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/18 13:53:46 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ private:
     void            call_spec_comm_invite(Server &serv, std::string str, user *users);
     void            call_spec_comm_topic(Server &Serv, std::string str, user *users);
     void            call_spec_comm_mode(Server &Serv, std::string str, user *users);
+    void            waiting_room();
 
 public:
 

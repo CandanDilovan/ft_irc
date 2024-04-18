@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/18 14:26:06 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:30:57 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,11 @@ public :
     ~Channel();
 
     int     getUserSize();
+    std::string getName();
 
     void    add_user(user *chuser);
     void    rm_user(user *chuser);
+    void    quit_user(user *chuser, std::string str);
     bool    invite_on_off();
     bool    is_in_invite_list(std::string nick);
     bool    is_in_op_list(std::string nick);

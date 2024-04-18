@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/18 14:29:08 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:32:02 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ int Channel::isop(user *chuser)
 int Channel::getUserSize()
 {
     return(_ulist.size());
+}
+
+std::string Channel::getName()
+{
+    return (_cname);
 }
 
 bool Channel::invite_on_off()
@@ -141,6 +146,27 @@ void Channel::add_user(user *chuser)
     std::cout << joineded;
     write(chuser->getFds()->fd, joineded.c_str(), joineded.size());
 }
+
+void Channel::quit_user(user *chuser, std::string str)
+{
+    for(std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+    {
+        if ((*it)->getNick() == chuser->getNick())  
+        {
+            for (std::list<user *>::iterator opit = _oplist.begin(); opit != _oplist.end(); opit++)
+                if ((*it)->getNick() == chuser->getNick())
+                {
+                    _oplist.erase(opit);
+                    break;
+                }
+            std::string msg = ":" + chuser->getNick() + " QUIT :Quit: " + str + "\r\n";
+            sendtoallnopm(msg);
+            _ulist.erase(it);
+            break;
+        }
+    }
+}
+
 
 void Channel::rm_user(user *chuser)
 {
