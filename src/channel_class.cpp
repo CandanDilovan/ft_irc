@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 13:50:35 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 15:09:10 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,15 +168,19 @@ void Channel::quit_user(user *chuser, std::string str)
 }
 
 
-void Channel::rm_user(user *chuser)
+void Channel::rm_user(user *chuser, std::string partmsg)
 {
     for(std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
     {
         if ((*it)->getNick() == chuser->getNick())  
         {
-            std::string msg = ":" + chuser->getNick() + " PART " + _cname + " " + chuser->getNick() + "\r\n";
+            std::string msg;
+
+            if (partmsg.size() > 0)
+                msg = ":" + chuser->getNick() + " PART " + _cname + " " + partmsg + "\r\n";
+            else
+                msg = ":" + chuser->getNick() + " PART " + _cname + "\r\n";
             sendtoallnopm(msg);
-            msg = "you have left the channel press alt + 1 to return to the main menu ";
             std::string tosend = ":" + chuser->getNick() + _cname + " :" + msg + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             _ulist.erase(it);

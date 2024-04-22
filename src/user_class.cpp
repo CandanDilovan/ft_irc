@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 14:31:30 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 15:03:29 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,7 @@ void    user::join(Server &serv, std::string str, user *users)
 void    user::part(Server &serv, std::string str, user *users)
 {
     (void) users;
-    std::string chname = str.substr(str.find('#'), (str.find(':') - str.find('#') - 1));
-    serv.leaving(this, chname);
+    serv.leaving(this, str);
 }
 
 void    user::ping(Server &serv, std::string str, user *users)

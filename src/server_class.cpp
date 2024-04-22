@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/22 14:40:56 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 15:09:20 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,13 @@ void Server::quit(user *chuser, std::string str)
     close(chuser->getFds()->fd);
 }
 
-void Server::leaving(user *chuser, std::string chname)
+void Server::leaving(user *chuser, std::string str)
 {
-    _chanmap[chname]->rm_user(chuser);
+    std::string partmsg;
+    std::string chname = str.substr(str.find('#'), (str.find(':') - str.find('#') - 1));
+    if (str.find(":") != str.npos)
+        partmsg = str.substr(str.find(':') + 1, (str.find('\r') - str.find(':')));
+    _chanmap[chname]->rm_user(chuser, partmsg);
     checkempty(chname);
 }
 
