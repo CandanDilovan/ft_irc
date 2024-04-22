@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 14:29:10 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 15:20:14 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ void Channel::KICK(user *chuser, std::string nick)
     }
     else
     {
-        std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + "you don't have the rights to kick" + "\r\n";
+        std::string tosend = ":" + chuser->getNick() + " ERROR " + _cname + " :" + "you don't have the rights to kick" + "\r\n";
         write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
     }
 }
@@ -256,17 +256,17 @@ void    Channel::TOPIC(std::string topic, user *users)
 
 void    Channel::MODE(std::string commands, user *users)
 {
-    if (commands.rfind("i") != commands.npos)
+    if (commands.find("+i") != commands.npos || commands.find("-i") != commands.npos)
     {
         (void) users;
         mode_i(commands);
     }
-    else if (commands.rfind("t") != commands.npos)
+    else if (commands.find("-t") != commands.npos || commands.find("+t") != commands.npos)
     {
         (void) users;
         mode_t(commands);
     }
-    else if ((commands.rfind("-o") != commands.npos && this->is_in_op_list(users->getNick())) || commands.rfind("+o") != commands.npos)
+    else if ((commands.find("-o") != commands.npos && this->is_in_op_list(users->getNick())) || commands.find("+o") != commands.npos)
     {
         mode_o(commands, users);
     }

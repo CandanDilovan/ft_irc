@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/22 14:56:40 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 15:20:24 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void Server::join_channel(user *chuser, std::string chname)
         {
             if ((*it)->getNick() == chuser->getNick())
             {
-                std::string tosend = ":" + (*it)->getNick() + " Can't join the channel (not invited)" + "\r\n";
+                std::string tosend = ":ft_irc 473 " + (*it)->getNick() + " " + chname + " Can't join the channel (+i)\r\n";
                 write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             }
         }
@@ -127,7 +127,6 @@ void Server::quit(user *chuser, std::string str)
 {
  
     leaveallchan(chuser, str);
-    usleep(100);
     close(chuser->getFds()->fd);
 }
 

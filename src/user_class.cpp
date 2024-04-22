@@ -6,13 +6,13 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:16:07 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 15:20:35 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/user_class.hpp"
 
-user::user(struct pollfd *fds, size_t n) : _connected(0)
+user::user(struct pollfd *fds, size_t n) : _connected(2)
 {
     if (fds)
         _fds = fds;
@@ -127,7 +127,8 @@ void    user::ping(Server &serv, std::string str, user *users)
     (void) users;
     std::string ping = str.substr(str.find("PING"),  (str.rfind('\r') - str.find("PING")));
     ping = ping.substr(ping.find(" ") + 1,  ping.rfind('\r') - ping.find(" "));
-    ping = "PONG :ft_irc " + ping + "\r\n";
+    ping = "PONG ft_irc " + ping + "\r\n";
+    std::cout << ping << std::endl;
     write(getFds()->fd, ping.c_str(), ping.size());
 }
 
@@ -229,7 +230,7 @@ void user::parse_input(Server &serv)
             strings.push_back(tmp);
             allbuff.erase(0, closest + 1);
         }
-        if (_connected == 0)
+        if (_connected == 2)
             fill_user(strings, serv);
         else if (_connected == 1)
             connected_parse(serv, strings);

@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 12:03:04 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 14:33:55 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void infinite_loop(class Server &serv)
                 }
             }
             (*it)->parse_input(serv);
-            if ((*it)->allbuff.find("QUIT") != (*it)->allbuff.npos && (*it)->_getco() == 0)
+            if ((*it)->_getco() == 0)
                 it = serv.getUserlist().erase(it);
         }
     }
