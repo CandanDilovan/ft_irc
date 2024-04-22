@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_class.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/18 14:14:50 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/18 14:30:57 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ public :
     void    KICK(user *user, std::string nick);
     void    INVITE(std::string nick, std::list<user *> userlist);
     void    TOPIC(std::string topic, user *users);
-    void    MODE(std::string commandes);
+    void    MODE(std::string commandes, user *users);
 };
 
 #endif

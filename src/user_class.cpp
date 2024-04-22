@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 13:08:21 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 13:26:57 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,8 +255,8 @@ void	user::call_spec_comm_topic(Server &serv, std::string str, user *users)
 
 void    user::call_spec_comm_mode(Server &serv, std::string str, user *users)
 {
-    (void) users;
+    // (void) users;
     // (void) str;
     // (void) serv;
-    serv.com_spec_mode(str);
+    serv.com_spec_mode(str, users);
 }
