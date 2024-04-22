@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/18 14:14:47 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 13:18:58 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ void Channel::rm_user(user *chuser)
             std::string msg = ":" + chuser->getNick() + " PART " + _cname + " " + chuser->getNick() + "\r\n";
             sendtoallnopm(msg);
             msg = "you have left the channel press alt + 1 to return to the main menu ";
-            std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + msg + "\r\n";
+            std::string tosend = ":" + chuser->getNick() + _cname + " :" + msg + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             _ulist.erase(it);
             break;
@@ -193,7 +193,7 @@ void Channel::KICK(user *chuser, std::string nick)
         {
             if ((*it)->getNick() == nick)
             {
-                std::string tosend = ":" + (*it)->getNick() + " KICK " + _cname + " " + nick + "\r\n";
+                std::string tosend = ":" + chuser->getNick() + " KICK " + _cname + " " + nick + "\r\n";
                 sendtoallnopm(tosend);
                 it = _ulist.erase(it);
                 break;
@@ -220,7 +220,7 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist)
         }
         else if (it == _ulist.end())
         {
-            std::string tosend = ":" + (*it)->getNick() + " want to invit " + nick + " in the server but not exist" + "\r\n";
+            std::string tosend = ":" + (*it)->getNick() + " can't invite user does not exist" + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
