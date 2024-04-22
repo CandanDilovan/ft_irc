@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_class.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/18 13:53:46 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 14:54:39 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ private:
     std::string     _nick;
     std::string     _upass;
     std::string     _num;
+    std::string     _commands_more;
 
     user();
 

@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:03:29 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 15:21:59 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,10 @@ void    user::privmsg(Server &serv, std::string str, user *users)
 void    user::join(Server &serv, std::string str, user *users)
 {
     (void) users;
+    // std::cout << "Join line:" << str << "!" << std::endl; 
     std::string chname = str.substr(str.find("#"),  str.rfind('\r') - str.find("#"));
+    // if (str.)
+    //     this->_commands_more = 
     serv.join_channel(this, chname);
 }
 

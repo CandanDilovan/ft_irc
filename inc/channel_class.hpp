@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:09:11 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 15:21:41 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ class Channel
 private :
 
     std::string _cname;
+    std::string _chan_password;
+    std::string _topic;
     std::list<user *> _ulist;
     std::list<user *> _oplist;
     std::list<user *> _invitlist;
-    std::string _topic;
+    bool _pass_on_off;
     bool _invit_only;
     bool _modif_topic;
     // int _nb_max_of_user;
@@ -47,6 +49,7 @@ public :
     void    rm_user(user *chuser, std::string partmsg);
     void    quit_user(user *chuser, std::string str);
     bool    invite_on_off();
+    bool    password_on_off();
     bool    is_in_invite_list(std::string nick);
     bool    is_in_op_list(std::string nick);
     void    sendtoall(user *chuser, std::string msg);
@@ -61,6 +64,7 @@ public :
     void    mode_o(std::string commands, user *users);
     void    mode_i(std::string commands);
     void    mode_t(std::string commands);
+    void    mode_k(std::string commands);
 };
 
 #endif
