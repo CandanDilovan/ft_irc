@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 13:34:05 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 14:29:10 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Channel::Channel(user *chuser, std::string cname) : _cname(cname)
     _oplist.push_back(chuser);
     _invit_only = false;
     _modif_topic = false;
+    _pass_on_off = false;
 }
 
 int Channel::isop(user *chuser)
@@ -50,6 +51,11 @@ std::string Channel::getName()
 bool Channel::invite_on_off()
 {
     return(_invit_only);
+}
+
+bool Channel::password_on_off()
+{
+    return (_pass_on_off);
 }
 
 bool    Channel::is_in_invite_list(std::string nick)
@@ -264,26 +270,43 @@ void    Channel::MODE(std::string commands, user *users)
     {
         mode_o(commands, users);
     }
-    // else if (commands.find("k") != commands.npos)
-    //     std::cout << "k" << std::endl;
+    else if (commands.find("-k") != commands.npos || commands.find("+k") != commands.npos)
+    {
+        mode_k(commands);
+    }
     // else if (commands.find("l") != commands.npos)
     //     std::cout << "l" << std::endl;
 }
 
+void    Channel::mode_k(std::string commands)
+{
+    if (commands.find("-k") != commands.npos)
+    {
+        _pass_on_off = false;
+    }
+    else if (commands.find("+k") != commands.npos)
+    {
+        _pass_on_off = true;
+        std::string password = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
+        _chan_password = password;
+        std::cout << "Password =" << _chan_password << "!" << std::endl;
+    } 
+}
+
 void    Channel::mode_i(std::string commands)
 {
-    if (commands.rfind("-") != commands.npos)
+    if (commands.rfind("-i") != commands.npos)
             _invit_only = false;
-    else if (commands.rfind("+") != commands.npos)
+    else if (commands.rfind("+i") != commands.npos)
         _invit_only = true;
     std::cout << "Invit only: " <<_invit_only << std::endl;
 }
 
 void    Channel::mode_t(std::string commands)
 {
-    if (commands.rfind("-") != commands.npos)
+    if (commands.rfind("-t") != commands.npos)
             _modif_topic = false;
-    else if (commands.rfind("+") != commands.npos)
+    else if (commands.rfind("+t") != commands.npos)
         _modif_topic = true;
     std::cout << "Modif topic: " << _modif_topic << std::endl;
 }

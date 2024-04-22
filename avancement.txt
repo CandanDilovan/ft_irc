@@ -18,6 +18,9 @@ ARTHUR
     int _nb_max_of_user;
 
 Modification des fonctions JOIN et autres pour liniter le CHAN au personnes invitee
+
+
+
 ------
 
 

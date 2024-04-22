@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/22 13:31:11 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 14:56:40 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,17 @@ void Server::join_channel(user *chuser, std::string chname)
         _chanmap.insert(std::pair<std::string, Channel *>(chname, newchan));
         _chanmap[chname]->add_user(chuser);
     }
-    else if (_chanmap[chname]->invite_on_off() == false)
+    else if (_chanmap[chname]->invite_on_off() == false && (_chanmap[chname]->password_on_off() == false))
         _chanmap[chname]->add_user(chuser);
     else if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) == true)
     {
         _chanmap[chname]->add_user(chuser);
         std::cout << chuser->getNick() << "join channel with invit" << std::endl;
     }
+    // else if (_chanmap[chname]->password_on_off() == true)
+    // {
+        
+    // }
     else
     {
         for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
