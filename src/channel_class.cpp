@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 13:35:07 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/22 13:50:35 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,25 +202,25 @@ void Channel::KICK(user *chuser, std::string nick)
     }
     else
     {
-        std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + "you don't have the rights to kick" + "\r\n";
+        std::string tosend = ":" + chuser->getNick() + " ERROR " + _cname + " :" + "you don't have the rights to kick" + "\r\n";
         write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
     }
 }
 
-void Channel::INVITE(std::string nick, std::list<user *> userlist)
+void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
 {
     for (std::list<user *>::iterator it = userlist.begin(); it != userlist.end(); it++)
     {
         if ((*it)->getNick() == nick)
         {
-            std::string tosend = ":" + (*it)->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
+            std::string tosend = ":" + users->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             _invitlist.push_back(*it);
             break;
         }
         else if (it == _ulist.end())
         {
-            std::string tosend = ":" + (*it)->getNick() + " can't invite user does not exist" + "\r\n";
+            std::string tosend = ":" + users->getNick() + " want to invit " + nick + " in the server but not exist" + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
@@ -250,46 +250,83 @@ void    Channel::TOPIC(std::string topic, user *users)
 
 void    Channel::MODE(std::string commands, user *users)
 {
-	(void) users;
-    if (commands.rfind("i") != commands.npos)
+    if (commands.find("+i") != commands.npos || commands.find("-i") != commands.npos)
     {
-        if (commands.rfind("-") != commands.npos)
-            _invit_only = false;
-        else if (commands.rfind("+") != commands.npos)
-            _invit_only = true;
-        std::cout << "Invit only: " <<_invit_only << std::endl;
+        (void) users;
+        mode_i(commands);
     }
-    else if (commands.rfind("t") != commands.npos)
+    else if (commands.find("-t") != commands.npos || commands.find("+t") != commands.npos)
     {
-        if (commands.rfind("-") != commands.npos)
-            _modif_topic = false;
-        else if (commands.rfind("+") != commands.npos)
-            _modif_topic = true;
-        std::cout << "Modif topic: " << _modif_topic << std::endl;
+        (void) users;
+        mode_t(commands);
     }
-    // else if ((commands.rfind("-o") != commands.npos && this->is_in_op_list(users->getNick())) || commands.rfind("+o") != commands.npos)
-    // {
-	// 	if (commands.rfind("-o")!= commands.npos)
-	// 	{
-	// 		std::string	nick = commands.substr(commands.find("-o"), commands.size() - 8);
-	// 		std::cout << "nick -o : " << nick << "!" << std::endl;
-	// 		for (std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
-	// 		{
-	// 			if ((*it)->getNick() == nick)
-	// 			{
-	// 				_oplist.erase(it);
-	// 				break;
-	// 			}
-	// 			else if (it == _oplist.end())
-	// 			{
-					
-	// 			}
-	// 		}
-	// 	}
-    //     	std::cout << "Mode o : " << std::endl;
-    // }
+    else if ((commands.find("-o") != commands.npos && this->is_in_op_list(users->getNick())) || commands.find("+o") != commands.npos)
+    {
+        mode_o(commands, users);
+    }
     // else if (commands.find("k") != commands.npos)
     //     std::cout << "k" << std::endl;
     // else if (commands.find("l") != commands.npos)
     //     std::cout << "l" << std::endl;
+}
+
+void    Channel::mode_i(std::string commands)
+{
+    if (commands.rfind("-") != commands.npos)
+            _invit_only = false;
+    else if (commands.rfind("+") != commands.npos)
+        _invit_only = true;
+    std::cout << "Invit only: " <<_invit_only << std::endl;
+}
+
+void    Channel::mode_t(std::string commands)
+{
+    if (commands.rfind("-") != commands.npos)
+            _modif_topic = false;
+    else if (commands.rfind("+") != commands.npos)
+        _modif_topic = true;
+    std::cout << "Modif topic: " << _modif_topic << std::endl;
+}
+
+void    Channel::mode_o(std::string commands, user *users)
+{
+    if (commands.rfind("-o")!= commands.npos)
+	{
+		std::string nick = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
+		for (std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
+		{
+			if ((*it)->getNick() == nick)
+			{
+				_oplist.erase(it);
+				break;
+			}
+			else if (it == _oplist.end())
+			{
+				std::string tosend = "Mode -o can't possible for " + nick + " because he's not a operator" + "\r\n";
+                write(users->getFds()->fd, tosend.c_str(), tosend.size());
+			}
+		}
+	}
+    else if (commands.rfind("+o")!= commands.npos)
+    {
+        std::string nick = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
+        if (this->is_in_op_list(nick) == true)
+        {
+            std::string tosend = "Mode +o can't possible for " + nick + " because he's allready a operator" + "\r\n";
+            write(users->getFds()->fd, tosend.c_str(), tosend.size());
+        }
+        else if (this->is_in_op_list(nick) == false)
+        {
+            for (std::list<user *>::iterator itt = _ulist.begin(); itt != _ulist.end(); itt++)
+            {
+                if ((*itt)->getNick() == nick)
+                    _oplist.push_back(*itt); 
+                else if (itt == _ulist.end())
+                {
+                    std::string tosend = "Mode +o can't possible for " + nick + " because he'not on the channel" + "\r\n";
+                    write(users->getFds()->fd, tosend.c_str(), tosend.size());
+                }
+            }
+        }
+    }
 }
