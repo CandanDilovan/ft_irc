@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/18 14:32:41 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:09:27 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,8 +243,7 @@ void    user::call_spec_comm_kick(Server &serv, std::string str, user *users)
 
 void    user::call_spec_comm_invite(Server &serv, std::string str, user *users)
 {
-    (void) users;
-    serv.com_spec_invite(str);
+    serv.com_spec_invite(str, users);
 }
 
 void	user::call_spec_comm_topic(Server &serv, std::string str, user *users)

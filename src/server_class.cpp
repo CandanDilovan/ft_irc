@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/18 14:32:23 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:09:04 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void    Server::com_spec_kick(user *user,std::string line)
     checkempty(chname);
 }
 
-void    Server::com_spec_invite(std::string line)
+void    Server::com_spec_invite(std::string line, user *users)
 {
     if (line.empty())
         return;
@@ -215,7 +215,7 @@ void    Server::com_spec_invite(std::string line)
     // std::cout << nick << "!" << std::endl;
     // std::cout << chname << "!" << std::endl;
     if (_chanmap.find(chname) != _chanmap.end())
-        _chanmap[chname]->INVITE(nick, _userlist);
+        _chanmap[chname]->INVITE(nick, _userlist, users);
 }
 
 void    Server::com_spec_topic(std::string line, user *users)
@@ -250,9 +250,9 @@ void    Server::com_spec_mode(std::string line, user *users)
         std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
         
         std::string objectifs = line.substr(cmd.size() + chname.size() + 1, line.size() - cmd.size() - chname.size());
-        std::cout << cmd << "!" << std::endl;
-        std::cout << chname << "!" << std::endl;
-        std::cout << objectifs << "!" << std::endl;
+        // std::cout << cmd << "!" << std::endl;
+        // std::cout << chname << "!" << std::endl;
+        // std::cout << objectifs << "!" << std::endl;
         if (_chanmap.find(chname) != _chanmap.end())
             _chanmap[chname]->MODE(objectifs, users);
     }

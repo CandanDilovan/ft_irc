@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/18 14:30:57 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:20:34 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,13 @@ public :
     void    sendtoallnopm(std::string msg);
     
     void    KICK(user *user, std::string nick);
-    void    INVITE(std::string nick, std::list<user *> userlist);
+    void    INVITE(std::string nick, std::list<user *> userlist, user *users);
     void    TOPIC(std::string topic, user *users);
+    
     void    MODE(std::string commandes, user *users);
+    void    mode_o(std::string commands, user *users);
+    void    mode_i(std::string commands);
+    void    mode_t(std::string commands);
 };
 
 #endif
