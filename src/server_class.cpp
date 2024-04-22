@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/22 13:09:04 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:31:11 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void Server::join_channel(user *chuser, std::string chname)
         {
             if ((*it)->getNick() == chuser->getNick())
             {
-                std::string tosend = ":" + (*it)->getNick() + " Can't join the channel because yo don't are invited" + "\r\n";
+                std::string tosend = ":" + (*it)->getNick() + " Can't join the channel (not invited)" + "\r\n";
                 write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             }
         }
@@ -182,7 +182,7 @@ void Server::twinick(user *puser)
     }
 }
 
-void    Server::com_spec_kick(user *user,std::string line)
+void    Server::com_spec_kick(user *chuser, std::string line)
 {
     if (line.empty())
         return;
@@ -195,7 +195,7 @@ void    Server::com_spec_kick(user *user,std::string line)
     
     std::string nick = line.substr(cmd.size() + chname.size() + 2, line.rfind(" ") - (cmd.size() + chname.size() + 2));
     if (_chanmap.find(chname) != _chanmap.end())
-        _chanmap[chname]->KICK(user, nick);
+        _chanmap[chname]->KICK(chuser, nick);
     checkempty(chname);
 }
 

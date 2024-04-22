@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 13:09:27 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:33:58 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void    user::quit(Server &serv, std::string str, user *users)
     int cut = str.find(':');
     std::string cutstr = str.substr(cut + 1, (str.find('\r') - cut));
     serv.quit(this, cutstr);
+    _connected = 0;
 }
 
 void    user::privmsg(Server &serv, std::string str, user *users)
@@ -167,8 +168,7 @@ void user::fill_user(std::list<std::string> strings, Server &serv)
 {
     int closest;
     
-    waiting_room();
-    for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
+    for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); ++it)
     {
         if ((*it).find('\r') < (*it).find('\n'))
             closest = (*it).find('\r');
@@ -181,7 +181,7 @@ void user::fill_user(std::list<std::string> strings, Server &serv)
             _nick = (*it).substr((*it).find(" ") + 1, closest);
             serv.twinick(this);
         }
-       else  if ((*it).find("USER") != (*it).npos)
+        else  if ((*it).find("USER") != (*it).npos)
             _name = (*it).substr((*it).find(":") + 1, closest);
         else if ((*it).find("PASS") != (*it).npos)
         {
@@ -223,14 +223,15 @@ void user::parse_input(Server &serv)
             else
                 closest = allbuff.find('\n');
             tmp = allbuff.substr(0, closest);
-            allbuff.erase(0, closest + 1);
             strings.push_back(tmp);
+            allbuff.erase(0, closest + 1);
         }
         if (_connected == 0)
             fill_user(strings, serv);
         else if (_connected == 1)
             connected_parse(serv, strings);
         allbuff.clear();
+        strings.clear();
     }
         
 }
