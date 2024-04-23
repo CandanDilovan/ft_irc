@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_class.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:21:41 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 11:26:23 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ private :
     std::list<user *> _ulist;
     std::list<user *> _oplist;
     std::list<user *> _invitlist;
-    bool _pass_on_off;
     bool _invit_only;
     bool _modif_topic;
     // int _nb_max_of_user;
@@ -44,6 +43,7 @@ public :
 
     int     getUserSize();
     std::string getName();
+    bool _pass_on_off;
 
     void    add_user(user *chuser);
     void    rm_user(user *chuser, std::string partmsg);

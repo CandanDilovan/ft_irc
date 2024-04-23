@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 14:54:39 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/23 11:16:51 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ private:
     std::string     _nick;
     std::string     _upass;
     std::string     _num;
-    std::string     _commands_more;
 
     user();
 
@@ -46,6 +45,7 @@ private:
 
 public:
 
+    std::string _commands_more;
     std::string allbuff;
 
 //constructor

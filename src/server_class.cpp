@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_class.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:21:54 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 11:26:05 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,18 @@ void    Server::checkempty(std::string chname)
 
 void Server::join_channel(user *chuser, std::string chname)
 {
-    if (_chanmap.find(chname) == _chanmap.end())
+    if (_chanmap.find(chname) == _chanmap.end() || (_chanmap.find(chname) == _chanmap.end() && chuser->_commands_more.size() != 0))
     {
         Channel      *newchan;
         
         newchan = new Channel(chuser, chname);
         _chanmap.insert(std::pair<std::string, Channel *>(chname, newchan));
         _chanmap[chname]->add_user(chuser);
+        if (chuser->_commands_more.size() != 0)
+        {
+            this->_password = chuser->_commands_more;
+            _chanmap[chname]->_pass_on_off = true;
+        }
     }
     else if (_chanmap[chname]->invite_on_off() == false && (_chanmap[chname]->password_on_off() == false))
         _chanmap[chname]->add_user(chuser);
@@ -97,10 +102,10 @@ void Server::join_channel(user *chuser, std::string chname)
         _chanmap[chname]->add_user(chuser);
         std::cout << chuser->getNick() << "join channel with invit" << std::endl;
     }
-    // else if (_chanmap[chname]->password_on_off() == true)
-    // {
-        
-    // }
+    else if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more == this->_password)
+    {
+        _chanmap[chname]->add_user(chuser);
+    }
     else
     {
         for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
