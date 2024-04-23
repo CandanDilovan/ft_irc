@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/23 13:02:06 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/23 13:23:28 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,12 +265,10 @@ void    Channel::MODE(std::string commands, user *users)
     {
         if (commands.find("+i") != commands.npos || commands.find("-i") != commands.npos)
         {
-            // (void) users;
             mode_i(commands);
         }
         else if (commands.find("-t") != commands.npos || commands.find("+t") != commands.npos)
         {
-            // (void) users;
             mode_t(commands);
         }
         else if ((commands.find("-o") != commands.npos && this->is_in_op_list(users->getNick())) || commands.find("+o") != commands.npos)
