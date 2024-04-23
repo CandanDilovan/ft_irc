@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:21:47 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 13:29:41 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,8 @@ void Channel::sendtoallfr(user *chuser, std::string msg)
 {
     for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
     {
-        std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + msg + "\r\n";
-        write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-        std::cout << tosend;
+        if (chuser->getNick() != (*it)->getNick())
+            write((*it)->getFds()->fd, msg.c_str(), msg.size());
     }
 }
 
@@ -110,9 +109,8 @@ void Channel::sendtoall(user *chuser, std::string msg)
     }
     else
     {
-        std::string msg = "Your message can't be sent because you've left the channel";
-        std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + msg + "\r\n";
-        write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
+        std::string msg = "Your message cannot be sent (not connected to channel)";
+        chuser->error(msg);
     }
 
 }
@@ -166,7 +164,7 @@ void Channel::quit_user(user *chuser, std::string str)
                     break;
                 }
             std::string msg = ":" + chuser->getNick() + " QUIT :Quit: " + str + "\r\n";
-            sendtoallnopm(msg);
+            sendtoallfr(chuser, msg);
             _ulist.erase(it);
             break;
         }
@@ -186,7 +184,7 @@ void Channel::rm_user(user *chuser, std::string partmsg)
                 msg = ":" + chuser->getNick() + " PART " + _cname + " " + partmsg + "\r\n";
             else
                 msg = ":" + chuser->getNick() + " PART " + _cname + "\r\n";
-            sendtoallnopm(msg);
+            sendtoallfr(chuser, msg);
             std::string tosend = ":" + chuser->getNick() + _cname + " :" + msg + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             _ulist.erase(it);

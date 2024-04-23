@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:21:54 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 13:59:41 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ Server::Server()
 Server::~Server()
 {
 
+}
+
+std::map<std::string, Channel *>    &Server::getMap()
+{
+    return (_chanmap);
 }
 
 std::list<user *> &Server::getUserlist()
@@ -142,7 +147,7 @@ void Server::leaving(user *chuser, std::string str)
 
 void Server::tmfm(user *chuser, std::string chname, std::string msg)
 {
-    if (chname.find('#') != chname.npos)
+    if (chname.find('#') != chname.npos && _chanmap.find(chname) != _chanmap.end())
         _chanmap[chname]->sendtoall(chuser, msg);
     else
     {
@@ -155,7 +160,7 @@ void Server::tmfm(user *chuser, std::string chname, std::string msg)
                 return ;
             }
         }
-        chuser->error("no such nick");
+        chuser->error("no such nick/channel");
     }
 }
 

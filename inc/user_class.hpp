@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_class.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 14:54:39 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/23 14:37:45 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ private:
     void            call_spec_comm_mode(Server &Serv, std::string str, user *users);
     void            waiting_room();
 
+
+    int             nick_verif();
+    std::string     intostr(int machin);
+
 public:
 
     std::string allbuff;
@@ -65,7 +69,7 @@ public:
 
     void    parse_input(Server &serv);
     void    fill_user(std::list<std::string> strings, Server &serv);
-    void    nego_end();
+    void    nego_end(Server &serv);
     void    connected_parse(Server &serv, std::list<std::string> strings);
     void    error(std::string error);
 

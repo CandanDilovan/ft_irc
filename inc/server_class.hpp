@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:04:02 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 11:33:34 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@ public :
     Server(char **argv);
     ~Server();
 
-    std::string             getPass();
-    std::string             getPort();
-    std::list<user *>       &getUserlist();
+    std::string                         getPass();
+    std::string                         getPort();
+    std::map<std::string, Channel *>    &getMap();
+    std::list<user *>                   &getUserlist();
     
     
 

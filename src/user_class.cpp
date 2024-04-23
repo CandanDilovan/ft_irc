@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:21:59 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 14:55:34 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,23 @@ void user::setNick(std::string newnick)
     _nick = newnick;
 }
 
+std::string user::intostr(int machin)
+{
+    std::stringstream convert;
+    convert << machin;
+    return (convert.str());
+}
+
+int user::nick_verif()
+{
+    for (size_t a = 0; a != _nick.size(); a++)
+    {
+        if (std::isalnum(_nick[a]) == 0)
+            return (1);
+    }
+    return (0);
+}
+
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
 	std::string	msg[9] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC", "MODE", "QUIT"};
@@ -99,7 +116,7 @@ void    user::privmsg(Server &serv, std::string str, user *users)
     if (str.find('#') != str.npos)
         chname = str.substr(str.find('#'), (str.find(':') - str.find('#') - 1));
     else
-        chname = str.substr(str.find(' '), (str.find(':') - str.find('#') - 1));
+        chname = str.substr(str.find(' ') + 1, (str.find(':') - str.find(' ')) - 2);
     std::string input =  str.substr(str.find(':') + 1, str.find('\n') - str.find(':'));
     serv.tmfm(this, chname, input);
 }
@@ -131,7 +148,7 @@ void    user::ping(Server &serv, std::string str, user *users)
     write(getFds()->fd, ping.c_str(), ping.size());
 }
 
-void user::nego_end()
+void user::nego_end(Server &serv)
 {
     std::string Willkommen;
     time_t now = time(0);
@@ -145,7 +162,7 @@ void user::nego_end()
     write(_fds->fd, Willkommen.c_str(), Willkommen.size());
     Willkommen = "003 " + _nick + " :This server was created " + timeloc + "\r\n";
     write(_fds->fd, Willkommen.c_str(), Willkommen.size());
-    Willkommen = "004 " + _nick + " :There are 1 users and 0 services on 1 servers" + "\r\n";
+    Willkommen = "004 " + _nick + " :There are " + intostr(serv.getUserlist().size() - 1) + " users and " + intostr((serv.getMap().size())) + " Channel on 1 servers" + "\r\n";
     write(_fds->fd, Willkommen.c_str(), Willkommen.size());
     _connected = 1;
     
@@ -182,6 +199,13 @@ void user::fill_user(std::list<std::string> strings, Server &serv)
         else if ((*it).find("NICK") != (*it).npos)
         {    
             _nick = (*it).substr((*it).find(" ") + 1, closest);
+            if (nick_verif() == 1)
+            {
+                std::string oldnick = _nick;
+                _nick = "Guest";
+                std::string msg = ":" + oldnick + " NICK " + _nick + "\n"  + "\x03" + "8" + "use /Nick <yournick> to change it" + "\x03" + "\r\n";
+                write(_fds->fd, msg.c_str(), msg.size());
+            }
             serv.twinick(this);
         }
         else  if ((*it).find("USER") != (*it).npos)
@@ -199,7 +223,7 @@ void user::fill_user(std::list<std::string> strings, Server &serv)
         else if ((*it).find("CAP END") != (*it).npos)
         {
             if (_upass.size() > 0)
-                nego_end();
+                nego_end(serv);
             else
             {
                 error("Password incorrect");
