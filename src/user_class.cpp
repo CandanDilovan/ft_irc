@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/23 14:55:34 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 14:56:59 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,14 @@ void    user::privmsg(Server &serv, std::string str, user *users)
 void    user::join(Server &serv, std::string str, user *users)
 {
     (void) users;
-    // std::cout << "Join line:" << str << "!" << std::endl; 
-    std::string chname = str.substr(str.find("#"),  str.rfind('\r') - str.find("#"));
-    // if (str.)
-    //     this->_commands_more = 
+    std::string chname = str.substr(str.find("#"),  str.rfind(" ") - str.find("#"));
+    std::string password = str.substr(str.rfind(" ") + 1, str.rfind("\r") - str.rfind(" "));
+    if (password != chname)
+    {
+        this->_commands_more = password;
+    }
+    // std::cout << "chname:" << chname << "!" << std::endl;
+    // std::cout << "password User:" << _commands_more << "!" << std::endl;
     serv.join_channel(this, chname);
 }
 
@@ -281,8 +285,5 @@ void	user::call_spec_comm_topic(Server &serv, std::string str, user *users)
 
 void    user::call_spec_comm_mode(Server &serv, std::string str, user *users)
 {
-    // (void) users;
-    // (void) str;
-    // (void) serv;
     serv.com_spec_mode(str, users);
 }

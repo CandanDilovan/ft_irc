@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/23 13:59:41 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 14:56:56 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,25 +87,35 @@ void    Server::checkempty(std::string chname)
 
 void Server::join_channel(user *chuser, std::string chname)
 {
-    if (_chanmap.find(chname) == _chanmap.end())
+    
+    if (_chanmap.find(chname) == _chanmap.end() || (_chanmap.find(chname) == _chanmap.end() && chuser->_commands_more.size() != 0))
     {
         Channel      *newchan;
         
         newchan = new Channel(chuser, chname);
         _chanmap.insert(std::pair<std::string, Channel *>(chname, newchan));
         _chanmap[chname]->add_user(chuser);
+        if (chuser->_commands_more.size() != 0)
+        {
+            this->_password = chuser->_commands_more;
+            _chanmap[chname]->_pass_on_off = true;
+        }
     }
-    else if (_chanmap[chname]->invite_on_off() == false && (_chanmap[chname]->password_on_off() == false))
-        _chanmap[chname]->add_user(chuser);
-    else if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) == true)
+    else if (_chanmap[chname]->_bool_nb_max_of_user == false || 
+            (_chanmap[chname]->_bool_nb_max_of_user == true && (_chanmap[chname]->getUserSize() + 1) <= _chanmap[chname]->_nb_max_of_user))
     {
-        _chanmap[chname]->add_user(chuser);
-        std::cout << chuser->getNick() << "join channel with invit" << std::endl;
+        if (_chanmap[chname]->invite_on_off() == false && (_chanmap[chname]->password_on_off() == false))
+            _chanmap[chname]->add_user(chuser);
+        else if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) == true)
+        {
+            _chanmap[chname]->add_user(chuser);
+            std::cout << chuser->getNick() << "join channel with invit" << std::endl;
+        }
+        else if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more == this->_password)
+        {
+            _chanmap[chname]->add_user(chuser);
+        }
     }
-    // else if (_chanmap[chname]->password_on_off() == true)
-    // {
-        
-    // }
     else
     {
         for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
@@ -223,9 +233,6 @@ void    Server::com_spec_invite(std::string line, user *users)
      
     size_t hashPos = line.find("#", secondSpacePos);
     std::string chname = line.substr(hashPos);
-    // std::cout << cmd << "!" << std::endl;
-    // std::cout << nick << "!" << std::endl;
-    // std::cout << chname << "!" << std::endl;
     if (_chanmap.find(chname) != _chanmap.end())
         _chanmap[chname]->INVITE(nick, _userlist, users);
 }
@@ -242,16 +249,12 @@ void    Server::com_spec_topic(std::string line, user *users)
     std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
     
     std::string topic = line.substr(cmd.size() + chname.size() + 3,line.size() - cmd.size() - chname.size());
-    // std::cout << cmd << "!" << std::endl;
-    // std::cout << chname << "!" << std::endl;
-    // std::cout << topic << "!" << std::endl;
     if (_chanmap.find(chname) != _chanmap.end())
         _chanmap[chname]->TOPIC(topic, users);
 }
 
 void    Server::com_spec_mode(std::string line, user *users)
 {
-    // (void) line;
     if (line.find("#") != line.npos)
     {
         size_t firstSpacePos = line.find(" ");
@@ -262,9 +265,6 @@ void    Server::com_spec_mode(std::string line, user *users)
         std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
         
         std::string objectifs = line.substr(cmd.size() + chname.size() + 1, line.size() - cmd.size() - chname.size());
-        // std::cout << cmd << "!" << std::endl;
-        // std::cout << chname << "!" << std::endl;
-        // std::cout << objectifs << "!" << std::endl;
         if (_chanmap.find(chname) != _chanmap.end())
             _chanmap[chname]->MODE(objectifs, users);
     }

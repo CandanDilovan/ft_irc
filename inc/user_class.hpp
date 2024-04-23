@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/23 14:37:45 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 14:56:47 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ private:
     std::string     _nick;
     std::string     _upass;
     std::string     _num;
-    std::string     _commands_more;
 
     user();
 
@@ -50,6 +49,7 @@ private:
 
 public:
 
+    std::string _commands_more;
     std::string allbuff;
 
 //constructor
