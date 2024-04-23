@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/23 13:23:28 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/23 13:37:17 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,7 +318,6 @@ void    Channel::mode_k(std::string commands)
         _pass_on_off = true;
         std::string password = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
         _chan_password = password;
-        // std::cout << "Password =" << _chan_password << "!" << std::endl;
     } 
 }
 
