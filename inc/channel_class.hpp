@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/23 11:26:23 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/23 11:39:18 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,21 @@ private :
     std::list<user *> _invitlist;
     bool _invit_only;
     bool _modif_topic;
-    // int _nb_max_of_user;
 
     int isop(user *chuser);
 
 public :
 
+    int _nb_max_of_user;
+    bool _pass_on_off;
+    bool _bool_nb_max_of_user;
     Channel();
     Channel(user *chuser, std::string cname);
     ~Channel();
 
+
     int     getUserSize();
     std::string getName();
-    bool _pass_on_off;
-
     void    add_user(user *chuser);
     void    rm_user(user *chuser, std::string partmsg);
     void    quit_user(user *chuser, std::string str);
@@ -65,6 +66,7 @@ public :
     void    mode_i(std::string commands);
     void    mode_t(std::string commands);
     void    mode_k(std::string commands);
+    void    mode_l(std::string commands);
 };
 
 #endif

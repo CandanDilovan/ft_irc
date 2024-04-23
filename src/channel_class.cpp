@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_class.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 15:21:47 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/23 13:02:06 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ Channel::Channel(user *chuser, std::string cname) : _cname(cname)
     _invit_only = false;
     _modif_topic = false;
     _pass_on_off = false;
+    _bool_nb_max_of_user = false;
 }
 
 int Channel::isop(user *chuser)
@@ -260,26 +261,52 @@ void    Channel::TOPIC(std::string topic, user *users)
 
 void    Channel::MODE(std::string commands, user *users)
 {
-    if (commands.find("+i") != commands.npos || commands.find("-i") != commands.npos)
+    if (this->is_in_op_list(users->getNick()))
     {
-        (void) users;
-        mode_i(commands);
+        if (commands.find("+i") != commands.npos || commands.find("-i") != commands.npos)
+        {
+            // (void) users;
+            mode_i(commands);
+        }
+        else if (commands.find("-t") != commands.npos || commands.find("+t") != commands.npos)
+        {
+            // (void) users;
+            mode_t(commands);
+        }
+        else if ((commands.find("-o") != commands.npos && this->is_in_op_list(users->getNick())) || commands.find("+o") != commands.npos)
+        {
+            mode_o(commands, users);
+        }
+        else if (commands.find("-k") != commands.npos || commands.find("+k") != commands.npos)
+        {
+            mode_k(commands);
+        }
+        else if (commands.find("-l") != commands.npos || commands.find("+l") != commands.npos)
+        {
+            mode_l(commands);
+        }
     }
-    else if (commands.find("-t") != commands.npos || commands.find("+t") != commands.npos)
+    else
     {
-        (void) users;
-        mode_t(commands);
+        std::string tosend = "Mode not accessible for " + users->getNick() + " because he's not a operator" + "\r\n";
+        write(users->getFds()->fd, tosend.c_str(), tosend.size());
     }
-    else if ((commands.find("-o") != commands.npos && this->is_in_op_list(users->getNick())) || commands.find("+o") != commands.npos)
+        
+}
+
+void    Channel::mode_l(std::string commands)
+{
+    if (commands.find("-l") != commands.npos)
     {
-        mode_o(commands, users);
+        _bool_nb_max_of_user = false;
     }
-    else if (commands.find("-k") != commands.npos || commands.find("+k") != commands.npos)
+    else if (commands.find("+l") != commands.npos)
     {
-        mode_k(commands);
+        _bool_nb_max_of_user = true;
+        std::string user_max = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
+        _nb_max_of_user = atoi(user_max.c_str());
+        std::cout << "nb max of user: " << _nb_max_of_user << std::endl;
     }
-    // else if (commands.find("l") != commands.npos)
-    //     std::cout << "l" << std::endl;
 }
 
 void    Channel::mode_k(std::string commands)
@@ -293,7 +320,7 @@ void    Channel::mode_k(std::string commands)
         _pass_on_off = true;
         std::string password = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
         _chan_password = password;
-        std::cout << "Password =" << _chan_password << "!" << std::endl;
+        // std::cout << "Password =" << _chan_password << "!" << std::endl;
     } 
 }
 
