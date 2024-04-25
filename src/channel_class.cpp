@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_class.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/23 14:56:51 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/25 11:30:55 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,7 +334,7 @@ void    Channel::mode_t(std::string commands)
             _modif_topic = false;
     else if (commands.rfind("+t") != commands.npos)
         _modif_topic = true;
-    std::cout << "Modif topic: " << _modif_topic << std::endl;
+    // std::cout << "Modif topic: " << _modif_topic << std::endl;
 }
 
 void    Channel::mode_o(std::string commands, user *users)

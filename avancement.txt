@@ -1,25 +1,21 @@
 ///////
 ARTHUR
 ------
-1. KICK fonctionnel mais pas les messages d'erreur
+1. KICK: OK
 
-2. Invite -> OK
-    - le message arrive
+2. Invite: OK
 
-3.TOPIC -> fonctionnel : 
-    - Droit modifiable pour modif topic.
+3. TOPIC: OK
 
-4. MODE: -i : Le blocage fonctionne mais la personne ne peut pas rejoindre
-                a tester
+4. MODE: -i: OK
 
-         -t: FONCTIONNEL !!!!!!!!
+         -t: OK
 
-4.AJOUTER DANS LA CLASSE CHANNEL
-    int _nb_max_of_user;
+         -k: OK
 
-Modification des fonctions JOIN et autres pour liniter le CHAN au personnes invitee
+         -o: OK
 
-
+         -l: ok
 
 ------
 
