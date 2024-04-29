@@ -39,21 +39,18 @@ std::string user::intostr(int machin)
     return (convert.str());
 }
 
-int user::nick_verif()
-{
-    for (size_t a = 0; a != _nick.size(); a++)
-    {
-        if (std::isalnum(_nick[a]) == 0)
-            return (1);
-    }
-    return (0);
-}
-
-
 void user::error(std::string eerror)
 {
     std::string error = "ERROR :" + eerror + "\r\n";
     write(_fds->fd, error.c_str(), error.size());
+}
+
+int user::findclosest(std::string str)
+{
+    if (str.find('\r') < str.find('\n'))
+        return (str.find('\r'));
+    else
+        return (str.find('\n'));
 }
 
 void user::waiting_room()

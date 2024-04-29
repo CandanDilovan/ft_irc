@@ -37,14 +37,18 @@ private:
     void            privmsg(Server &serv, std::string str, user *users);
     void            part(Server &serv, std::string str, user *users);
     void            quit(Server &serv, std::string str, user *users);
+    void            nick(Server &serv, std::string str, user *users);
     void            call_spec_comm_kick(Server &serv, std::string str, user *users);
     void            call_spec_comm_invite(Server &serv, std::string str, user *users);
     void            call_spec_comm_topic(Server &Serv, std::string str, user *users);
     void            call_spec_comm_mode(Server &Serv, std::string str, user *users);
+
+
     void            waiting_room();
-
-
+    void            wrong_pass();
+    void            wrong_nick(Server &serv);
     int             nick_verif();
+    int             findclosest(std::string str);
     std::string     intostr(int machin);
 
 public:

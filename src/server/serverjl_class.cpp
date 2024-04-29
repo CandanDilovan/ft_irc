@@ -171,7 +171,6 @@ void Server::leaveallchan(user *chuser, std::string str)
 
 void Server::quit(user *chuser, std::string str)
 {
- 
     leaveallchan(chuser, str);
     close(chuser->getFds()->fd);
 }

@@ -14,6 +14,21 @@
 
 
 
+void    user::nick(Server &serv, std::string str, user *users)
+{
+    (void)users;
+    std::string oldnick = _nick;
+    _nick = str.substr(str.find(" ") + 1, str.find("\n") - str.find(" "));
+    if (nick_verif() == 0)
+    {
+        serv.twinick(this);
+        std::string msg = ":" + oldnick + " NICK " + _nick + "\r\n";
+        write(_fds->fd, msg.c_str(), msg.size());
+    }
+    else
+        error("Nick: special character not allowed");
+}
+
 void    user::quit(Server &serv, std::string str, user *users)
 {
     (void) users;

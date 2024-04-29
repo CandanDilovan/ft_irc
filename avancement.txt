@@ -23,12 +23,8 @@ ARTHUR
 ///////
 DILO
 ------
-1. Modification du fonctionnement de Kick, message d'erreur ajouter + commande executable seulement par l'op (à tester)
-2. Modification de join et de leave qui fonctionne parfois
-3. ajout de la list d'opérateur dans la classe channel
-4. channel delete quand ils sont vides
-5. /msg "nickname" fonctionne uniquement si le nick existe
-6. rename si un user à déjà le nickname
-7. a faire : /quit /names (nick = chname :nick (@nick si op)) /nick
+- restructuration du code
+- Fix de la verif du nick prends mtn "{} [] \ |" ne prends pas de nombre en premier charactere
+- ajout de /nick
 
 ------

@@ -12,6 +12,42 @@
 
 #include "../../inc/user_class.hpp"
 
+void user::wrong_pass()
+{
+    error("Password incorrect");
+    usleep(100);
+    close(_fds->fd);
+}
+
+void user::wrong_nick(Server &serv)
+{
+    std::string oldnick = _nick;
+    _nick = "Guest";
+    serv.twinick(this);
+    std::string msg = ":" + oldnick + " NICK " + _nick + "\n"  + "\x03" + "8" + "use /Nick <yournick> to change it" + "\x03" + "\r\n";
+    write(_fds->fd, msg.c_str(), msg.size());
+}
+
+int user::nick_verif()
+{
+    for (size_t a = 0; a != _nick.size(); a++)
+    {
+        if ((_nick[a] >= 'a' && _nick[a] <= 'z') || (_nick[a] >= 'A' && _nick[a] <= 'Z')
+            || (_nick[a] >= '0' && _nick[a] <= '9') || _nick[a] == '[' || _nick[a] == ']'
+            || _nick[a] == '{' || _nick[a] == '}' || _nick[a] == '\\' || _nick[a] == '|')
+        {
+            if (std::isdigit(_nick[0]) == true)
+            {
+                error("Nick: No digit as first character");
+                return (1);
+            }
+        }
+        else
+            return (1);
+    }
+    return (0);
+}
+
 void user::nego_end(Server &serv)
 {
     std::string Willkommen;
@@ -33,28 +69,18 @@ void user::nego_end(Server &serv)
 }
 
 void user::fill_user(std::list<std::string> strings, Server &serv)
-{
-    int closest;
-    
+{   
     for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); ++it)
     {
-        if ((*it).find('\r') < (*it).find('\n'))
-            closest = (*it).find('\r');
-        else
-            closest = (*it).find('\n');
+        int closest = findclosest((*it));
+        
         if ((*it).find("CAP LS") != (*it).npos)
             write(_fds->fd, "CAP * LS\n", 9);
         else if ((*it).find("NICK") != (*it).npos)
         {    
             _nick = (*it).substr((*it).find(" ") + 1, closest);
             if (nick_verif() == 1)
-            {
-                std::string oldnick = _nick;
-                _nick = "Guest";
-                serv.twinick(this);
-                std::string msg = ":" + oldnick + " NICK " + _nick + "\n"  + "\x03" + "8" + "use /Nick <yournick> to change it" + "\x03" + "\r\n";
-                write(_fds->fd, msg.c_str(), msg.size());
-            }
+                wrong_nick(serv);
             else
                 serv.twinick(this);
         }
@@ -64,23 +90,14 @@ void user::fill_user(std::list<std::string> strings, Server &serv)
         {
             _upass = (*it).substr((*it).find(" ") + 1, closest);
             if (serv.getPass() != _upass)
-            {
-                error("Password incorrect");
-                usleep(100);
-                close(_fds->fd);
-            }
+                wrong_pass();
         }
         else if ((*it).find("CAP END") != (*it).npos)
         {
             if (_upass.size() > 0)
                 nego_end(serv);
             else
-            {
-                error("Password incorrect");
-                usleep(100);
-                close(_fds->fd);
-            }
-            
+                wrong_pass();
         }
     }
 }
