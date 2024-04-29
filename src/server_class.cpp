@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/25 13:31:18 by aabel            ###   ########.fr       */
+/*   Updated: 2024/04/29 13:53:25 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,67 @@ void    Server::checkempty(std::string chname)
         _chanmap.erase(chname); 
 }
 
+// void Server::join_channel(user *chuser, std::string chname)
+// {
+    
+//     if (_chanmap.find(chname) == _chanmap.end() || (_chanmap.find(chname) == _chanmap.end() && chuser->_commands_more.size() != 0))
+//     {
+//         Channel      *newchan;
+        
+//         newchan = new Channel(chuser, chname);
+//         _chanmap.insert(std::pair<std::string, Channel *>(chname, newchan));
+//         _chanmap[chname]->add_user(chuser);
+//         if (chuser->_commands_more.size() != 0)
+//         {
+//             this->_password = chuser->_commands_more;
+//             _chanmap[chname]->_pass_on_off = true;
+//         }
+//     }
+//     else if (_chanmap[chname]->_bool_nb_max_of_user == false || 
+//             (_chanmap[chname]->_bool_nb_max_of_user == true && (_chanmap[chname]->getUserSize() + 1) <= _chanmap[chname]->_nb_max_of_user))
+//     {
+//         if (_chanmap[chname]->invite_on_off() == false && (_chanmap[chname]->password_on_off() == false))
+//             _chanmap[chname]->add_user(chuser);
+//         else if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) == true)
+//         {
+//             _chanmap[chname]->add_user(chuser);
+//             std::cout << chuser->getNick() << "join channel with invit" << std::endl;
+//         }
+//         else if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more == this->_password)
+//         {
+//             if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) == true)
+//                 _chanmap[chname]->add_user(chuser);
+//             else if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) != true)
+//             {
+//                 for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
+//                 {
+//                     if ((*it)->getNick() == chuser->getNick())
+//                     {
+//                         std::string tosend = ":ft_irc 473 " + (*it)->getNick() + " " + chname + " Can't join the channel (+i)\r\n";
+//                         write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+//                     }
+//                 }
+//             }
+//             else if (_chanmap[chname]->password_on_off() == false)
+//             {
+//                 _chanmap[chname]->add_user(chuser);
+//                 std::cout << chuser->getNick() << "join channel with invit" << std::endl;
+//             }
+//         }
+//     }
+//     else
+//     {
+//         for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
+//         {
+//             if ((*it)->getNick() == chuser->getNick())
+//             {
+//                 std::string tosend = ":ft_irc 473 " + (*it)->getNick() + " " + chname + " Can't join the channel (+i)\r\n";
+//                 write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+//             }
+//         }
+//     }
+// }
+
 void Server::join_channel(user *chuser, std::string chname)
 {
     
@@ -105,17 +166,31 @@ void Server::join_channel(user *chuser, std::string chname)
             (_chanmap[chname]->_bool_nb_max_of_user == true && (_chanmap[chname]->getUserSize() + 1) <= _chanmap[chname]->_nb_max_of_user))
     {
         if (_chanmap[chname]->invite_on_off() == false && (_chanmap[chname]->password_on_off() == false))
+        {
             _chanmap[chname]->add_user(chuser);
+        }
         else if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) == true)
         {
             _chanmap[chname]->add_user(chuser);
             std::cout << chuser->getNick() << "join channel with invit" << std::endl;
         }
-        else if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more == this->_password)
+        else if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) == false)
         {
-            if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) == true)
+            for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
+                {
+                    if ((*it)->getNick() == chuser->getNick())
+                    {
+                        std::string tosend = ":ft_irc 473 " + (*it)->getNick() + " " + chname + " Can't join the channel (+i)\r\n";
+                        write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+                    }
+                }
+        }
+        else if ((_chanmap[chname]->password_on_off() == true && _chanmap[chname]->invite_on_off() == true) || 
+                (_chanmap[chname]->password_on_off() == true && _chanmap[chname]->invite_on_off() == false))
+        {
+            if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more == this->_password)
                 _chanmap[chname]->add_user(chuser);
-            else if (_chanmap[chname]->invite_on_off() == true && _chanmap[chname]->is_in_invite_list(chuser->getNick()) != true)
+            else if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more != this->_password)
             {
                 for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
                 {
@@ -125,11 +200,6 @@ void Server::join_channel(user *chuser, std::string chname)
                         write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
                     }
                 }
-            }
-            else if (_chanmap[chname]->password_on_off() == false)
-            {
-                _chanmap[chname]->add_user(chuser);
-                std::cout << chuser->getNick() << "join channel with invit" << std::endl;
             }
         }
     }
