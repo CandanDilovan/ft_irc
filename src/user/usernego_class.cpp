@@ -56,16 +56,24 @@ void user::nego_end(Server &serv)
     char timeloc[100];
     strftime(timeloc, sizeof(timeloc), "%Y/%m/%d %H:%M:%S", ltm);
 
-    Willkommen = "001 " + _nick + " :Welcome to the Internet Relay Network " + _nick + "\r\n";
-    write(_fds->fd, Willkommen.c_str(), Willkommen.size());
-    Willkommen = "002 " + _nick + " :Your host is ft_irc, running version 1.0" + "\r\n";
-    write(_fds->fd, Willkommen.c_str(), Willkommen.size());
-    Willkommen = "003 " + _nick + " :This server was created " + timeloc + "\r\n";
-    write(_fds->fd, Willkommen.c_str(), Willkommen.size());
-    Willkommen = "004 " + _nick + " :There are " + intostr(serv.getUserlist().size() - 1) + " users and " + intostr((serv.getMap().size())) + " Channel on 1 servers" + "\r\n";
-    write(_fds->fd, Willkommen.c_str(), Willkommen.size());
-    _connected = 1;
-    
+    if (_nick.empty() == true || _name.empty() == true || _upass.empty() == true || _capls != 1)
+    {
+        error("Registration: something went wrong");
+        _connected = 0;
+        close(_fds->fd);
+    }
+    else
+    {
+        Willkommen = "001 " + _nick + " :Welcome to the Internet Relay Network " + _nick + "\r\n";
+        write(_fds->fd, Willkommen.c_str(), Willkommen.size());
+        Willkommen = "002 " + _nick + " :Your host is ft_irc, running version 1.0" + "\r\n";
+        write(_fds->fd, Willkommen.c_str(), Willkommen.size());
+        Willkommen = "003 " + _nick + " :This server was created " + timeloc + "\r\n";
+        write(_fds->fd, Willkommen.c_str(), Willkommen.size());
+        Willkommen = "004 " + _nick + " :There are " + intostr(serv.getUserlist().size() - 1) + " users and " + intostr((serv.getMap().size())) + " Channel on 1 servers" + "\r\n";
+        write(_fds->fd, Willkommen.c_str(), Willkommen.size());
+        _connected = 1;
+    } 
 }
 
 void user::fill_user(std::list<std::string> strings, Server &serv)
@@ -75,7 +83,10 @@ void user::fill_user(std::list<std::string> strings, Server &serv)
         int closest = findclosest((*it));
         
         if ((*it).find("CAP LS") != (*it).npos)
+        {
             write(_fds->fd, "CAP * LS\n", 9);
+            _capls = 1;
+        }
         else if ((*it).find("NICK") != (*it).npos)
         {    
             _nick = (*it).substr((*it).find(" ") + 1, closest);

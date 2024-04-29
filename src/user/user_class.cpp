@@ -12,7 +12,7 @@
 
 #include "../../inc/user_class.hpp"
 
-user::user(struct pollfd *fds, size_t n) : _connected(2)
+user::user(struct pollfd *fds, size_t n) : _connected(2), _capls(0)
 {
     if (fds)
         _fds = fds;

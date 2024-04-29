@@ -23,6 +23,7 @@ class user
 private:
 
     int             _connected;
+    int             _capls;
     struct pollfd   *_fds;
     std::string     _name;
     std::string     _nick;

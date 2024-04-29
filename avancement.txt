@@ -26,5 +26,9 @@ DILO
 - restructuration du code
 - Fix de la verif du nick prends mtn "{} [] \ |" ne prends pas de nombre en premier charactere
 - ajout de /nick
+- gestion de la connexion avec nc renvoie une erreur si la registration n'est pas complète
+
+à faire :
+    - les messages de mode dans tous les channel;
 
 ------
