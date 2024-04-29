@@ -11,7 +11,10 @@
 # **************************************************************************** #
 
 NAME = ft_irc
-SOURCES = src/main.cpp src/user_class.cpp src/server_class.cpp src/channel_class.cpp
+SOURCES = src/main.cpp \
+		src/user/user_class.cpp src/user/usercmd_class.cpp src/user/usernego_class.cpp src/user/userparse_class.cpp src/user/useruseful_class.cpp\
+		src/server/server_class.cpp src/server/servercmd_class.cpp src/server/serveruseful_class.cpp src/server/serverjl_class.cpp \
+		src/channel/channel_class.cpp src/channel/channelcmd_class.cpp src/channel/channelmode_class.cpp src/channel/channelmsg_class.cpp src/channel/channeluseful_class.cpp
 			
 OBJECTS = $(SOURCES:.cpp=.o)
 
