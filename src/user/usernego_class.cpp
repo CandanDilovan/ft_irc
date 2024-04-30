@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   usernego_class.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-29 11:57:05 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-29 11:57:05 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/29 11:57:05 by dilovan           #+#    #+#             */
+/*   Updated: 2024/04/30 13:49:18 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int user::nick_verif()
             || (_nick[a] >= '0' && _nick[a] <= '9') || _nick[a] == '[' || _nick[a] == ']'
             || _nick[a] == '{' || _nick[a] == '}' || _nick[a] == '\\' || _nick[a] == '|')
         {
-            if (std::isdigit(_nick[0]) == true)
+            if (_nick[0] >= '0' && _nick[0] <= '9')
             {
                 error("Nick: No digit as first character");
                 return (1);
@@ -98,14 +98,12 @@ void user::fill_user(std::list<std::string> strings, Server &serv)
         else  if ((*it).find("USER") != (*it).npos)
             _name = (*it).substr((*it).find(":") + 1, closest);
         else if ((*it).find("PASS") != (*it).npos)
-        {
             _upass = (*it).substr((*it).find(" ") + 1, closest);
-            if (serv.getPass() != _upass)
-                wrong_pass();
-        }
         else if ((*it).find("CAP END") != (*it).npos)
         {
-            if (_upass.size() > 0)
+            if (serv.getPass() != _upass)
+                wrong_pass();
+            else if (_upass.size() > 0)
                 nego_end(serv);
             else
                 wrong_pass();

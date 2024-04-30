@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/23 14:56:43 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/30 10:57:41 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ public :
     void    sendtoall(user *chuser, std::string msg);
     void    sendtoallfr(user *chuser, std::string msg);
     void    sendtoallnopm(std::string msg);
+    int     isinchan(user *chuser);
     
     void    KICK(user *user, std::string nick);
     void    INVITE(std::string nick, std::list<user *> userlist, user *users);

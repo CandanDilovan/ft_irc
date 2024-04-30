@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/23 11:33:34 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/30 10:53:13 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ public :
     void                    join_channel(user *chuser, std::string chname);
     void                    leaving(user *chuser, std::string str);
     void                    quit(user *chuser, std::string str);
+
+    void                    isinchan(user *chuser, std::string msg);
     
     void                    tmfm(user *chuser, std::string chname, std::string msg);
     

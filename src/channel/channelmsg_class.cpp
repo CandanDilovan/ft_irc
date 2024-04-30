@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channelmsg_class.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-29 10:53:26 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-29 10:53:26 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/29 10:53:26 by dilovan           #+#    #+#             */
+/*   Updated: 2024/04/30 10:44:21 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void Channel::sendtoallnopm(std::string msg)
 {
     for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
         write((*it)->getFds()->fd, msg.c_str(), msg.size());
-    std::cout << msg;
+    //std::cout << msg;
 }
 
 void Channel::sendtoallfr(user *chuser, std::string msg)

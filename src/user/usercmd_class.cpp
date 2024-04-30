@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   usercmd_class.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-29 11:54:51 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-29 11:54:51 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/29 11:54:51 by dilovan           #+#    #+#             */
+/*   Updated: 2024/04/30 13:29:24 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@ void    user::nick(Server &serv, std::string str, user *users)
     {
         serv.twinick(this);
         std::string msg = ":" + oldnick + " NICK " + _nick + "\r\n";
+        serv.isinchan(this, msg);
         write(_fds->fd, msg.c_str(), msg.size());
     }
     else
+    {
+        _nick = oldnick;
         error("Nick: special character not allowed");
+    }
 }
 
 void    user::quit(Server &serv, std::string str, user *users)

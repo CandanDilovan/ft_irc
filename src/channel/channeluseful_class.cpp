@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channeluseful_class.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-29 10:51:53 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-29 10:51:53 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/29 10:51:53 by dilovan           #+#    #+#             */
+/*   Updated: 2024/04/30 10:57:43 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,14 @@ bool    Channel::is_in_invite_list(std::string nick)
             send = false;
     } 
     return (send);  
+}
+
+int Channel::isinchan(user *chuser)
+{
+    for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
+        if ((*it)->getNick() == chuser->getNick())
+            return (1);
+    return (0);
 }
 
 int Channel::isop(user *chuser)
