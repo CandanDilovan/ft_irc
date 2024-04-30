@@ -6,13 +6,13 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:45:00 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/23 14:56:59 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/30 14:55:03 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/user_class.hpp"
 
-user::user(struct pollfd *fds, size_t n) : _connected(2), _capls(0)
+user::user(struct pollfd *fds, size_t n) : _connected(2), _capls(0), _pinged(0)
 {
     if (fds)
         _fds = fds;
@@ -28,6 +28,7 @@ user::user(struct pollfd *fds, size_t n) : _connected(2), _capls(0)
         _num += convert.str();
     else
         throw ToMany();
+    _sentping = time(0);
 }
 
 user::user()

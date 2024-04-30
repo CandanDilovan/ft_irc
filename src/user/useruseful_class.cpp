@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   useruseful_class.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-29 12:01:26 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-29 12:01:26 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/29 12:01:26 by dilovan           #+#    #+#             */
+/*   Updated: 2024/04/30 15:08:06 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,24 @@ int user::findclosest(std::string str)
         return (str.find('\r'));
     else
         return (str.find('\n'));
+}
+
+void user::pinged()
+{
+    time_t pingus = time(0);
+
+    if (pingus - _sentping > 20 && _pinged == 0)
+    {
+        std::string ping = "PING ft_irc\r\n";
+        write(_fds->fd, ping.c_str(), ping.size());
+        _pinged = 1;
+    }
+    if (pingus - _sentping > 30 && _pinged == 1)
+    {
+        error("timed out");
+        close(_fds->fd);
+        _connected = 0;
+    }
 }
 
 void user::waiting_room()

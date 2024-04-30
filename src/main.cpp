@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/22 14:33:55 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/30 15:06:44 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void infinite_loop(class Server &serv)
                     std::cout << tkt;
                 }
             }
+            if (it != serv.getUserlist().begin())
+                (*it)->pinged();
             (*it)->parse_input(serv);
             if ((*it)->_getco() == 0)
                 it = serv.getUserlist().erase(it);

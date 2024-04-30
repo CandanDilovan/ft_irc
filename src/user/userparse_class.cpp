@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   userparse_class.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-29 11:57:54 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-29 11:57:54 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/29 11:57:54 by dilovan           #+#    #+#             */
+/*   Updated: 2024/04/30 15:04:51 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 void user::connected_parse(Server &serv, std::list<std::string> strings)
 {
-	std::string	msg[10] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC", "MODE", "QUIT", "NICK"};
-	void		(user::*user_list[10])(Server &serv, std::string str, user *users) = {&user::join, &user::ping, &user::privmsg, 
+	std::string	msg[11] = {"JOIN", "PING", "PRIVMSG", "KICK", "INVITE", "PART", "TOPIC", "MODE", "QUIT", "NICK", "PONG"};
+	void		(user::*user_list[11])(Server &serv, std::string str, user *users) = {&user::join, &user::ping, &user::privmsg, 
                 &user::call_spec_comm_kick, &user::call_spec_comm_invite, &user::part, &user::call_spec_comm_topic, &user::call_spec_comm_mode,
-                &user::quit, &user::nick};
+                &user::quit, &user::nick, &user::pong};
 	int 		a;
 
 	a = -1;
-	while (++a < 10)
+	while (++a < 11)
 	{
         for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
         {

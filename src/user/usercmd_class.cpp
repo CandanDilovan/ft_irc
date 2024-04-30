@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:54:51 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/30 13:29:24 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/30 14:52:06 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,15 @@ void    user::ping(Server &serv, std::string str, user *users)
     write(getFds()->fd, ping.c_str(), ping.size());
 }
 
+void    user::pong(Server &serv, std::string str, user *users)
+{
+    (void)serv;
+    (void)str;
+    (void)users;
+    
+    _pinged = 0;
+    _sentping = time(0);
+}
 
 void    user::call_spec_comm_kick(Server &serv, std::string str, user *users)
 {

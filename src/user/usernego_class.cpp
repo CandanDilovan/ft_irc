@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:57:05 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/30 13:49:18 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/04/30 15:10:56 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void user::wrong_nick(Server &serv)
     std::string oldnick = _nick;
     _nick = "Guest";
     serv.twinick(this);
-    std::string msg = ":" + oldnick + " NICK " + _nick + "\n"  + "\x03" + "8" + "use /Nick <yournick> to change it" + "\x03" + "\r\n";
+    std::string msg = ":" + oldnick + " NICK " + _nick + "\n"  + "\x03" + "12" + "use /Nick <yournick> to change it" + "\x03" + "\r\n";
     write(_fds->fd, msg.c_str(), msg.size());
 }
 
@@ -73,6 +73,7 @@ void user::nego_end(Server &serv)
         Willkommen = "004 " + _nick + " :There are " + intostr(serv.getUserlist().size() - 1) + " users and " + intostr((serv.getMap().size())) + " Channel on 1 servers" + "\r\n";
         write(_fds->fd, Willkommen.c_str(), Willkommen.size());
         _connected = 1;
+        _sentping = time(0);
     } 
 }
 
