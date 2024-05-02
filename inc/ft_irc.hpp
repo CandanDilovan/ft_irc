@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_irc.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 11:52:41 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/16 13:45:54 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/02 11:46:30 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,16 @@
 # include "server_class.hpp"
 # include "channel_class.hpp"
 # include <stdbool.h>
+# include <signal.h>
+
+class SigInted : public std::exception 
+{
+    public:
+    virtual const char *what() const throw()
+    {
+        return ("Server stopped");
+    }
+};
+
 
 #endif 
