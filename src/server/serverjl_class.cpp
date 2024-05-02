@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   serverjl_class.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-29 11:31:18 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-29 11:31:18 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/29 11:31:18 by dilovan           #+#    #+#             */
+/*   Updated: 2024/05/02 14:11:23 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,8 @@ void Server::leaveallchan(user *chuser, std::string str)
     for(std::map<std::string, Channel *>::iterator itch = _chanmap.begin(); itch != _chanmap.end(); itch++)
     {
        itch->second->quit_user(chuser, str);
-       checkempty(itch->second->getName());
+       if (checkempty(itch->second->getName()) == 1)
+        _chanmap.erase(itch);
     }
 }
 
@@ -185,8 +186,9 @@ void Server::leaving(user *chuser, std::string str)
     checkempty(chname);
 }
 
-void    Server::checkempty(std::string chname)
+int    Server::checkempty(std::string chname)
 {
     if (_chanmap[chname]->getUserSize() < 1)
-        _chanmap.erase(chname); 
+        return (1);
+    return (0);
 }

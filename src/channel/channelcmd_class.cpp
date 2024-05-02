@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channelcmd_class.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/02 13:10:07 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/02 13:41:56 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void Channel::KICK(user *chuser, std::string nick)
         {
             if ((*it)->getNick() == nick)
             {
-                std::string tosend = chuser->getNick() + " KICK " + _cname + " " + nick + "\r\n";
+                std::string tosend = ":" + chuser->getNick() + " KICK " + _cname + " " + nick + "\r\n";
                 sendtoallnopm(tosend);
                 it = _ulist.erase(it);
                 break;

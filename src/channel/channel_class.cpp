@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel_class.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/25 11:30:55 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/02 13:54:29 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,18 @@ void Channel::rm_user(user *chuser, std::string partmsg)
                 msg = ":" + chuser->getNick() + " PART " + _cname + " " + partmsg + "\r\n";
             else
                 msg = ":" + chuser->getNick() + " PART " + _cname + "\r\n";
-            sendtoallfr(chuser, msg);
+            sendtoallnopm(msg);
             std::string tosend = ":" + chuser->getNick() + _cname + " :" + msg + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             _ulist.erase(it);
+            break;
+        }
+    }
+    for(std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
+    {
+        if ((*it)->getNick() == chuser->getNick())
+        {
+            _oplist.erase(it);
             break;
         }
     }
