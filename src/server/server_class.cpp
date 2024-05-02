@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_class.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:06:07 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/25 13:31:18 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/02 12:46:09 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ Server::Server()
 
 Server::~Server()
 {
+    for (std::map<std::string, Channel *>::iterator it = _chanmap.begin(); it != _chanmap.end(); it++)
+        delete it->second;
+    _chanmap.clear();
+    for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
+        delete *it;
+    _userlist.clear();
 
 }
 

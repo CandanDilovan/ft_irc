@@ -6,13 +6,14 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/30 15:06:44 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/02 12:47:05 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/user_class.hpp"
 #include "../inc/server_class.hpp"
 #include "../inc/channel_class.hpp"
+#include "../inc/ft_irc.hpp"
 
 
 void infinite_loop(class Server &serv)
@@ -41,14 +42,23 @@ void infinite_loop(class Server &serv)
                 (*it)->pinged();
             (*it)->parse_input(serv);
             if ((*it)->_getco() == 0)
+            {
+                delete *it;
                 it = serv.getUserlist().erase(it);
+            }
         }
     }
 }
 
+void crash_serv(int sig)
+{
+    if (sig == SIGINT)
+        throw   SigInted();
+}
 
 int main(int argc, char **argv)
 {
+
     if (argc != 3)
     {
         std::cerr << "Error: wrong number of arguments" << std::endl;
@@ -56,10 +66,15 @@ int main(int argc, char **argv)
     }
     try
     {
+        signal(SIGINT, crash_serv);
         Server serv(argv);
         infinite_loop(serv);
     }
-    catch(const std::exception &e)
+    catch(SigInted &e)
+    {
+        std::cerr << "Stopped: " << e.what() << std::endl;
+    }
+    catch(const std::exception &e)           
     {
         std::cerr << "Error: " << e.what() << std::endl;
     }
