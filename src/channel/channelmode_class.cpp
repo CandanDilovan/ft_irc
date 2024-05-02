@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channelmode_class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:50:57 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/30 14:20:28 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/02 13:30:56 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void    Channel::mode_o(std::string commands, user *users)
 			}
 			else if (it == _oplist.end())
 			{
-				std::string tosend = "Mode -o can't possible for " + nick + " because he's not a operator" + "\r\n";
+				std::string tosend = users->getNick() + " " + nick + " :" + "No such nick/channel" + "\r\n";
                 write(users->getFds()->fd, tosend.c_str(), tosend.size());
 			}
 		}
@@ -94,7 +94,7 @@ void    Channel::mode_o(std::string commands, user *users)
                     _oplist.push_back(*itt); 
                 else if (itt == _ulist.end())
                 {
-                    std::string tosend = "Mode +o can't possible for " + nick + " because he'not on the channel" + "\r\n";
+                    std::string tosend = users->getNick() + " " + nick + " :" + "No such nick/channel" + "\r\n";
                     write(users->getFds()->fd, tosend.c_str(), tosend.size());
                 }
             }
