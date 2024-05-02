@@ -17,6 +17,10 @@ ARTHUR
 
          -l: ok
 
+En cours:
+1. Message d erreur si pas de permission modif topic
+- Message d erreur si pas dans un chan lors de la commande topic
+
 ------
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channelcmd_class.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dilovan <dilovan@student.42.fr>            #+#  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-04-29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024-04-29 10:51:15 by dilovan          ###   ########.fr       */
+/*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
+/*   Updated: 2024/05/02 13:10:07 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,21 @@ void Channel::KICK(user *chuser, std::string nick)
         {
             if ((*it)->getNick() == nick)
             {
-                std::string tosend = ":" + chuser->getNick() + " KICK " + _cname + " " + nick + "\r\n";
+                std::string tosend = chuser->getNick() + " KICK " + _cname + " " + nick + "\r\n";
                 sendtoallnopm(tosend);
                 it = _ulist.erase(it);
                 break;
+            }
+            else
+            {
+                std::string tosend = chuser->getNick() + " ERROR " + _cname + " :" + "They aren't on that channel" + "\r\n";
+                write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
             }
         }
     }
     else
     {
-        std::string tosend = ":" + chuser->getNick() + " ERROR " + _cname + " :" + "you don't have the rights to kick" + "\r\n";
+        std::string tosend = chuser->getNick() + " ERROR " + _cname + " :" + "You're not channel operator" + "\r\n";
         write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
     }
 }
@@ -58,8 +63,18 @@ void    Channel::TOPIC(std::string topic, user *users)
 {
     if (topic.size() != 0 && _modif_topic == true)
         _topic = topic;
+    else if (topic.size() != 0 && this->isinchan(users) == 0)
+    {
+        std::string tosend = users->getNick() + " " + _cname + " :" + "You're not in the channel" + "\r\n";
+        write(users->getFds()->fd, tosend.c_str(), tosend.size());
+    }
     else if (topic.size() != 0 && _modif_topic == false && this->is_in_op_list(users->getNick()))
         _topic = topic;
+    else if (topic.size() != 0 && _modif_topic == false && !this->is_in_op_list(users->getNick()))
+    {
+        std::string tosend = users->getNick() + " " + _cname + " :" + "You're not channel operator" + "\r\n";
+        write(users->getFds()->fd, tosend.c_str(), tosend.size());
+    }
     else if (topic.size() == 0)
     {
         for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
