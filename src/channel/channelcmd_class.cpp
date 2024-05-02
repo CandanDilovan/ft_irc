@@ -6,7 +6,11 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/02 13:41:56 by dcandan          ###   ########.fr       */
+=======
+/*   Updated: 2024/05/02 14:02:52 by aabel            ###   ########.fr       */
+>>>>>>> refs/remotes/origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +57,7 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
         }
         else if (it == _ulist.end())
         {
-            std::string tosend = ":" + users->getNick() + " want to invit " + nick + " in the server but not exist" + "\r\n";
+            std::string tosend = ":" + users->getNick() + " " + _cname + " want to invit " + nick + " in the server but not exist" + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
@@ -103,7 +107,7 @@ void    Channel::MODE(std::string commands, user *users)
         {
             mode_t(commands);
         }
-        else if ((commands.find("-o") != commands.npos && this->is_in_op_list(users->getNick())) || commands.find("+o") != commands.npos)
+        else if ((commands.find("-o") != commands.npos && this->is_in_op_list(users->getNick())) || (commands.find("+o") != commands.npos && this->is_in_op_list(users->getNick())))
         {
             mode_o(commands, users);
         }
@@ -115,10 +119,15 @@ void    Channel::MODE(std::string commands, user *users)
         {
             mode_l(commands);
         }
+        else
+        {
+            std::string tosend = ":ft_irc 501 " + users->getNick() + " " + _cname + " :Unknown MODE flag" + "\r\n";
+            write(users->getFds()->fd, tosend.c_str(), tosend.size());
+        }
     }
     else
     {
-        std::string tosend = "Mode not accessible for " + users->getNick() + " because he's not a operator" + "\r\n";
+        std::string tosend = "Mode not accessible for " + users->getNick() + " " + _cname + " because he's not a operator" + "\r\n";
         write(users->getFds()->fd, tosend.c_str(), tosend.size());
     }
         
