@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/03 10:37:33 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/03 11:07:10 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void    Channel::TOPIC(std::string topic, user *users)
         _topic = topic;
     else if (topic.size() != 0 && _modif_topic == false && !this->is_in_op_list(users->getNick()))
     {
-        std::string tosend = users->getNick() + " " + _cname + " :" + "You're not channel operator" + "\r\n";
+        std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " :" + "You're not channel operator" + "\r\n";
         write(users->getFds()->fd, tosend.c_str(), tosend.size());
     }
     else if (topic.size() == 0)
@@ -117,13 +117,13 @@ void    Channel::MODE(std::string commands, user *users)
         }
         else
         {
-            std::string tosend = ":ft_irc 501 " + users->getNick() + " " + _cname + " :Unknown MODE flag" + "\r\n";
+            std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " :Unknown MODE flag" + "\r\n";
             write(users->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
     else
     {
-        std::string tosend = "Mode not accessible for " + users->getNick() + " " + _cname + " because he's not a operator" + "\r\n";
+        std::string tosend = "PRIVMSG " + _cname + " :" + "Mode not accessible for " + users->getNick() + " in " + _cname + " because he's not a operator" + "\r\n";
         write(users->getFds()->fd, tosend.c_str(), tosend.size());
     }
         

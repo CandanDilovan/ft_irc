@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:50:57 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/02 13:30:56 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/03 12:17:19 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void    Channel::mode_i(std::string commands)
             _invit_only = false;
     else if (commands.rfind("+i") != commands.npos)
         _invit_only = true;
-    std::cout << "Invit only: " <<_invit_only << std::endl;
 }
 
 void    Channel::mode_t(std::string commands)
@@ -56,7 +55,6 @@ void    Channel::mode_t(std::string commands)
             _modif_topic = false;
     else if (commands.rfind("+t") != commands.npos)
         _modif_topic = true;
-    // std::cout << "Modif topic: " << _modif_topic << std::endl;
 }
 
 void    Channel::mode_o(std::string commands, user *users)
@@ -69,21 +67,18 @@ void    Channel::mode_o(std::string commands, user *users)
 			if ((*it)->getNick() == nick)
 			{
 				_oplist.erase(it);
-				break;
-			}
-			else if (it == _oplist.end())
-			{
-				std::string tosend = users->getNick() + " " + nick + " :" + "No such nick/channel" + "\r\n";
-                write(users->getFds()->fd, tosend.c_str(), tosend.size());
+				return ;
 			}
 		}
+		std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " No such nick/channel" + "\r\n";
+         write(users->getFds()->fd, tosend.c_str(), tosend.size());
 	}
     else if (commands.rfind("+o")!= commands.npos)
     {
         std::string nick = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
         if (this->is_in_op_list(nick) == true)
         {
-            std::string tosend = "Mode +o can't possible for " + nick + " because he's allready a operator" + "\r\n";
+            std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " Mode +o can't possible for " + nick + " because he's allready a operator" + "\r\n";
             write(users->getFds()->fd, tosend.c_str(), tosend.size());
         }
         else if (this->is_in_op_list(nick) == false)
@@ -91,13 +86,13 @@ void    Channel::mode_o(std::string commands, user *users)
             for (std::list<user *>::iterator itt = _ulist.begin(); itt != _ulist.end(); itt++)
             {
                 if ((*itt)->getNick() == nick)
-                    _oplist.push_back(*itt); 
-                else if (itt == _ulist.end())
                 {
-                    std::string tosend = users->getNick() + " " + nick + " :" + "No such nick/channel" + "\r\n";
-                    write(users->getFds()->fd, tosend.c_str(), tosend.size());
-                }
+                    _oplist.push_back(*itt);
+                    return ;
+                } 
             }
+            std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " " +nick + " No such nick/channel" + "\r\n";
+            write(users->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
 }
