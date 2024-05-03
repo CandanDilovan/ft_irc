@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:31:18 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/02 14:11:23 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/03 13:32:53 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,14 @@ void Server::leaveallchan(user *chuser, std::string str)
     {
        itch->second->quit_user(chuser, str);
        if (checkempty(itch->second->getName()) == 1)
-        _chanmap.erase(itch);
+       {
+            delete itch->second;
+            _chanmap.erase(itch);
+            if (_chanmap.size() == 0)
+                break;
+            else
+                itch = _chanmap.begin();
+       }
     }
 }
 
