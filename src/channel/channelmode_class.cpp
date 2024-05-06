@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channelmode_class.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:50:57 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 11:41:23 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/06 14:48:06 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,32 +66,31 @@ void    Channel::mode_o(std::string commands, user *users)
 		{
 			if ((*it)->getNick() == nick)
 			{
+                std::string msg = ":" + users->getNick() + " MODE " + _cname  + " -o " + nick + "\r\n";
+                sendtoallnopm(msg);
 				_oplist.erase(it);
 				return ;
 			}
 		}
-		std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " " + nick + " No such nick/channel" + "\r\n";
-         write(users->getFds()->fd, tosend.c_str(), tosend.size());
+        std::string tosend = ":ft_irc 401 " + users->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
+        write(users->getFds()->fd, tosend.c_str(), tosend.size());
 	}
     else if (commands.rfind("+o")!= commands.npos)
     {
         std::string nick = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
-        if (this->is_in_op_list(nick) == true)
-        {
-            std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " Mode +o can't possible for " + nick + " because he's allready a operator" + "\r\n";
-            write(users->getFds()->fd, tosend.c_str(), tosend.size());
-        }
-        else if (this->is_in_op_list(nick) == false)
+        if (isop(users) == 0)
         {
             for (std::list<user *>::iterator itt = _ulist.begin(); itt != _ulist.end(); itt++)
             {
                 if ((*itt)->getNick() == nick)
                 {
+                    std::string msg = ":" + users->getNick() + " MODE " + _cname  + " +o " + nick + "\r\n";
+                    sendtoallnopm(msg);
                     _oplist.push_back(*itt);
                     return ;
                 } 
             }
-            std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " " + nick + " No such nick/channel" + "\r\n";
+            std::string tosend = ":ft_irc 441 " + users->getNick() + " " + nick + " " + _cname + " :They aren't on that channel" + "\r\n";
             write(users->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }

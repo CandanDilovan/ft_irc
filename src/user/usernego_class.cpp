@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:57:05 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/30 15:10:56 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 12:43:32 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ int user::nick_verif()
             {
                 error("Nick: No digit as first character");
                 return (1);
+            }
+            else if( _nick.size() > 30)
+            {
+                error("Nick: nick lenght limited to 30 characters");
+                return 1;
             }
         }
         else

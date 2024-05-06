@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/30 10:57:41 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 14:28:27 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ private :
     bool _modif_topic;
 
     int isop(user *chuser);
+    void notop(user *users);
 
 public :
 

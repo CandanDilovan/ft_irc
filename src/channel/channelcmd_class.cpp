@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channelcmd_class.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/03 11:07:10 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/06 14:48:21 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,13 @@ void Channel::KICK(user *chuser, std::string nick)
             }
             else
             {
-                std::string tosend = chuser->getNick() + " ERROR " + _cname + " :" + "They aren't on that channel" + "\r\n";
+                std::string tosend = ":ft_irc 401 " + chuser->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
                 write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
             }
         }
     }
     else
-    {
-        std::string tosend = chuser->getNick() + " ERROR " + _cname + " :" + "You're not channel operator" + "\r\n";
-        write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
-    }
+        notop(chuser);
 }
 
 void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
@@ -68,13 +65,10 @@ void    Channel::TOPIC(std::string topic, user *users)
         std::string tosend = users->getNick() + " " + _cname + " :" + "You're not in the channel" + "\r\n";
         write(users->getFds()->fd, tosend.c_str(), tosend.size());
     }
-    else if (topic.size() != 0 && _modif_topic == false && this->is_in_op_list(users->getNick()))
+    else if (topic.size() != 0 && _modif_topic == false && isop(users) == 1)
         _topic = topic;
-    else if (topic.size() != 0 && _modif_topic == false && !this->is_in_op_list(users->getNick()))
-    {
-        std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " :" + "You're not channel operator" + "\r\n";
-        write(users->getFds()->fd, tosend.c_str(), tosend.size());
-    }
+    else if (topic.size() != 0 && _modif_topic == false && isop(users) == 0)
+        notop(users);
     else if (topic.size() == 0)
     {
         for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
@@ -93,7 +87,7 @@ void    Channel::TOPIC(std::string topic, user *users)
 
 void    Channel::MODE(std::string commands, user *users)
 {
-    if (this->is_in_op_list(users->getNick()))
+    if (isop(users) == 1)
     {
         if (commands.find("+i") != commands.npos || commands.find("-i") != commands.npos)
         {
@@ -117,15 +111,12 @@ void    Channel::MODE(std::string commands, user *users)
         }
         else
         {
-            std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " :Unknown MODE flag" + "\r\n";
+            std::string tosend = ":ft_irc 501 " + users->getNick() + " " + _cname + " :Unknown MODE flag" + "\r\n";
             write(users->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
     else
-    {
-        std::string tosend = "PRIVMSG " + _cname + " :" + "Mode not accessible for " + users->getNick() + " in " + _cname + " because he's not a operator" + "\r\n";
-        write(users->getFds()->fd, tosend.c_str(), tosend.size());
-    }
+        notop(users);
         
 }
 

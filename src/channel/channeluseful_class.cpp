@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:53 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/30 10:57:43 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 14:28:28 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,12 @@ int Channel::isop(user *chuser)
         if ((*it)->getNick() == chuser->getNick())
             return (1);
     return (0);
+}
+
+void Channel::notop(user *users)
+{
+    std::string tosend = ":ft_irc 482 " + users->getNick() + " " + _cname + " :You're not operator on this channel" +"\r\n";
+        write(users->getFds()->fd, tosend.c_str(), tosend.size());
 }
 
 bool Channel::is_in_op_list(std::string nick)
