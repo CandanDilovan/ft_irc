@@ -6,7 +6,7 @@
 /*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:50:57 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/03 12:17:19 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/06 11:41:23 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void    Channel::mode_o(std::string commands, user *users)
 				return ;
 			}
 		}
-		std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " No such nick/channel" + "\r\n";
+		std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " " + nick + " No such nick/channel" + "\r\n";
          write(users->getFds()->fd, tosend.c_str(), tosend.size());
 	}
     else if (commands.rfind("+o")!= commands.npos)
@@ -91,7 +91,7 @@ void    Channel::mode_o(std::string commands, user *users)
                     return ;
                 } 
             }
-            std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " " +nick + " No such nick/channel" + "\r\n";
+            std::string tosend = "PRIVMSG " + _cname + " :" + users->getNick() + " " + nick + " No such nick/channel" + "\r\n";
             write(users->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
