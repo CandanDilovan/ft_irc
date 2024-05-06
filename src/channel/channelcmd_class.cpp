@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 14:48:21 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 14:52:29 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
         }
         else if (it == _ulist.end())
         {
-            std::string tosend = ":" + users->getNick() + " " + _cname + " want to invit " + nick + " in the server but not exist" + "\r\n";
-            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+            std::string tosend = ":ft_irc 401 " + users->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
+            write(users->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
 }

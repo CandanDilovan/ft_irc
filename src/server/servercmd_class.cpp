@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   servercmd_class.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:31:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 13:40:52 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/06 14:54:06 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void    Server::com_spec_kick(user *chuser, std::string line)
         _chanmap[chname]->KICK(chuser, nick);
     else if (_chanmap.find(chname) == _chanmap.end())
     {
-        std::string tosend = chuser->getNick() + " " + chname + " :" + "no such channel" + "\r\n";
+        std::string tosend = ":ft_irc 401 " + chuser->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
         write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
     }
     checkempty(chname);
@@ -58,7 +58,7 @@ void    Server::com_spec_invite(std::string line, user *users)
         _chanmap[chname]->INVITE(nick, _userlist, users);
     else if (_chanmap.find(chname) == _chanmap.end())
     {
-        std::string tosend = users->getNick() + " " + chname + " :" + "no such channel" + "\r\n";
+        std::string tosend = ":ft_irc 401 " + users->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
         write(users->getFds()->fd, tosend.c_str(), tosend.size());
     }
 }
@@ -83,7 +83,7 @@ void    Server::com_spec_topic(std::string line, user *users)
         _chanmap[chname]->TOPIC(topic, users);
     else if (_chanmap.find(chname) == _chanmap.end())
     {
-        std::string tosend = users->getNick() + " " + chname + " :" + "no such channel" + "\r\n";
+        std::string tosend = ":ft_irc 401 " + users->getNick() + " " + chname + " " + " :No such nick/channel" + "\r\n";
         write(users->getFds()->fd, tosend.c_str(), tosend.size());
     }
 }

@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:50:57 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 14:48:06 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:01:28 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ void    Channel::mode_o(std::string commands, user *users)
 				return ;
 			}
 		}
-        std::string tosend = ":ft_irc 401 " + users->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
+        std::string tosend = ":ft_irc 401 " + users->getNick() + " " + nick + " :No such nick/channel" + "\r\n";
         write(users->getFds()->fd, tosend.c_str(), tosend.size());
 	}
     else if (commands.rfind("+o")!= commands.npos)
     {
         std::string nick = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
-        if (isop(users) == 0)
+        if (isop(users) == 1)
         {
             for (std::list<user *>::iterator itt = _ulist.begin(); itt != _ulist.end(); itt++)
             {
@@ -91,6 +91,7 @@ void    Channel::mode_o(std::string commands, user *users)
                 } 
             }
             std::string tosend = ":ft_irc 441 " + users->getNick() + " " + nick + " " + _cname + " :They aren't on that channel" + "\r\n";
+            std::cout << tosend;
             write(users->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
