@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   servercmd_class.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:31:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/02 13:39:31 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 13:40:52 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,5 @@ void    Server::com_spec_mode(std::string line, user *users)
             _chanmap[chname]->MODE(objectifs, users);
     }
     else
-        std::cout << "Mode line: " << line << "!" << std::endl;
+        return ;
 }
