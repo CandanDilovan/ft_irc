@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_class.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/03 12:06:44 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 14:31:14 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ public :
     void                    com_spec_invite(std::string line, user *users);
     void                    com_spec_topic(std::string topic, user *users);
     void                    com_spec_mode(std::string line, user *users);
+    void                    join_channel_invit_pass(user *chuser, std::string chname);
 };
 
 #endif
