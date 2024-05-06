@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:50:57 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 15:01:28 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:54:42 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,26 @@ void    Channel::mode_l(std::string commands)
     }
 }
 
-void    Channel::mode_k(std::string commands)
+void    Channel::mode_k(std::string commands, user *chuser)
 {
-    if (commands.find("-k") != commands.npos)
+    if (commands.find("-k") != commands.npos && _chan_password.empty() == false)
     {
         _pass_on_off = false;
+        std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " -k " + _chan_password + "\r\n";
+        write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
+        _chan_password.clear();
     }
     else if (commands.find("+k") != commands.npos)
     {
-        _pass_on_off = true;
         std::string password = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
-        _chan_password = password;
+        std::cout << password <<std::endl;
+        if (password != "+k")
+        {
+            _pass_on_off = true;
+            _chan_password = password;
+            std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " +k " + _chan_password + "\r\n";
+            write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
+        }
     } 
 }
 

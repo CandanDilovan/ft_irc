@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:31:18 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 14:49:24 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:11:55 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void Server::join_channel(user *chuser, std::string chname)
         {
             if ((*it)->getNick() == chuser->getNick())
             {
-                std::string tosend = ":ft_irc 473 " + (*it)->getNick() + " " + chname + " Can't join the channel (+i)\r\n";
+                std::string tosend = ":ft_irc 471 " + (*it)->getNick() + " " + chname + " :Cannot join channel (+l)\r\n";
                 write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             }
         }
@@ -91,7 +91,7 @@ void    Server::join_channel_invit_pass(user *chuser, std::string chname)
                 {
                     if ((*it)->getNick() == chuser->getNick())
                     {
-                        std::string tosend = ":ft_irc 473 " + (*it)->getNick() + " " + chname + " Can't join the channel (+i)\r\n";
+                        std::string tosend = ":ft_irc 464 " + (*it)->getNick() + " " + chname + " :Password incorrect\r\n";
                         write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
                     }
                 }

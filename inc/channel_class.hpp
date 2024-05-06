@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/05/06 14:49:17 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:54:09 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ public :
     void    mode_o(std::string commands, user *users);
     void    mode_i(std::string commands);
     void    mode_t(std::string commands);
-    void    mode_k(std::string commands);
+    void    mode_k(std::string commands, user *chuser);
     void    mode_l(std::string commands);
 };
 

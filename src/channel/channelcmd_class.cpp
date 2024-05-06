@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 14:52:29 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/06 15:53:55 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void    Channel::TOPIC(std::string topic, user *users)
         _topic = topic;
     else if (topic.size() != 0 && this->isinchan(users) == 0)
     {
-        std::string tosend = users->getNick() + " " + _cname + " :" + "You're not in the channel" + "\r\n";
+        std::string tosend = ":ft_irc 442 " + users->getNick() + " " + _cname + " :You're not on that channel" +"\r\n";
         write(users->getFds()->fd, tosend.c_str(), tosend.size());
     }
     else if (topic.size() != 0 && _modif_topic == false && isop(users) == 1)
@@ -103,7 +103,7 @@ void    Channel::MODE(std::string commands, user *users)
         }
         else if (commands.find("-k") != commands.npos || commands.find("+k") != commands.npos)
         {
-            mode_k(commands);
+            mode_k(commands, users);
         }
         else if (commands.find("-l") != commands.npos || commands.find("+l") != commands.npos)
         {
