@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 15:53:55 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 11:50:25 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,28 +58,19 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
 
 void    Channel::TOPIC(std::string topic, user *users)
 {
-    if (topic.size() != 0 && _modif_topic == true)
+    if (topic.size() != 0 && _modif_topic == false)
         _topic = topic;
     else if (topic.size() != 0 && this->isinchan(users) == 0)
     {
         std::string tosend = ":ft_irc 442 " + users->getNick() + " " + _cname + " :You're not on that channel" +"\r\n";
         write(users->getFds()->fd, tosend.c_str(), tosend.size());
     }
-    else if (topic.size() != 0 && _modif_topic == false && isop(users) == 1)
+    else if (topic.size() != 0 && _modif_topic == true && isop(users) == 1)
         _topic = topic;
-    else if (topic.size() != 0 && _modif_topic == false && isop(users) == 0)
-        notop(users);
-    else if (topic.size() == 0)
+    else if (topic.size() != 0 && _modif_topic == true && isop(users) == 0)
     {
-        for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
-        {
-            if ((*it)->getNick() == users->getNick())
-            {
-                std::string tosend = "TOPIC " + _cname + " :" + _topic + "\r\n";
-                write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-                return ;
-            }
-        }
+        notop(users);
+        return;
     }
     std::string tosend = "TOPIC " + _cname + " :" + _topic + "\r\n";
     sendtoallnopm(tosend);
@@ -90,25 +81,15 @@ void    Channel::MODE(std::string commands, user *users)
     if (isop(users) == 1)
     {
         if (commands.find("+i") != commands.npos || commands.find("-i") != commands.npos)
-        {
-            mode_i(commands);
-        }
+            mode_i(commands, users);
         else if (commands.find("-t") != commands.npos || commands.find("+t") != commands.npos)
-        {
-            mode_t(commands);
-        }
+            mode_t(commands, users);
         else if ((commands.find("-o") != commands.npos && this->is_in_op_list(users->getNick())) || (commands.find("+o") != commands.npos && this->is_in_op_list(users->getNick())))
-        {
             mode_o(commands, users);
-        }
         else if (commands.find("-k") != commands.npos || commands.find("+k") != commands.npos)
-        {
             mode_k(commands, users);
-        }
         else if (commands.find("-l") != commands.npos || commands.find("+l") != commands.npos)
-        {
-            mode_l(commands);
-        }
+            mode_l(commands, users);
         else
         {
             std::string tosend = ":ft_irc 501 " + users->getNick() + " " + _cname + " :Unknown MODE flag" + "\r\n";

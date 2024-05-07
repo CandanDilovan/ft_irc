@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:31:18 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 15:11:55 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 10:55:23 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void Server::join_channel(user *chuser, std::string chname)
         _chanmap[chname]->add_user(chuser);
         if (chuser->_commands_more.size() != 0)
         {
-            this->_password = chuser->_commands_more;
+            _chanmap[chname]->setChanPass(chuser->_commands_more);
             _chanmap[chname]->_pass_on_off = true;
         }
     }
@@ -80,12 +80,11 @@ void    Server::join_channel_invit_pass(user *chuser, std::string chname)
                     }
                 }
         }
-        else if ((_chanmap[chname]->password_on_off() == true && _chanmap[chname]->invite_on_off() == true) || 
-                (_chanmap[chname]->password_on_off() == true && _chanmap[chname]->invite_on_off() == false))
+        else if (_chanmap[chname]->password_on_off() == true)
         {
-            if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more == this->_password)
+            if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more == _chanmap[chname]->getChanPass())
                 _chanmap[chname]->add_user(chuser);
-            else if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more != this->_password)
+            else if (_chanmap[chname]->password_on_off() == true && chuser->_commands_more != _chanmap[chname]->getChanPass())
             {
                 for (std::list<user *>::iterator it = _userlist.begin(); it != _userlist.end(); it++)
                 {

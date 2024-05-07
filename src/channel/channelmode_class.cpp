@@ -6,24 +6,35 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:50:57 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 15:54:42 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 11:37:19 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/channel_class.hpp"
 
-void    Channel::mode_l(std::string commands)
+void    Channel::mode_l(std::string commands, user *chuser)
 {
     if (commands.find("-l") != commands.npos)
     {
         _bool_nb_max_of_user = false;
+        std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " -l" + "\r\n";
+        sendtoallnopm(tosend);
     }
     else if (commands.find("+l") != commands.npos)
     {
         _bool_nb_max_of_user = true;
         std::string user_max = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
-        _nb_max_of_user = atoi(user_max.c_str());
-        std::cout << "nb max of user: " << _nb_max_of_user << std::endl;
+        if (atoi(user_max.c_str()) > 0)
+        {
+            _nb_max_of_user = atoi(user_max.c_str());
+            std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " +l " + user_max + "\r\n";
+            sendtoallnopm(tosend);
+        }
+        else
+        {
+            std::string tosend = ":ft_irc 461" + chuser->getNick() + " MODE +l :Not enough parameters\r\n";
+            write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
+        }
     }
 }
 
@@ -33,7 +44,7 @@ void    Channel::mode_k(std::string commands, user *chuser)
     {
         _pass_on_off = false;
         std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " -k " + _chan_password + "\r\n";
-        write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
+        sendtoallnopm(tosend);
         _chan_password.clear();
     }
     else if (commands.find("+k") != commands.npos)
@@ -45,25 +56,41 @@ void    Channel::mode_k(std::string commands, user *chuser)
             _pass_on_off = true;
             _chan_password = password;
             std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " +k " + _chan_password + "\r\n";
-            write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
+            sendtoallnopm(tosend);
         }
     } 
 }
 
-void    Channel::mode_i(std::string commands)
+void    Channel::mode_i(std::string commands, user *chuser)
 {
     if (commands.rfind("-i") != commands.npos)
-            _invit_only = false;
+    {
+         _invit_only = false;
+        std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " -i\r\n";
+        sendtoallnopm(tosend);
+    }
     else if (commands.rfind("+i") != commands.npos)
+    {
         _invit_only = true;
+        std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " +i\r\n";
+        sendtoallnopm(tosend);
+    }
 }
 
-void    Channel::mode_t(std::string commands)
+void    Channel::mode_t(std::string commands, user *chuser)
 {
     if (commands.rfind("-t") != commands.npos)
-            _modif_topic = false;
+    {
+        _modif_topic = false;
+        std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " -t\r\n";
+        sendtoallnopm(tosend);
+    }
     else if (commands.rfind("+t") != commands.npos)
+    {
         _modif_topic = true;
+        std::string tosend = ":" + chuser->getNick() + " MODE " + _cname + " +t\r\n";
+        sendtoallnopm(tosend);
+    }
 }
 
 void    Channel::mode_o(std::string commands, user *users)

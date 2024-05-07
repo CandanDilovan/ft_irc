@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:53 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 14:28:28 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 11:53:46 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@ std::string Channel::getName()
     return (_cname);
 }
 
+std::string Channel::getChanPass()
+{
+    return (_chan_password);
+}
+void Channel::setChanPass(std::string pass)
+{
+    _chan_password = pass;
+}
+
 bool Channel::invite_on_off()
 {
     return(_invit_only);
@@ -34,18 +43,12 @@ bool Channel::password_on_off()
 
 bool    Channel::is_in_invite_list(std::string nick)
 {
-    bool send;
     for (std::list<user *>::iterator it = _invitlist.begin(); it != _invitlist.end(); it++)
     {
         if ((*it)->getNick() == nick)
-        {
-            send = true;
-            break;
-        }
-        else if (it == _invitlist.end())
-            send = false;
+            return true;
     } 
-    return (send);  
+    return false;
 }
 
 int Channel::isinchan(user *chuser)

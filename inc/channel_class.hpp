@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/05/06 15:54:09 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 11:34:27 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ private :
 
 public :
 
+    std::string getChanPass();
+    void setChanPass(std::string pass);
+
     int _nb_max_of_user;
     bool _pass_on_off;
     bool _bool_nb_max_of_user;
@@ -65,10 +68,10 @@ public :
     
     void    MODE(std::string commandes, user *users);
     void    mode_o(std::string commands, user *users);
-    void    mode_i(std::string commands);
-    void    mode_t(std::string commands);
+    void    mode_i(std::string commands, user *chuser);
+    void    mode_t(std::string commands, user *chuser);
     void    mode_k(std::string commands, user *chuser);
-    void    mode_l(std::string commands);
+    void    mode_l(std::string commands, user *chuser);
 };
 
 #endif

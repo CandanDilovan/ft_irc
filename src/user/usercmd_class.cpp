@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:54:51 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 15:36:38 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 10:51:45 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void    user::join(Server &serv, std::string str, user *users)
     (void) users;
     std::string chname = str.substr(str.find("#"),  str.rfind(" ") - str.find("#"));
     std::string password = str.substr(str.rfind(" ") + 1, str.rfind("\r") - str.rfind(" "));
-    std::cout << password << "|" << std::endl;
     if (password != chname)
         this->_commands_more = password;
     serv.join_channel(this, chname);
