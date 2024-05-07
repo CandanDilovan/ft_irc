@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:53 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/07 11:53:46 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 12:24:48 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,10 @@ void Channel::notop(user *users)
 
 bool Channel::is_in_op_list(std::string nick)
 {
-    bool    send;
     for (std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
     {
         if ((*it)->getNick() == nick)
-        {
-            send = true;
-            break;
-        }
-        else if (it == _invitlist.end())
-            send = false;
+            return true;
     }
-    return (send);
+    return false;
 }
