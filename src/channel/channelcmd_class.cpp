@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/07 12:24:18 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 14:04:11 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
 {
     for (std::list<user *>::iterator it = userlist.begin(); it != userlist.end(); it++)
     {
+        if(isinchan(*it) == 1)
+        {
+            std::string tosend = ":ft_irc 443 " + users->getNick() + " " + _cname + " " + nick + " :Is already in channel\r\n";
+            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+        }
         if ((*it)->getNick() == nick)
         {
             std::string tosend = ":" + users->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
@@ -48,12 +53,9 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
             _invitlist.push_back(*it);
             break;
         }
-        else if (it == _ulist.end())
-        {
-            std::string tosend = ":ft_irc 401 " + users->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
-            write(users->getFds()->fd, tosend.c_str(), tosend.size());
-        }
     }
+    std::string tosend = ":ft_irc 401 " + users->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
+    write(users->getFds()->fd, tosend.c_str(), tosend.size());
 }
 
 void    Channel::TOPIC(std::string topic, user *users)

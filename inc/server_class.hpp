@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_class.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 12:59:16 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 14:31:14 by aabel            ###   ########.fr       */
+/*   Updated: 2024/05/07 14:25:17 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ private :
     std::map<std::string, Channel *>    _chanmap;
 
     Server();
-    void                    leaveallchan(user *chuser, std::string str);
 
 public :
 
@@ -51,6 +50,7 @@ public :
     void                    join_channel(user *chuser, std::string chname);
     void                    leaving(user *chuser, std::string str);
     void                    quit(user *chuser, std::string str);
+    void                    leaveallchan(user *chuser, std::string str);
 
     void                    isinchan(user *chuser, std::string msg);
     

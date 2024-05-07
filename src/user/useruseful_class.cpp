@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 12:01:26 by dilovan           #+#    #+#             */
-/*   Updated: 2024/04/30 15:08:06 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 14:25:19 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int user::findclosest(std::string str)
         return (str.find('\n'));
 }
 
-void user::pinged()
+void user::pinged(Server &serv)
 {
     time_t pingus = time(0);
 
@@ -66,6 +66,7 @@ void user::pinged()
     if (pingus - _sentping > 30 && _pinged == 1)
     {
         error("timed out");
+        serv.leaveallchan(this, "TIMED OUT");
         close(_fds->fd);
         _connected = 0;
     }

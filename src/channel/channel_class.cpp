@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/05/06 12:47:51 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 13:58:20 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ void Channel::rm_user(user *chuser, std::string partmsg)
             else
                 msg = ":" + chuser->getNick() + " PART " + _cname + "\r\n";
             sendtoallnopm(msg);
-            std::string tosend = ":" + chuser->getNick() + _cname + " :" + msg + "\r\n";
-            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             _ulist.erase(it);
             break;
         }

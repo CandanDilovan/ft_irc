@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/05/02 12:47:05 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 14:16:32 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void infinite_loop(class Server &serv)
                 }
             }
             if (it != serv.getUserlist().begin())
-                (*it)->pinged();
+                (*it)->pinged(serv);
             (*it)->parse_input(serv);
             if ((*it)->_getco() == 0)
             {

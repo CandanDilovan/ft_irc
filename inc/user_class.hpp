@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/04/30 15:05:13 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/07 14:16:15 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ public:
     void    nego_end(Server &serv);
     void    connected_parse(Server &serv, std::list<std::string> strings);
     void    error(std::string error);
-    void    pinged();
+    void    pinged(Server &serv);
 
 
 //exception 
