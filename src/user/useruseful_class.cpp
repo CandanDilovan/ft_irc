@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 12:01:26 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/07 14:25:19 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 11:58:33 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 std::string user::getNick()
 {
     return (_nick);
+}
+
+std::string     user::getNickHost()
+{
+    std::string returning = _nick + "!" + _name + "@localhost";
+    return (returning);
 }
 
 struct pollfd *user::getFds()

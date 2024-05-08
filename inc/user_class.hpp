@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 11:36:35 by dcandan           #+#    #+#             */
-/*   Updated: 2024/05/07 14:16:15 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 11:56:22 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ public:
     std::string     getNick();
     int             _getco();
     struct pollfd   *getFds();
+    std::string     getNickHost();
 
     void             setNick(std::string newnick);
 

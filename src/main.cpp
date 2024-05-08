@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/05/07 14:16:32 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 11:51:04 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int main(int argc, char **argv)
     try
     {
         signal(SIGINT, crash_serv);
+        signal(SIGPIPE, crash_serv);
         Server serv(argv);
         infinite_loop(serv);
     }
