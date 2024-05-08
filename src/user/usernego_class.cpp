@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:57:05 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 12:43:32 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 13:57:19 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,16 @@ void user::fill_user(std::list<std::string> strings, Server &serv)
         }
         else if ((*it).find("NICK") != (*it).npos)
         {    
-            _nick = (*it).substr((*it).find(" ") + 1, closest);
+            _nick = (*it).substr((*it).find(" ") + 1,  closest - ((*it).find(" ") + 1));
             if (nick_verif() == 1)
                 wrong_nick(serv);
             else
                 serv.twinick(this);
         }
         else  if ((*it).find("USER") != (*it).npos)
-            _name = (*it).substr((*it).find(":") + 1, closest);
-        else if ((*it).find("PASS") != (*it).npos)
-            _upass = (*it).substr((*it).find(" ") + 1, closest);
+            _name = (*it).substr((*it).find(" ") + 1, ((*it).find(" ",(*it).find(" ") + 1)) - ((*it).find(" ") + 1));
+         else if ((*it).find("PASS") != (*it).npos)
+            _upass = (*it).substr((*it).find(" ") + 1, closest - ((*it).find(" ") + 1));
         else if ((*it).find("CAP END") != (*it).npos)
         {
             if (serv.getPass() != _upass)

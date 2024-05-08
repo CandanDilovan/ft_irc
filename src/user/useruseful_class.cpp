@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 12:01:26 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/08 11:58:33 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 13:29:21 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ std::string user::getNick()
 
 std::string     user::getNickHost()
 {
-    std::string returning = _nick + "!" + _name + "@localhost";
+    std::string returning = _nick + "!~" + _name + "@localhost";
     return (returning);
 }
 

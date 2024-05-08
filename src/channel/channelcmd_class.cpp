@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/07 14:04:11 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 13:26:16 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void Channel::KICK(user *chuser, std::string nick)
         {
             if ((*it)->getNick() == nick)
             {
-                std::string tosend = ":" + chuser->getNick() + " KICK " + _cname + " " + nick + "\r\n";
+                std::string tosend = ":" + chuser->getNickHost() + " KICK " + _cname + " " + nick + "\r\n";
                 sendtoallnopm(tosend);
                 it = _ulist.erase(it);
                 break;
@@ -48,7 +48,7 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
         }
         if ((*it)->getNick() == nick)
         {
-            std::string tosend = ":" + users->getNick() + " INVITE " + nick + " " + _cname + "\r\n";
+            std::string tosend = ":" + users->getNickHost() + " INVITE " + nick + " " + _cname + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             _invitlist.push_back(*it);
             break;
