@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/08 14:02:10 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 14:23:42 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,15 @@ void Channel::KICK(user *chuser, std::string nick)
             {
                 std::string tosend = ":" + chuser->getNickHost() + " KICK " + _cname + " " + nick + "\r\n";
                 sendtoallnopm(tosend);
+                rm_op(*it);
+                if (_invit_only == true)
+                    rm_inv(*it);
                 it = _ulist.erase(it);
                 break;
             }
             else
             {
-                std::string tosend = ":ft_irc 401 " + chuser->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
+                std::string tosend = ":ft_irc 401 " + chuser->getNickHost() + " " + nick + " " + " :No such nick/channel" + "\r\n";
                 write(chuser->getFds()->fd, tosend.c_str(), tosend.size());
             }
         }
@@ -41,10 +44,10 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
 {
     for (std::list<user *>::iterator it = userlist.begin(); it != userlist.end(); it++)
     {
-        if(isinchan(*it) == 1)
+        if(isinchan(*it) == 1 && (*it)->getNick() == nick)
         {
-            std::string tosend = ":ft_irc 443 " + users->getNick() + " " + _cname + " " + nick + " :Is already in channel\r\n";
-            write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+            std::string tosend = ":ft_irc 443 " + users->getNickHost() + " " + _cname + " " + nick + " :Is already in channel\r\n";
+            write(users->getFds()->fd, tosend.c_str(), tosend.size());
             return ;
         }
         if ((*it)->getNick() == nick)
@@ -55,7 +58,7 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
             return ;
         }
     }
-    std::string tosend = ":ft_irc 401 " + users->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
+    std::string tosend = ":ft_irc 401 " + users->getNickHost() + " " + nick + " " + " :No such nick/channel" + "\r\n";
     write(users->getFds()->fd, tosend.c_str(), tosend.size());
 }
 

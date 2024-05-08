@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:31:25 by dcandan           #+#    #+#             */
-/*   Updated: 2024/05/07 11:34:27 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 14:17:10 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ public :
     std::string getName();
     void    add_user(user *chuser);
     void    rm_user(user *chuser, std::string partmsg);
+    void    rm_op(user *chuser);
+    void    rm_inv(user*chuser);
     void    quit_user(user *chuser, std::string str);
     bool    invite_on_off();
     bool    password_on_off();

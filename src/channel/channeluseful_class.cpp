@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:53 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/07 12:26:29 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 14:19:05 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,3 +82,29 @@ bool Channel::is_in_op_list(std::string nick)
     }
     return false;
 }
+
+void    Channel::rm_op(user *chuser)
+{
+for(std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
+{
+    if ((*it)->getNick() == chuser->getNick())
+    {
+        _oplist.erase(it);
+        return ;
+    }
+}
+}
+
+void    Channel::rm_inv(user*chuser)
+{
+    for(std::list<user *>::iterator it = _invitlist.begin(); it != _invitlist.end(); it++)
+    {
+        if ((*it)->getNick() == chuser->getNick())
+        {
+            _invitlist.erase(it);
+            return ;
+        }
+    }
+    
+}
+
