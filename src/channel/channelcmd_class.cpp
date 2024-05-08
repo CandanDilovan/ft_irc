@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:51:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/08 13:26:16 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/08 14:02:10 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ void Channel::INVITE(std::string nick, std::list<user *> userlist, user *users)
         {
             std::string tosend = ":ft_irc 443 " + users->getNick() + " " + _cname + " " + nick + " :Is already in channel\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
+            return ;
         }
         if ((*it)->getNick() == nick)
         {
             std::string tosend = ":" + users->getNickHost() + " INVITE " + nick + " " + _cname + "\r\n";
             write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
             _invitlist.push_back(*it);
-            break;
+            return ;
         }
     }
     std::string tosend = ":ft_irc 401 " + users->getNick() + " " + nick + " " + " :No such nick/channel" + "\r\n";
