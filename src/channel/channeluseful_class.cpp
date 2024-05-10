@@ -85,14 +85,14 @@ bool Channel::is_in_op_list(std::string nick)
 
 void    Channel::rm_op(user *chuser)
 {
-for(std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
-{
-    if ((*it)->getNick() == chuser->getNick())
+    for(std::list<user *>::iterator it = _oplist.begin(); it != _oplist.end(); it++)
     {
-        _oplist.erase(it);
-        return ;
+        if ((*it)->getNick() == chuser->getNick())
+        {
+            _oplist.erase(it);
+            return ;
+        }
     }
-}
 }
 
 void    Channel::rm_inv(user*chuser)
@@ -105,6 +105,5 @@ void    Channel::rm_inv(user*chuser)
             return ;
         }
     }
-    
 }
 

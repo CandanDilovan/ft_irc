@@ -58,18 +58,15 @@ void Channel::quit_user(user *chuser, std::string str)
     {
         if ((*it)->getNick() == chuser->getNick())  
         {
-            for (std::list<user *>::iterator opit = _oplist.begin(); opit != _oplist.end(); opit++)
-                if ((*it)->getNick() == chuser->getNick())
-                {
-                    _oplist.erase(opit);
-                    break;
-                }
             std::string msg = ":" + chuser->getNickHost() + " QUIT :Quit: " + str + "\r\n";
             sendtoallfr(chuser, msg);
             _ulist.erase(it);
             break;
         }
     }
+    rm_op(chuser);
+    if (_invit_only == true)
+        rm_inv(chuser);
 }
 
 void Channel::rm_user(user *chuser, std::string partmsg)
@@ -90,4 +87,6 @@ void Channel::rm_user(user *chuser, std::string partmsg)
         }
     }
     rm_op(chuser);
+    if (_invit_only == true)
+        rm_inv(chuser);
 }
