@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:54:51 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/07 10:51:45 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/13 13:41:58 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void    user::ping(Server &serv, std::string str, user *users)
     std::string ping = str.substr(str.find("PING"),  (str.rfind('\r') - str.find("PING")));
     ping = ping.substr(ping.find(" ") + 1,  ping.rfind('\r') - ping.find(" "));
     ping = "PONG ft_irc " + ping + "\r\n";
-    std::cout << ping << std::endl;
     write(getFds()->fd, ping.c_str(), ping.size());
 }
 

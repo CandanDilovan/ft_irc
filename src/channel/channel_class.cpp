@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:25:46 by dcandan           #+#    #+#             */
-/*   Updated: 2024/05/08 14:19:38 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/13 13:42:23 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void Channel::add_user(user *chuser)
             joineded += (*it)->getNick() + " ";
     }
     joineded += "\r\n:ft_irc 366 " + chuser->getNick() + ' ' + _cname + " :End of /NAMES list\r\n";
-    std::cout << joineded;
     write(chuser->getFds()->fd, joineded.c_str(), joineded.size());
 }
 

@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:53:26 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/13 11:21:59 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/13 13:42:04 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void Channel::sendtoallnopm(std::string msg)
 {
     for (std::list<user *>::iterator it = _ulist.begin(); it != _ulist.end(); it++)
         write((*it)->getFds()->fd, msg.c_str(), msg.size());
-    //std::cout << msg;
 }
 
 void Channel::sendtoallfr(user *chuser, std::string msg)
@@ -43,7 +42,6 @@ void Channel::sendtoall(user *chuser, std::string msg)
             std::string tosend = ":" + chuser->getNick() + " PRIVMSG " + _cname + " :" + msg + "\r\n";
             if ((*it)->getFds()->fd != chuser->getFds()->fd)
                 write((*it)->getFds()->fd, tosend.c_str(), tosend.size());
-            std::cout << tosend << std::endl << "size = " << tosend.size() << std::endl;
         }
     }
     else

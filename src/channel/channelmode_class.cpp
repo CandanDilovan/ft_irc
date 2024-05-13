@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 10:50:57 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/08 13:41:58 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/13 13:42:16 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void    Channel::mode_k(std::string commands, user *chuser)
     else if (commands.find("+k") != commands.npos)
     {
         std::string password = commands.substr((commands.rfind(" ") + 1), commands.find("\r") - (commands.rfind(" ") + 1));
-        std::cout << password <<std::endl;
         if (password != "+k")
         {
             _pass_on_off = true;
@@ -127,7 +126,6 @@ void    Channel::mode_o(std::string commands, user *users)
                 } 
             }
             std::string tosend = ":ft_irc 441 " + users->getNick() + " " + nick + " " + _cname + " :They aren't on that channel" + "\r\n";
-            std::cout << tosend;
             write(users->getFds()->fd, tosend.c_str(), tosend.size());
         }
     }
