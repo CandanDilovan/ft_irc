@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:57:05 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/08 13:57:19 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/13 11:02:26 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void user::wrong_pass()
     error("Password incorrect");
     usleep(100);
     close(_fds->fd);
+    _connected = 0;
 }
 
 void user::wrong_nick(Server &serv)

@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:57:54 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/06 13:48:55 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/13 12:05:46 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void user::connected_parse(Server &serv, std::list<std::string> strings)
 	{
         for(std::list<std::string>::iterator it = strings.begin(); it != strings.end(); it++)
         {
-            if ((*it).find(msg[a]) != (*it).npos)
+            if ((*it).substr(0, msg[a].size()) == msg[a])
             {
                 std::string test = (*it).substr((*it).find(" ") + 1, (*it).find('\n') - (*it).find(" "));
                 if (test.size() == 0 && a != 10 && a != 8)

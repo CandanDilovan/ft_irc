@@ -6,7 +6,7 @@
 /*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:37:21 by dcandan           #+#    #+#             */
-/*   Updated: 2024/05/08 11:51:04 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/13 11:45:49 by dcandan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void infinite_loop(class Server &serv)
                     serv.add_user();
                 else if (user_fd->revents & POLLIN)
                 {
-                    int reading = read(user_fd->fd, tkt, 100);
+                    int reading = read(user_fd->fd, tkt, 99);
                     if (reading > 0)
                         (*it)->allbuff += tkt;
                     std::cout << tkt;
