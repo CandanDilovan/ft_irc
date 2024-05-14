@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   servercmd_class.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcandan <dcandan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aabel <aabel@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:31:15 by dilovan           #+#    #+#             */
-/*   Updated: 2024/05/07 14:55:32 by dcandan          ###   ########.fr       */
+/*   Updated: 2024/05/14 13:14:54 by aabel            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void    Server::com_spec_topic(std::string line, user *users)
         size_t secondSpacePos = line.find(" ", hashPos);
         std::string chname = line.substr(hashPos, secondSpacePos - hashPos);
 
-        std::string topic = line.substr(cmd.size() + chname.size() + 3,line.size() - cmd.size() - chname.size());
+        std::string topic = line.substr(line.find(":") + 1, line.find("\r") - line.find(":"));
+        std::cout << "TOPIC: " << topic << std::endl;
         if (_chanmap.find(chname) != _chanmap.end())
         {
             _chanmap[chname]->TOPIC(topic, users);
